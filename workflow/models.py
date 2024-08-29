@@ -1,3 +1,102 @@
 from django.db import models
+from django.utils import timezone
 
-# Create your models here.
+# Modelo para Clientes
+class Cliente(models.Model):
+    nome = models.CharField(max_length=255)
+    endereco = models.CharField(max_length=255)
+    razao_social = models.CharField(max_length=255, blank=True, null=True)
+    telefone = models.CharField(max_length=15)
+    email = models.EmailField()
+    contato_principal = models.CharField(max_length=255)
+    contato_secundario = models.CharField(max_length=255, blank=True, null=True)
+    proposta_link = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.nome} ({self.id})"
+
+
+# Modelo para Serviços
+class Servico(models.Model):
+    REGULATORIO = 'Regulatório'
+    QUALIDADE = 'Qualidade'
+    CAPACITACAO = 'Capacitação e Treinamento'
+    CONSULTORIA = 'Consultoria Empresarial'
+    SUPORTE = 'Suporte Pós Serviço'
+    
+    TIPO_SERVICO_CHOICES = [
+        (REGULATORIO, 'Regulatório'),
+        (QUALIDADE, 'Qualidade'),
+        (CAPACITACAO, 'Capacitação e Treinamento'),
+        (CONSULTORIA, 'Consultoria Empresarial'),
+        (SUPORTE, 'Suporte Pós Serviço'),
+    ]
+
+    nome = models.CharField(max_length=255)
+    tipo_servico = models.CharField(max_length=50, choices=TIPO_SERVICO_CHOICES)
+    valor_base = models.DecimalField(max_digits=10, decimal_places=2)
+    prazo_execucao = models.IntegerField(help_text="Prazo em dias")
+
+    def __str__(self):
+        return f"{self.nome} ({self.tipo_servico})"
+
+
+# Modelo para Tarefas
+class Tarefa(models.Model):
+    STATUS_CHOICES = [
+        ('iniciado', 'Iniciado'),
+        ('coleta_informacoes', 'Coleta de Informações'),
+        ('execucao', 'Execução'),
+        ('aprovacao_cliente', 'Aprovação Cliente'),
+        ('concluido', 'Concluído'),
+        ('encerrado', 'Encerrado'),
+    ]
+
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='iniciado')
+    data_inicio = models.DateField(default=timezone.now)
+    data_fim_prevista = models.DateField(null=True, blank=True)
+    data_fim_real = models.DateField(null=True, blank=True)
+    observacoes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Tarefa {self.id} para {self.cliente.nome}"
+
+
+# Modelo para Etapas das Tarefas
+class Etapa(models.Model):
+    tarefa = models.ForeignKey(Tarefa, on_delete=models.CASCADE)
+    nome_etapa = models.CharField(max_length=255)
+    data_etapa = models.DateField(null=True, blank=True)
+    status_etapa = models.BooleanField(default=False)
+    observacoes_etapa = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Etapa {self.nome_etapa} da Tarefa {self.tarefa.id}"
+
+
+# Modelo para Suporte
+class Suporte(models.Model):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    descricao = models.TextField()
+    valor_hora = models.DecimalField(max_digits=10, decimal_places=2, default=75.00)
+    data_suporte = models.DateField(default=timezone.now)
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
+
+    def __str__(self):
+        return f"Suporte para {self.cliente.nome} em {self.data_suporte}"
+
+
+# Modelo para Relatórios
+class Relatorio(models.Model):
+    tarefa = models.ForeignKey(Tarefa, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    descricao_relatorio = models.TextField()
+    data_relatorio = models.DateField(default=timezone.now)
+    tipo_relatorio = models.CharField(max_length=50, choices=[('impressao', 'Impressão'), ('excel', 'Excel')])
+    filtro = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"Relatório {self.id} para {self.cliente.nome}"
