@@ -10,7 +10,8 @@ class CreateCliente(forms.ModelForm):
     nome = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Digite o Nome'
+                'placeholder': 'Digite o Nome',
+                'class': 'text-placeholder'
             }
         ),
         label='Nome',
@@ -73,7 +74,7 @@ class CreateCliente(forms.ModelForm):
                 'placeholder': 'Maria - (44)99112-3456'
             }
         ),
-        label='Email do Cliente',
+        label='Contato Secundário',
         help_text='Não necessário'
     )
 

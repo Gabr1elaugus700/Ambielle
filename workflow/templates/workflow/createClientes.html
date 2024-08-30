@@ -2,7 +2,9 @@
 
 {% block content %}
   <div class="tela-form">
-    <h1>Formulário de Cadastro de Cliente</h1>
+    <div class="title-form">
+        <h1>Formulário de Cadastro de Cliente</h1>
+    </div>
     <form action=" {% url 'workflow:createCliente' %}" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
 
@@ -20,7 +22,7 @@
           {% endfor %}
         </div>
         <div class="btn">
-          <button class="btn-form" type="submit">Enviar</button>
+          <button class="btn-form" type="submit">SALVAR</button>
         </div>
       </div>
     </form>
