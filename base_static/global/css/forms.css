@@ -1,0 +1,41 @@
+.errorlist{
+    list-style: none;
+    font-family: var(--secondary-font);
+    font-size: smaller;
+    color: tomato;
+}
+
+h1{
+    font-family: var(--primary-font);
+}
+
+.tela-form{
+    padding: 30px;
+    background-color: aliceblue;
+    width: 1216px;
+}
+
+.form-label{
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column; /* Garante que cada label e input fiquem em coluna */
+    align-items: flex-start;
+}
+.form-label .help_text {
+    font-family: var(--secondary-font);
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 30px;
+}
+
+.btn button{
+    font-family: var(--secondary-font);
+}

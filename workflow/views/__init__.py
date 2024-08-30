@@ -1,2 +1,3 @@
 ## Adicionar Novos arquivos aqui 
-from .index import *
+from .createForms import *
+from .getPage import *

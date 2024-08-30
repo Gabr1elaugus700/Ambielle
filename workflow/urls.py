@@ -5,7 +5,7 @@ app_name = 'workflow'
 
 urlpatterns  = [
     #Create
-    path('ambielle/teste/', views.index, name='index'),
+    path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),
     #Detail
 
     #Update

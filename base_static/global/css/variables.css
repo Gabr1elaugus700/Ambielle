@@ -11,3 +11,10 @@
     --primary-font: 'Cabin Condensed', sans-serif;
     --secondary-font: 'Roboto Mono', sans-serif;
  }
+
+ body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+}
