@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from . import models
 from django.contrib.auth.models import User
-from .models import Cliente
+from .models import Cliente, Tarefa, Servico
 
 
 class CreateCliente(forms.ModelForm):
@@ -81,3 +81,53 @@ class CreateCliente(forms.ModelForm):
     class Meta:
         model = models.Cliente
         fields = ('nome', 'endereco', 'razao_social', 'telefone', 'email', 'contato_principal', 'contato_secundario')
+
+
+class CreateServicoForm(forms.ModelForm):
+    
+    cliente = forms.ModelChoiceField(
+        queryset=Cliente.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-select'
+            }
+        ),
+        label='Cliente'
+    )
+    
+    tipo_servico = forms.ChoiceField(
+        choices=Servico.TIPO_SERVICO_CHOICES,
+        widget=forms.Select(
+            attrs={
+                'class': 'form-select'
+            }
+        ),
+        label='Tipo de Serviço'
+    )
+    
+    valor_base = forms.DecimalField(
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Digite o valor base'
+            }
+        ),
+        label='Valor Base',
+        max_digits=10,
+        decimal_places=2
+    )
+    
+    prazo_execucao = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Prazo de execução (dias)'
+            }
+        ),
+        label='Prazo de Execução',
+        help_text='Prazo em dias'
+    )
+    
+    class Meta:
+        model = Servico
+        fields = ['cliente', 'tipo_servico', 'valor_base', 'prazo_execucao']

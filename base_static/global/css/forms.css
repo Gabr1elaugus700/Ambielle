@@ -55,6 +55,16 @@ h1{
     border-radius: 4px;
     width: 500px;
     width: 85%;
+    border: none;
+}
+
+.form-label select{
+    font-family: var(--secondary-font);
+    padding: 5px;
+    border-radius: 4px;
+    width: 500px;
+    width: 87%;
+    border: none;
 }
 
 .help_text {

@@ -18,27 +18,56 @@ class Cliente(models.Model):
 
 # Modelo para Serviços
 class Servico(models.Model):
+    ANVISA = 'Anvisa'
+    CIVIL = 'Civil'
+    DEFESA_PF = 'Defesa PF'
+    EXERCITO = 'Exército'
+    GESTAO_PROCESSOS = 'Gestão de Processos'
+    IBAMA = 'Ibama'
+    ISO_9001 = 'ISO 9001'
+    IAT = 'IAT'
+    LIDERANCA = 'Liderança'
+    MAPA_PF = 'Mapa Da PF'
+    POLICIA_FEDERAL = 'Polícia Federal'
+    PRODIR = 'PRODIR'
+    RDC_ANVISA = 'RDC Anvisa'
+    RECURSOS_HUMANOS = 'Recursos Humanos'
     REGULATORIO = 'Regulatório'
-    QUALIDADE = 'Qualidade'
-    CAPACITACAO = 'Capacitação e Treinamento'
-    CONSULTORIA = 'Consultoria Empresarial'
-    SUPORTE = 'Suporte Pós Serviço'
-    
+    SASSMAQ = 'SASSMAQ'
+    SINIR = 'SINIR'
+    TREINAMENTO_EBOOK = 'Treinamento (E-book)'
+    TREINAMENTO_ONLINE = 'Treinamento (On-line)'
+    TREINAMENTO_PRESENCIAL = 'Treinamento (Presencial)'
+
     TIPO_SERVICO_CHOICES = [
+        (ANVISA, 'Anvisa'),
+        (CIVIL, 'Civil'),
+        (DEFESA_PF, 'Defesa PF'),
+        (EXERCITO, 'Exército'),
+        (GESTAO_PROCESSOS, 'Gestão de Processos'),
+        (IBAMA, 'Ibama'),
+        (ISO_9001, 'ISO 9001'),
+        (IAT, 'IAT'),
+        (LIDERANCA, 'Liderança'),
+        (MAPA_PF, 'Mapa Da PF'),
+        (POLICIA_FEDERAL, 'Polícia Federal'),
+        (PRODIR, 'PRODIR'),
+        (RDC_ANVISA, 'RDC Anvisa'),
+        (RECURSOS_HUMANOS, 'Recursos Humanos'),
         (REGULATORIO, 'Regulatório'),
-        (QUALIDADE, 'Qualidade'),
-        (CAPACITACAO, 'Capacitação e Treinamento'),
-        (CONSULTORIA, 'Consultoria Empresarial'),
-        (SUPORTE, 'Suporte Pós Serviço'),
+        (SASSMAQ, 'SASSMAQ'),
+        (SINIR, 'SINIR'),
+        (TREINAMENTO_EBOOK, 'Treinamento (E-book)'),
+        (TREINAMENTO_ONLINE, 'Treinamento (On-line)'),
+        (TREINAMENTO_PRESENCIAL, 'Treinamento (Presencial)'),
     ]
 
-    nome = models.CharField(max_length=255)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     tipo_servico = models.CharField(max_length=50, choices=TIPO_SERVICO_CHOICES)
     valor_base = models.DecimalField(max_digits=10, decimal_places=2)
-    prazo_execucao = models.IntegerField(help_text="Prazo em dias")
 
     def __str__(self):
-        return f"{self.nome} ({self.tipo_servico})"
+        return f"{self.tipo_servico} - Cliente: {self.cliente.nome}"
 
 
 # Modelo para Tarefas

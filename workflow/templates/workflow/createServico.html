@@ -1,0 +1,37 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+  <div class="tela-form">
+    <div class="title-form">
+        <h1>Formulário de Cadastro de Serviço</h1>
+    </div>
+    <form action=" {% url 'workflow:createServico' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form">
+        <div class="content-form">
+          {% for field in form %}
+            <div class="form-label">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {{ field.errors }}
+              {% if field.help_text %}
+                <p class="help_text">{{ field.help_text }}</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="btn">
+          <button class="btn-form" type="submit">SALVAR</button>
+        </div>
+      </div>
+    </form>
+    {% if messages %}
+      <ul>
+        {% for message in messages %}
+          <li class="alert alert-{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endblock %}
