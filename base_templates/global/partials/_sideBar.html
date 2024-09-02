@@ -1,0 +1,15 @@
+<div class="sidebar" id="sidebar">
+    <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
+    <ul>
+        <li><i class="fas fa-home"></i><span class="text">Home</span></li>
+        <li><i class="fas fa-user"></i><span class="text">Profile</span></li>
+        <li><i class="fas fa-cog"></i><span class="text">Settings</span></li>
+        <li><i class="fas fa-sign-out-alt"></i><span class="text">Logout</span></li>
+    </ul>
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("expanded");
+    }
+</script>
