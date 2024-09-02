@@ -1,3 +1,9 @@
+.formulario-center{
+    display: flex;
+    margin-top: 5px;
+    justify-content: center;
+}
+
 .errorlist{
     list-style: none;
     font-family: var(--secondary-font);
