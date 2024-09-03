@@ -202,7 +202,6 @@ h2 {
 .status{
     width: 100%;
     height: 45px;
-    
 }
 
 .demand-cards-status h3{
@@ -230,7 +229,7 @@ h2 {
 }
 
 .demand-card:hover{
-    transform: translateY(-3px);
+    transform: translateY(-5px);
 }
 
 .demand-card h3 {

@@ -24,14 +24,16 @@
     margin-top: 50px;
 }
 
-.sidebar ul li {
+.sidebar ul li a{
 
     display: flex;
     padding: 15px 20px;
     color: aliceblue;
     cursor: pointer;
     transition: 0.3s ease;
+    text-decoration: none;
 }
+
 
 .sidebar ul li:hover {
     color: var(--secondary-color);
