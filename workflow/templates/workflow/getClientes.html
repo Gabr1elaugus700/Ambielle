@@ -1,0 +1,10 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+  <h1>Lista de CLientes:</h1>
+  {% for cliente in clientes %}
+    <ul>
+      <li>{{ cliente.nome }}</li>
+    </ul>
+  {% endfor %}
+{% endblock %}
