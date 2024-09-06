@@ -7,6 +7,7 @@ urlpatterns  = [
     #Detail
     path('ambielle/', views.index, name='index'),
     path('ambielle/listaClientes/', views.getCliente, name='getCliente'),
+    path('ambielle/linhaTempo/', views.getTimeLine, name='getCliente'),
     #Create
     path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),
     path('ambielle/cadastroServico/', views.createServico, name='createServico'),

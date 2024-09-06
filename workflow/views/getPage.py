@@ -33,3 +33,16 @@ def getCliente(request):
         'workflow/getClientes.html',
         context,
     )
+
+def getTimeLine(request):
+    title = 'Linha Do Tempo'
+
+    context ={
+        'title': title,
+    }
+
+    return render(
+        request,
+        'workflow/timeLine.html',
+        context,
+    )

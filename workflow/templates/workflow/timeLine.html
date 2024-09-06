@@ -1,0 +1,69 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+  <div class="content-timeline">
+    <div class="container">
+      <div class="company-info">
+        <h1>Pooltecnica Química Ltda</h1>
+        <p>
+          Pooltecnica é nosso Cliente desde 2018, já prestamos 197 serviços.<br />
+          Trabalhos Realizados: Mapa Da PF, Licença ambiental,
+        </p>
+        <div class="buttons">
+          <button class="btn">Button</button>
+          <button class="btn">Button &gt;</button>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="arrow left">&#8592;</div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+                <div class="line left-line"></div>
+                <div class="line right-line"></div>
+                <div class="dotLine"></div>
+                <div class="content-text">
+                    <h4>01/04/2020</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+                </div>
+          </div>
+          <div class="timeline-item">
+            <div class="line left-line"></div>
+
+            <div class="line right-line"></div>
+            <div class="dotLine"></div>
+            <div class="content-text">
+              <h4>21/09/2021</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="line left-line"></div>
+
+            <div class="line right-line"></div>
+            <div class="dotLine"></div>
+            <div class="content-text">
+              <h4>21/09/2021</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+            </div>
+          </div>
+          {% comment %}
+          <div class="timeline-item">
+            <div class="line left-line"></div>
+            <div class="dot"></div>
+            <div class="line right-line"></div>
+            <div class="content">
+              <h4>Date</h4>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+            </div>
+          </div>
+          {% endcomment %}
+        </div>
+
+        <div class="arrow right">&#8594;</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
