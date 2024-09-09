@@ -16,3 +16,25 @@
  body {
     background-color: var(--background-color);
 }
+
+#message-popup {
+    font-family: var(--secondary-font);
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    border-radius: 5px;
+    width: 300px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#progress-bar {
+    width: 0%;
+    height: 5px;
+    background-color: #fff;
+    margin-top: 10px;
+    transition: width 3s linear; /* Duração de 5 segundos */
+}

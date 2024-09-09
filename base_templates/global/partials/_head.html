@@ -10,3 +10,22 @@
     <title>Ambielle - {{ title }}</title>
 </head>
 <body>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var progressBar = document.getElementById('progress-bar');
+        var messagePopup = document.getElementById('message-popup');
+    
+        if (messagePopup) {
+            setTimeout(function() {
+                progressBar.style.width = '100%';
+            }, 100);
+    
+            setTimeout(function() {
+                messagePopup.style.opacity = '0';
+                setTimeout(function() {
+                    messagePopup.remove();
+                }, 400); // Tempo extra para a animação de fade
+            }, 3000); 
+        }
+    });
+</script>
