@@ -21,15 +21,16 @@
     
 }
 
-h1 {
-    font-size: 2.5rem;
+.company-infoH  {
+    font-size: 65px;
     margin-bottom: 10px;
+    font-family: var(--primary-font);
 }
 
-p {
-    font-size: 10px;
-    margin-bottom: 20px;
-    padding: 15px;
+.company-infoP {
+    font-size: 20px;
+    font-family: var(--secondary-font);
+    color: #666;
 }
 
 .buttons {
@@ -40,14 +41,10 @@ p {
     width: 100%;
 }
 
-
-
-
 .timeline {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-
     position: relative;
 }
 
@@ -56,18 +53,21 @@ p {
     flex-direction: column;
     align-items: center;
     position: relative;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
-    padding: 20px 0;
-    border: 2px solid salmon;
+    padding: 20px;
 }
 
+.timeline-item p{
+    text-align: justify;
+    padding: 30px;
+}
 .line {
-    height: 2px;
-    background-color: black;
+    height: 3px;
+    background-color: var(--secondary-color);
     position: absolute;
-    top: 50%;
-    width: 50%; /* A linha ocupa 50% do espaço para cada lado */
+    top: 12px;
+    width: 50%; 
     transform: translateY(-50%);
     z-index: 0;
 }
@@ -87,14 +87,13 @@ p {
     background-color: var(--primary-color);
     position: relative;
     z-index: 1;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center; 
+    top: -17px;
+    border: 3px solid var(--secondary-color);
 }
 
 .content-text {
     text-align: center;
-    margin-top: 30px; /* Espaçamento entre o conteúdo e a linha */
+    font-family: var(--secondary-font);
 }
 
 .arrow {
@@ -113,7 +112,6 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid black;
 }
 
 .arrow.right {

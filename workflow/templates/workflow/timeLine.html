@@ -4,19 +4,18 @@
   <div class="content-timeline">
     <div class="containerTime">
       <div class="company-info">
-        <h1>Pooltecnica Química Ltda</h1>
-        <p>
+        <h1 class="company-infoH">Pooltecnica Química Ltda</h1>
+        <p class="company-infoP">
           Pooltecnica é nosso Cliente desde 2018, já prestamos 197 serviços.<br />
           Trabalhos Realizados: Mapa Da PF, Licença ambiental,
         </p>
         <div class="buttons">
-          <button class="btn-form">Button</button>
-          <button class="btn-form">Button &gt;</button>
+          <button class="btn-form">Exportar PDF</button>
         </div>
       </div>
 
       <div class="timeline">
-        <div class="arrow left">&#8592;</div>
+        {% comment %} <div class="arrow left">&#8592;</div> {% endcomment %}
 
         <div class="timeline">
           <div class="timeline-item">
@@ -46,7 +45,7 @@
             <div class="dotLine"></div>
             <div class="content-text">
               <h4>21/09/2021</h4>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
+              <p class="textLine">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.</p>
             </div>
           </div>
           {% comment %}
@@ -62,7 +61,7 @@
           {% endcomment %}
         </div>
 
-        <div class="arrow right">&#8594;</div>
+        {% comment %} <div class="arrow right">&#8594;</div> {% endcomment %}
       </div>
     </div>
   </div>
