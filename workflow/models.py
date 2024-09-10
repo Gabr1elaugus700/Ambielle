@@ -62,6 +62,7 @@ class Servico(models.Model):
         (TREINAMENTO_PRESENCIAL, 'Treinamento (Presencial)'),
     ]
 
+    prazo_final = models.DateField(null=True, blank=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     tipo_servico = models.CharField(max_length=50, choices=TIPO_SERVICO_CHOICES)
     valor_base = models.DecimalField(max_digits=10, decimal_places=2)

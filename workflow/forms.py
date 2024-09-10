@@ -11,7 +11,7 @@ class CreateCliente(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'placeholder': 'Digite o Nome',
-                'class': 'text-placeholder'
+                'class': 'form-control'
             }
         ),
         label='Nome',
@@ -21,6 +21,7 @@ class CreateCliente(forms.ModelForm):
     endereco = forms.CharField(
         widget=forms.TextInput(
             attrs={
+                'class': 'form-control',
                 'placeholder': 'Avenida Colombo'
             }
         ),
@@ -31,6 +32,7 @@ class CreateCliente(forms.ModelForm):
     razao_social = forms.CharField(
         widget=forms.TextInput(
             attrs={
+                'class': 'form-control',
                 'placeholder': 'Razão Social'
             }
         ),
@@ -41,6 +43,7 @@ class CreateCliente(forms.ModelForm):
     telefone = forms.CharField(
         widget=forms.TextInput(
             attrs={
+                'class': 'form-control',
                 'placeholder': '(44)99999-1234'
             }
         ),
@@ -51,16 +54,17 @@ class CreateCliente(forms.ModelForm):
     email = forms.EmailField(
         widget=forms.TextInput(
             attrs={
+                'class': 'form-control',
                 'placeholder': 'fulano@dominio.com.br'
             }
         ),
         label='Email',
-        # help_text='Nome de Exibição'
     )
 
     contato_principal = forms.CharField(
         widget=forms.TextInput(
             attrs={
+                'class': 'form-control',
                 'placeholder': 'Pedro - (44)99112-3456'
             }
         ),
@@ -71,6 +75,7 @@ class CreateCliente(forms.ModelForm):
     contato_secundario = forms.CharField(
         widget=forms.TextInput(
             attrs={
+                'class': 'form-control',
                 'placeholder': 'Maria - (44)99112-3456'
             }
         ),
@@ -89,7 +94,7 @@ class CreateServicoForm(forms.ModelForm):
         queryset=Cliente.objects.all(),
         widget=forms.Select(
             attrs={
-                'class': 'form-select'
+                'class': 'form-control'
             }
         ),
         label='Cliente'
@@ -99,7 +104,7 @@ class CreateServicoForm(forms.ModelForm):
         choices=Servico.TIPO_SERVICO_CHOICES,
         widget=forms.Select(
             attrs={
-                'class': 'form-select'
+                'class': 'form-control'
             }
         ),
         label='Tipo de Serviço'
@@ -117,17 +122,17 @@ class CreateServicoForm(forms.ModelForm):
         decimal_places=2
     )
     
-    prazo_execucao = forms.IntegerField(
-        widget=forms.NumberInput(
+    prazo_final = forms.DateField(
+        widget=forms.DateInput(
             attrs={
-                'class': 'form-control',
-                'placeholder': 'Prazo de execução (dias)'
+                'type': 'date',
+                'class': 'form-control'
             }
         ),
-        label='Prazo de Execução',
+        label="Data Limite",
         help_text='Prazo em dias'
     )
     
     class Meta:
         model = Servico
-        fields = ['cliente', 'tipo_servico', 'valor_base', 'prazo_execucao']
+        fields = ['cliente', 'tipo_servico', 'valor_base', 'prazo_final']

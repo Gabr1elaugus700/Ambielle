@@ -8,6 +8,8 @@ from workflow.models import *
 def index(request):
     title = 'Home'
 
+    
+
     context ={
         'title': title,
     }

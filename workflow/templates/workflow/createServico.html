@@ -1,7 +1,8 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-  <div class="formulario-center">
+
+<div class="containerForm">
     <div class="tela-form">
       <div class="title-form">
         <h1>Formulário de Cadastro de Serviço</h1>
@@ -9,18 +10,17 @@
       <form action=" {% url 'workflow:createServico' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <div class="form">
-          <div class="content-form">
-            {% for field in form %}
-              <div class="form-label">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {{ field.errors }}
-                {% if field.help_text %}
-                  <p class="help_text">{{ field.help_text }}</p>
-                {% endif %}
-              </div>
-            {% endfor %}
+          <div class="form">
+              {% for field in form %}
+                <div class="form-label">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                      <p class="help">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+              {% endfor %}
           </div>
           <div class="btn">
             <button class="btn-form" type="submit">SALVAR</button>
@@ -28,7 +28,6 @@
         </div>
       </form>
     </div>
-  </div>
 
   {% if messages %}
     <div id="message-popup" class="alert alert-success">
@@ -38,5 +37,5 @@
       <div class="progress-bar" id="progress-bar"></div>
     </div>
   {% endif %}
-  
+</div>
 {% endblock %}
