@@ -10,7 +10,7 @@ urlpatterns  = [
     path('ambielle/linhaTempo/', views.getTimeLine, name='getCliente'),
     #Create
     path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),
-    path('ambielle/cadastroServico/', views.createServico, name='createServico'),
+    path('ambielle/cadastroServico/', views.createTarefa, name='createServico'),
 
     #Update
 

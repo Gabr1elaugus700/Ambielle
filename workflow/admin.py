@@ -9,20 +9,12 @@ class ClienteAdmin(admin.ModelAdmin):
     list_filter = ('razao_social',)
     ordering = ('nome',)
 
-# Configuração da exibição dos serviços
-@admin.register(Servico)
-class ServicoAdmin(admin.ModelAdmin):
-    list_display = ('cliente', 'tipo_servico', 'valor_base')
-    search_fields = ('cliente', 'tipo_servico')
-    list_filter = ('tipo_servico',)
-    ordering = ('cliente',)
-
 # Configuração das tarefas no Django Admin
 @admin.register(Tarefa)
 class TarefaAdmin(admin.ModelAdmin):
-    list_display = ('cliente', 'servico', 'status', 'data_inicio', 'data_fim_prevista')
-    search_fields = ('cliente__nome', 'servico__nome', 'status')
-    list_filter = ('status', 'servico')
+    list_display = ('cliente', 'status', 'data_inicio', 'tipo_servico')
+    search_fields = ('cliente__nome', 'tipo_servico', 'status')
+    list_filter = ('status', 'tipo_servico')
     ordering = ('data_inicio',)
     date_hierarchy = 'data_inicio'
 

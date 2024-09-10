@@ -88,7 +88,7 @@ class CreateCliente(forms.ModelForm):
         fields = ('nome', 'endereco', 'razao_social', 'telefone', 'email', 'contato_principal', 'contato_secundario')
 
 
-class CreateServicoForm(forms.ModelForm):
+class CreateTarefaForm(forms.ModelForm):
     
     cliente = forms.ModelChoiceField(
         queryset=Cliente.objects.all(),
@@ -100,26 +100,34 @@ class CreateServicoForm(forms.ModelForm):
         label='Cliente'
     )
     
-    tipo_servico = forms.ChoiceField(
-        choices=Servico.TIPO_SERVICO_CHOICES,
+    servico = forms.ModelChoiceField(
+        queryset=Servico.objects.all(),
         widget=forms.Select(
             attrs={
                 'class': 'form-control'
             }
         ),
-        label='Tipo de Serviço'
+        label='Serviço'
     )
     
-    valor_base = forms.DecimalField(
-        widget=forms.NumberInput(
+    status = forms.ChoiceField(
+        choices=Tarefa.STATUS_CHOICES,
+        widget=forms.Select(
             attrs={
-                'class': 'form-control',
-                'placeholder': 'Digite o valor base'
+                'class': 'form-control'
             }
         ),
-        label='Valor Base',
-        max_digits=10,
-        decimal_places=2
+        label='Status'
+    )
+    
+    data_inicio = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control'
+            }
+        ),
+        label="Data de Início"
     )
     
     prazo_final = forms.DateField(
@@ -129,10 +137,10 @@ class CreateServicoForm(forms.ModelForm):
                 'class': 'form-control'
             }
         ),
-        label="Data Limite",
-        help_text='Prazo em dias'
+        label="Prazo Final",
+        required=False
     )
-    
+
     class Meta:
-        model = Servico
-        fields = ['cliente', 'tipo_servico', 'valor_base', 'prazo_final']
+        model = Tarefa
+        fields = ['cliente', 'servico', 'status', 'data_inicio', 'prazo_final']

@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
-from workflow.forms import CreateCliente, CreateServicoForm
+from workflow.forms import CreateCliente, CreateTarefaForm
 from django.contrib import messages
 
 def createCliente(request):
@@ -39,11 +39,11 @@ def createCliente(request):
             context,
         )
     
-def createServico(request):
+def createTarefa(request):
     if request.method == 'POST':
 
         title = 'Cadastro de Serviços'
-        form = CreateServicoForm(request.POST)
+        form = CreateTarefaForm(request.POST)
 
         context ={
             'title': title,
@@ -62,11 +62,10 @@ def createServico(request):
         )
     
     else:
-        print('tO AQUI')
         title = 'Cadastro de Serviço'
         context = {
             'title': title,
-            'form': CreateServicoForm
+            'form': CreateTarefaForm
         }
 
         return render(
