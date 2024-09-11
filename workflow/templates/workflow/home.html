@@ -63,11 +63,8 @@
           </div>
             <div class="demand-card">
                 {% for alerta in alerta_tarefas %}
-                <tr>
-                  <td> <strong>{{ alerta.cliente }}</strong> - </td>
-                  <td>{{ alerta.tipo_servico }} - </td>
-                  <td> <strong>{{ alerta.prazo_final }}</strong></td>
-                </tr>
+                <p><strong>{{ alerta.cliente|upper }}</strong><br>{{ alerta.tipo_servico }} - {{ alerta.status }} - <strong>{{ alerta.prazo_final|date:"d/m" }}</strong></p>
+              
                 {% empty %}
                 <tr>
                   <td colspan="3">Nenhuma Tarefa Pendente nos próximos 20 dias.</td>

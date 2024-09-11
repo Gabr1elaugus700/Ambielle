@@ -11,7 +11,7 @@ def index(request):
 
     hoje = timezone.now().date()
     data_limite = hoje + timedelta(days=20)
-    alerta_tarefas = Servico.objects.filter(prazo_final__lte=data_limite).order_by('prazo_final')
+    alerta_tarefas = Tarefa.objects.filter(prazo_final__lte=data_limite).order_by('prazo_final')
 
     context ={
         'title': title,

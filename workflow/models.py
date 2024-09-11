@@ -13,7 +13,7 @@ class Cliente(models.Model):
     proposta_link = models.URLField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.nome} ({self.id})"
+        return f"{self.nome}"
 
 
 # Modelo para Serviços
