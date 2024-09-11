@@ -143,4 +143,4 @@ class CreateTarefaForm(forms.ModelForm):
 
     class Meta:
         model = Tarefa
-        fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final']
+        fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final'] 

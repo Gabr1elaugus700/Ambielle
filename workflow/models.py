@@ -73,12 +73,12 @@ class Servico(models.Model):
 class Tarefa(models.Model):
 
     STATUS_CHOICES = [
-        ('iniciado', 'Iniciado'),
-        ('coleta_informacoes', 'Coleta de Informações'),
-        ('execucao', 'Execução'),
-        ('aprovacao_cliente', 'Aprovação Cliente'),
-        ('concluido', 'Concluído'),
-        ('encerrado', 'Encerrado'),
+        ('Iniciado', 'Iniciado'),
+        ('Coleta De Informações', 'Coleta de Informações'),
+        ('Execucao', 'Execução'),
+        ('Aprovação Cliente', 'Aprovação Cliente'),
+        ('Concluído', 'Concluído'),
+        ('Encerrado', 'Encerrado'),
     ]
 
     TIPO_SERVICO_CHOICES = [

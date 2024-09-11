@@ -11,11 +11,18 @@ def index(request):
 
     hoje = timezone.now().date()
     data_limite = hoje + timedelta(days=20)
-    alerta_tarefas = Tarefa.objects.filter(prazo_final__lte=data_limite).order_by('prazo_final')
+    
+    demandas_execucao = Tarefa.objects.filter(status='Execucao', prazo_final__lte=data_limite).order_by('prazo_final')
+    demandas_aprovacao = Tarefa.objects.filter(status='Aprovação Cliente', prazo_final__lte=data_limite).order_by('prazo_final')
+    demandas_coleta = Tarefa.objects.filter(status='Coleta de Informações', prazo_final__lte=data_limite).order_by('prazo_final')
+    demandas_iniciado = Tarefa.objects.filter(status='Iniciado', prazo_final__lte=data_limite).order_by('prazo_final')
 
     context ={
         'title': title,
-        'alerta_tarefas': alerta_tarefas,
+        'demandas_execucao': demandas_execucao,
+        'demandas_aprovacao': demandas_aprovacao,
+        'demandas_coleta': demandas_coleta,
+        'demandas_iniciado': demandas_iniciado,
     }
 
     return render(
