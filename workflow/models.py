@@ -71,6 +71,7 @@ class Servico(models.Model):
 
 # Modelo para Tarefas
 class Tarefa(models.Model):
+
     STATUS_CHOICES = [
         ('iniciado', 'Iniciado'),
         ('coleta_informacoes', 'Coleta de Informações'),
@@ -80,52 +81,30 @@ class Tarefa(models.Model):
         ('encerrado', 'Encerrado'),
     ]
 
-    ANVISA = 'Anvisa'
-    CIVIL = 'Civil'
-    DEFESA_PF = 'Defesa PF'
-    EXERCITO = 'Exército'
-    GESTAO_PROCESSOS = 'Gestão de Processos'
-    IBAMA = 'Ibama'
-    ISO_9001 = 'ISO 9001'
-    IAT = 'IAT'
-    LIDERANCA = 'Liderança'
-    MAPA_PF = 'Mapa Da PF'
-    POLICIA_FEDERAL = 'Polícia Federal'
-    PRODIR = 'PRODIR'
-    RDC_ANVISA = 'RDC Anvisa'
-    RECURSOS_HUMANOS = 'Recursos Humanos'
-    REGULATORIO = 'Regulatório'
-    SASSMAQ = 'SASSMAQ'
-    SINIR = 'SINIR'
-    TREINAMENTO_EBOOK = 'Treinamento (E-book)'
-    TREINAMENTO_ONLINE = 'Treinamento (On-line)'
-    TREINAMENTO_PRESENCIAL = 'Treinamento (Presencial)'
-
     TIPO_SERVICO_CHOICES = [
-        (ANVISA, 'Anvisa'),
-        (CIVIL, 'Civil'),
-        (DEFESA_PF, 'Defesa PF'),
-        (EXERCITO, 'Exército'),
-        (GESTAO_PROCESSOS, 'Gestão de Processos'),
-        (IBAMA, 'Ibama'),
-        (ISO_9001, 'ISO 9001'),
-        (IAT, 'IAT'),
-        (LIDERANCA, 'Liderança'),
-        (MAPA_PF, 'Mapa Da PF'),
-        (POLICIA_FEDERAL, 'Polícia Federal'),
-        (PRODIR, 'PRODIR'),
-        (RDC_ANVISA, 'RDC Anvisa'),
-        (RECURSOS_HUMANOS, 'Recursos Humanos'),
-        (REGULATORIO, 'Regulatório'),
-        (SASSMAQ, 'SASSMAQ'),
-        (SINIR, 'SINIR'),
-        (TREINAMENTO_EBOOK, 'Treinamento (E-book)'),
-        (TREINAMENTO_ONLINE, 'Treinamento (On-line)'),
-        (TREINAMENTO_PRESENCIAL, 'Treinamento (Presencial)'),
+        ('Anvisa', 'Anvisa'),
+        ('Civil', 'Civil'),
+        ('Defesa PF', 'Defesa PF'),
+        ('Exército', 'Exército'),
+        ('Gestão de Processos', 'Gestão de Processos'),
+        ('Ibama', 'Ibama'),
+        ('ISO 9001', 'ISO 9001'),
+        ('IAT', 'IAT'),
+        ('Liderança', 'Liderança'),
+        ('Mapa Da PF', 'Mapa Da PF'),
+        ('Polícia Federal', 'Polícia Federal'),
+        ('PRODIR', 'PRODIR'),
+        ('RDC Anvisa', 'RDC Anvisa'),
+        ('Recursos Humanos', 'Recursos Humanos'),
+        ('Regulatório', 'Regulatório'),
+        ('SASSMAQ', 'SASSMAQ'),
+        ('SINIR', 'SINIR'),
+        ('Treinamento (E-book)', 'Treinamento (E-book)'),
+        ('Treinamento (On-line)', 'Treinamento (On-line)'),
+        ('Treinamento (Presencial)', 'Treinamento (Presencial)'),
     ]
-
    
-    tipo_servico = models.CharField(max_length=50, choices=TIPO_SERVICO_CHOICES)
+    tipo_servico = models.CharField(max_length=50, choices=TIPO_SERVICO_CHOICES, default='ANVISA')
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='iniciado')
     data_inicio = models.DateField(default=timezone.now)

@@ -53,7 +53,7 @@ def createTarefa(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Serviço Cadastrado com Sucesso!')
-            return redirect('workflow:createServico')
+            return redirect('workflow:createTarefa')
 
         return render(
             request,

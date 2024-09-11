@@ -71,7 +71,7 @@ label {
 }
 
 select.form-control {
-    appearance: none;
+    appearance:initial;
     -webkit-appearance: none;
     -moz-appearance: none;
 }
