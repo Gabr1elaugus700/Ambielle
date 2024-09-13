@@ -1,0 +1,49 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+  <h1>Quadro de Tarefas</h1>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Ex: Nome do cliente, Demandas, Atividades..." />
+    <button>Pesquisar</button>
+  </div>
+
+  <div class="filters">
+    <button>Concluídas X</button>
+    <button>Qualidade X</button>
+    <button>Licença X</button>
+    <button>Limpar Filtros</button>
+  </div>
+
+  <div class="tasks-section">
+    <h2>Em Execução:</h2>
+    {% for task in tarefas %}
+      <div class="tasks-row">
+        <div class="task-card">
+          <div class="task-header">
+            <h3>{{ task.cliente }}</h3>
+            <div class="date">{{ task.prazo_final|date:'d/m/y' }}</div>
+            <div class="status">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="8.5" fill="#32CD32" stroke="black" />
+              </svg>
+            </div>
+          </div>
+          <div class="info">
+            <p>
+              <strong>Status:</strong> {{task.status}}
+            </p>
+            <p>
+              <strong>Serviço:</strong> Mapa da PF
+            </p>
+            {% if task.observacoes %}
+                <p>{{task.observacoes}}</p>
+            {% else %}
+                <p>Nenhuma Observação cadastrada.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

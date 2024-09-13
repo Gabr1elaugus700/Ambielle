@@ -8,6 +8,7 @@ urlpatterns  = [
     path('ambielle/', views.index, name='index'),
     path('ambielle/listaClientes/', views.getCliente, name='getCliente'),
     path('ambielle/linhaTempo/', views.getTimeLine, name='getCliente'),
+    path('ambielle/tarefas/', views.getTarefas, name='getTarefas'),
     #Create
     path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),
     path('ambielle/cadastroServico/', views.createTarefa, name='createTarefa'),

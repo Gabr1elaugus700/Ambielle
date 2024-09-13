@@ -107,7 +107,7 @@ class CreateTarefaForm(forms.ModelForm):
                 'class': 'form-control'
             }
         ),
-        label='Status'
+        label='Serviço'
     )
     
     status = forms.ChoiceField(

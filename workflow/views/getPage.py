@@ -59,3 +59,20 @@ def getTimeLine(request):
         'workflow/timeLine.html',
         context,
     )
+
+
+def getTarefas(request):
+    title = 'Quadro de Tarefas'
+
+    tarefas = Tarefa.objects.all()
+
+    context ={
+        'title': title,
+        'tarefas': tarefas,
+    }
+
+    return render(
+        request,
+        'workflow/getTarefas.html',
+        context,
+    )
