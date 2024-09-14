@@ -16,9 +16,12 @@
   </div>
 
   <div class="tasks-section">
+    <div class="taskStatus">
     <h2>Em Execução:</h2>
-    {% for task in tarefas %}
+
+    
       <div class="tasks-row">
+        {% for task in tarefas %}
         <div class="task-card">
           <div class="task-header">
             <h3>{{ task.cliente }}</h3>
@@ -43,7 +46,9 @@
             {% endif %}
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
+    
+  </div>
   </div>
 {% endblock %}
