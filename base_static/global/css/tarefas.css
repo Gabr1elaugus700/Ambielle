@@ -55,19 +55,45 @@
 
 .tasks-row {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: row;
-    background-color: tomato;
+    padding: 10px;
+    flex-wrap: wrap;
 }
 
 .task-header {
-    color: aliceblue;
-    background-color: var(--secondary-color);
-    height: 60px;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px 10px 0 0;
+    color: aliceblue;
+    background-color: var(--secondary-color);
+  }
+
+.task-dateCli{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
 }
+
+
+.task-header h3, 
+.task-header .date {
+  margin: 0; 
+}
+
+  
+  .task-header .status {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 7px;
+    width: 30px; 
+  }
 
 .task-card {
     background-color: var(--secondary-color);
@@ -78,10 +104,6 @@
     border: 3px solid var(--secondary-color);
     font-family: var(--secondary-font);
 }
-
-.task-card .date {}
-
-.task-card .status {}
 
 .task-card .info {
     background-color: var(--primary-color);
