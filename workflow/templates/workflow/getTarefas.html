@@ -1,56 +1,104 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
+
+<div class="tela-task">
   <h1>Quadro de Tarefas</h1>
 
-  <div class="search-bar">
-    <input type="text" placeholder="Ex: Nome do cliente, Demandas, Atividades..." />
-    <button>Pesquisar</button>
-  </div>
+  <button id="openFilterModal" class="btn-filter">Filtrar</button>
 
-  <div class="filters">
-    <button>Concluídas X</button>
-    <button>Qualidade X</button>
-    <button>Licença X</button>
-    <button>Limpar Filtros</button>
-  </div>
-
-  <div class="tasks-section">
-    <div class="taskStatus">
-    <h2>Em Execução:</h2>
-
-    
-      <div class="tasks-row">
-        {% for task in tarefas %}
-        <div class="task-card">
-          <div class="task-header">
-            <div class="task-dateCli">
-              <h3>{{ task.cliente }}</h3>
-              <div class="date">{{ task.prazo_final|date:'d/m/y' }}</div>
-            </div>
-            <div class="status">
-              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 18 18" fill="none">
-                <circle cx="9" cy="9" r="8.5" fill="#32CD32" stroke="black" />
-              </svg>
-            </div>
-          </div>
-          <div class="info">
-            <p>
-              <strong>Status:</strong> {{task.status}}
-            </p>
-            <p>
-              <strong>Serviço:</strong> Mapa da PF
-            </p>
-            {% if task.observacoes %}
-                <p>{{task.observacoes}}</p>
-            {% else %}
-                <p>Nenhuma Observação cadastrada.</p>
-            {% endif %}
-          </div>
+  <!-- O Modal (inicialmente oculto) -->
+  <div id="filterModal" class="modal">
+    <div class="modal-content">
+      <span id="closeFilterModal" class="close">&times;</span>
+      <h2>Escolher Filtros</h2>
+      
+      <!-- Formulário para os filtros -->
+      <form id="filterForm" action="" method="GET">
+        <!-- Filtros por Status -->
+        <div class="filter-group">
+          <h3>Status</h3>
+          {% for status, label in status_choices %}
+            <label>
+              <input type="checkbox" name="status" value="{{ status }}" 
+                     {% if status in status_selecionados %}checked{% endif %}>
+              {{ label }}
+            </label><br>
+          {% endfor %}
         </div>
-      {% endfor %}
+  
+        <!-- Filtros por Tipo de Serviço -->
+        <div class="filter-group">
+          <h3>Tipo de Serviço</h3>
+          {% for tipo_servico, label in tipo_servico_choices %}
+            <label>
+              <input type="checkbox" name="tipo_servico" value="{{ tipo_servico }}"
+                     {% if tipo_servico in tipo_servico_selecionados %}checked{% endif %}>
+              {{ label }}
+            </label><br>
+          {% endfor %}
+        </div>
+  
+        <!-- Botão para filtrar todos -->
+        <button type="submit" class="btn-filter-all">Filtrar Todos</button>
+      </form>
     </div>
-    
   </div>
-  </div>
+    <div class="tasks-section">
+      <div class="taskStatus">
+      <h2>Em Execução:</h2>
+
+      
+        <div class="tasks-row">
+          {% for task in tarefas %}
+          <div class="task-card">
+            <div class="task-header">
+              <div class="task-dateCli">
+                <h3>{{ task.cliente }}</h3>
+                <div class="date">{{ task.prazo_final|date:'d/m/y' }}</div>
+              </div>
+              <div class="status">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="8.5" fill="#32CD32" stroke="black" />
+                </svg>
+              </div>
+            </div>
+            <div class="info">
+              <p>
+                <strong>Status:</strong> {{task.status}}
+              </p>
+              <p>
+                <strong>Serviço:</strong> {{task.tipo_servico}}
+              </p>
+              {% if task.observacoes %}
+                  <p>{{task.observacoes}}</p>
+              {% else %}
+                  <p>Nenhuma Observação cadastrada.</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      
+</div>
+<script>
+var modal = document.getElementById("filterModal");
+var btn = document.getElementById("openFilterModal");
+var span = document.getElementById("closeFilterModal");
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// Fechar o modal quando clicar fora dele
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
 {% endblock %}

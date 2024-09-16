@@ -4,6 +4,7 @@ from workflow.forms import CreateCliente, CreateTarefaForm
 from django.contrib import messages
 from workflow.models import *
 from datetime import timedelta
+from django.utils.dateparse import parse_date
 
 
 def index(request):
@@ -63,16 +64,24 @@ def getTimeLine(request):
 
 def getTarefas(request):
     title = 'Quadro de Tarefas'
-
     tarefas = Tarefa.objects.all()
 
-    context ={
-        'title': title,
+    # Filtrar por status
+    status_selecionados = request.GET.getlist('status')
+    if status_selecionados:
+        tarefas = tarefas.filter(status__in=status_selecionados)
+
+    # Filtrar por tipo de serviço
+    tipo_servico_selecionados = request.GET.getlist('tipo_servico')
+    if tipo_servico_selecionados:
+        tarefas = tarefas.filter(tipo_servico__in=tipo_servico_selecionados)
+
+    context = {
         'tarefas': tarefas,
+        'status_choices': Tarefa.STATUS_CHOICES,
+        'tipo_servico_choices': Tarefa.TIPO_SERVICO_CHOICES,
+        'status_selecionados': status_selecionados,
+        'tipo_servico_selecionados': tipo_servico_selecionados,
     }
 
-    return render(
-        request,
-        'workflow/getTarefas.html',
-        context,
-    )
+    return render(request, 'workflow/getTarefas.html', context)

@@ -1,31 +1,36 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <link rel="stylesheet" href="{% static 'global/css/main.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ambielle - {{ title }}</title>
 </head>
+
 <body>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var progressBar = document.getElementById('progress-bar');
-        var messagePopup = document.getElementById('message-popup');
-    
-        if (messagePopup) {
-            setTimeout(function() {
-                progressBar.style.width = '100%';
-            }, 100);
-    
-            setTimeout(function() {
-                messagePopup.style.opacity = '0';
-                setTimeout(function() {
-                    messagePopup.remove();
-                }, 400); 
-            }, 3000); 
-        }
-    });
-</script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var progressBar = document.getElementById('progress-bar');
+            var messagePopup = document.getElementById('message-popup');
+
+            if (messagePopup) {
+                setTimeout(function () {
+                    progressBar.style.width = '100%';
+                }, 100);
+
+                setTimeout(function () {
+                    messagePopup.style.opacity = '0';
+                    setTimeout(function () {
+                        messagePopup.remove();
+                    }, 400);
+                }, 3000);
+            }
+        });
+
+    </script>

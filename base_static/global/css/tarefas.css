@@ -1,44 +1,119 @@
-
-
-.search-bar {
+.tela-task {
+    width: 100%;
+    margin: 0;
     display: flex;
+    align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    flex-direction: column;
 }
 
-.search-bar input {
-    padding: 10px;
-    width: 400px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-}
-
-.search-bar button {
-    padding: 10px;
-    border: none;
-    background-color: #00bcd4;
+.filter-header {
+    background-color: #333;
     color: white;
-    border-radius: 0 5px 5px 0;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    width: fit-content;
+}
+
+.filter-group{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4CAF50;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Conteúdo do Modal */
+.modal-content {
+    font-family: var(--secondary-font);
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* Botão de fechar */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
     cursor: pointer;
 }
 
-.filters {
-    text-align: center;
+/* Estilos do botão */
+.btn-filter {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-filter-all {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilos para os filtros aplicados */
+.applied-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
-.filters button {
-    font-family: var(--secondary-font);
-    width: 163px;
-    height: 44px;
-    flex-shrink: 0;
-    color: aliceblue;
-    border-radius: 10px;
-    border: 2px solid #D1D3D4;
-    background: #181D21;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    cursor: pointer;
+.filter-chip {
+    display: inline-block;
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
 }
+
+.filter-chip a.remove-filter {
+    color: white;
+    text-decoration: none;
+    margin-left: 8px;
+    font-weight: bold;
+}
+
+.clear-filters {
+    display: inline-block;
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+
 
 .tasks-section {
     display: flex;
@@ -70,9 +145,9 @@
     align-items: center;
     color: aliceblue;
     background-color: var(--secondary-color);
-  }
+}
 
-.task-dateCli{
+.task-dateCli {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,19 +156,19 @@
 }
 
 
-.task-header h3, 
+.task-header h3,
 .task-header .date {
-  margin: 0; 
+    margin: 0;
 }
 
-  
-  .task-header .status {
+
+.task-header .status {
     display: flex;
     align-items: center;
     justify-content: end;
     padding: 7px;
-    width: 30px; 
-  }
+    width: 30px;
+}
 
 .task-card {
     background-color: var(--secondary-color);
