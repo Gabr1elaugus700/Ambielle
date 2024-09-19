@@ -7,24 +7,30 @@
     flex-direction: column;
 }
 
-.filter-header {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-    width: fit-content;
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    flex-direction: column;
 }
 
-.filter-group{
+.filter-content {
+    flex-wrap: wrap;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: #4CAF50;
+    flex-direction: row;
+    gap: 15px;
 }
+
+.filter-group label {
+    width: auto;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+}
+
 .modal {
+    border-radius: 10px;
     display: none;
     position: fixed;
     z-index: 1;
@@ -35,17 +41,16 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Conteúdo do Modal */
 .modal-content {
     font-family: var(--secondary-font);
-    background-color: white;
-    margin: 10% auto;
-    padding: 20px;
+    background-color: aliceblue;
+    margin: 8% auto;
+    padding: 25px;
     border: 1px solid #888;
-    width: 80%;
+    width: 70%;
+    border-radius: 15px;    
 }
 
-/* Botão de fechar */
 .close {
     color: #aaa;
     float: right;
@@ -59,7 +64,6 @@
     cursor: pointer;
 }
 
-/* Estilos do botão */
 .btn-filter {
     padding: 10px 20px;
     background-color: #4CAF50;
@@ -77,7 +81,6 @@
     cursor: pointer;
 }
 
-/* Estilos para os filtros aplicados */
 .applied-filters {
     display: flex;
     align-items: center;
@@ -111,9 +114,6 @@
     text-decoration: none;
     font-weight: bold;
 }
-
-
-
 
 .tasks-section {
     display: flex;
@@ -155,12 +155,10 @@
     width: 100%;
 }
 
-
 .task-header h3,
 .task-header .date {
     margin: 0;
 }
-
 
 .task-header .status {
     display: flex;

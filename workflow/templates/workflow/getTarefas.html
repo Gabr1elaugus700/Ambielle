@@ -18,6 +18,7 @@
         <!-- Filtros por Status -->
         <div class="filter-group">
           <h3>Status</h3>
+          <div class="filter-content">
           {% for status, label in status_choices %}
             <label>
               <input type="checkbox" name="status" value="{{ status }}" 
@@ -26,10 +27,12 @@
             </label><br>
           {% endfor %}
         </div>
+        </div>
   
         <!-- Filtros por Tipo de Serviço -->
         <div class="filter-group">
           <h3>Tipo de Serviço</h3>
+          <div class="filter-content">
           {% for tipo_servico, label in tipo_servico_choices %}
             <label>
               <input type="checkbox" name="tipo_servico" value="{{ tipo_servico }}"
@@ -38,20 +41,21 @@
             </label><br>
           {% endfor %}
         </div>
+        </div>
   
-        <!-- Botão para filtrar todos -->
-        <button type="submit" class="btn-filter-all">Filtrar Todos</button>
+        <button type="submit" class="btn-filter-all">Filtrar</button>
       </form>
     </div>
   </div>
     <div class="tasks-section">
       <div class="taskStatus">
-      <h2>Em Execução:</h2>
+     
 
       
         <div class="tasks-row">
           {% for task in tarefas %}
-          <div class="task-card">
+           <h2>{{task.status}}</h2>
+           <div class="task-card">
             <div class="task-header">
               <div class="task-dateCli">
                 <h3>{{ task.cliente }}</h3>
