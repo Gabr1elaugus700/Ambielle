@@ -7,7 +7,7 @@
 
   <button id="openFilterModal" class="btn-filter">Filtrar</button>
 
-  <!-- O Modal (inicialmente oculto) -->
+
   <div id="filterModal" class="modal">
     <div class="modal-content">
       <span id="closeFilterModal" class="close">&times;</span>
@@ -28,8 +28,7 @@
           {% endfor %}
         </div>
         </div>
-  
-        <!-- Filtros por Tipo de Serviço -->
+
         <div class="filter-group">
           <h3>Tipo de Serviço</h3>
           <div class="filter-content">
@@ -46,6 +45,11 @@
         <button type="submit" class="btn-filter-all">Filtrar</button>
       </form>
     </div>
+  </div>
+  <div id="selectedFilters">
+    <h1>Filtros ></h1>
+    <span id="selectedStatus"></span>
+    <span id="selectedServices"></span>
   </div>
     <div class="tasks-section">
       <div class="taskStatus">
@@ -86,23 +90,154 @@
       
 </div>
 <script>
-var modal = document.getElementById("filterModal");
-var btn = document.getElementById("openFilterModal");
-var span = document.getElementById("closeFilterModal");
+document.addEventListener("DOMContentLoaded", function() {
+  var modal = document.getElementById("filterModal");
+  var btn = document.getElementById("openFilterModal");
+  var closeBtn = document.getElementById("closeFilterModal");
+  
+  // Elementos para exibir os filtros
+  var selectedStatusElement = document.getElementById("selectedStatus");
+  var selectedServicesElement = document.getElementById("selectedServices");
 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// Fechar o modal quando clicar fora dele
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+  // Abrir o modal
+  btn.onclick = function() {
+    modal.style.display = "block";
   }
+
+  // Fechar o modal
+  closeBtn.onclick = function() {
+    modal.style.display = "none";
+    updateSelectedFilters(); // Atualizar os filtros selecionados quando fechar o modal
+  }
+
+  // Fechar o modal ao clicar fora dele
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      if (validateFilters()) {
+        modal.style.display = "none";
+        updateSelectedFilters(); // Atualizar os filtros selecionados ao clicar fora do modal
+      }
+    }
+  }
+
+  var selected = [];
+
+  // Função para atualizar os filtros selecionados
+  function updateSelectedFilters() {
+    var selectedStatus = [];
+    var selectedServices = [];
+
+    // Pegar os checkboxes de status e serviços
+    var statusCheckboxes = document.querySelectorAll("input[name='status']:checked");
+    var serviceCheckboxes = document.querySelectorAll("input[name='tipo_servico']:checked");
+
+    // Adicionar os valores dos checkboxes selecionados nos arrays
+    statusCheckboxes.forEach(function(checkbox) {
+      selectedStatus.push(checkbox.nextSibling.textContent.trim());
+    });
+
+    serviceCheckboxes.forEach(function(checkbox) {
+      selectedServices.push(checkbox.nextSibling.textContent.trim());
+    });
+
+    // Atualizar a exibição dos filtros
+    selectedStatusElement.innerHTML = selectedStatus.length ? "Status: " + selectedStatus.join(", ") : "";
+    selectedServicesElement.innerHTML = selectedServices.length ? "Serviços: " + selectedServices.join(", ") : "";
+  }
+});
+
+var selected = [];
+
+// Função que atualiza os filtros selecionados e exibe na tela
+function updateSelectedFilters() {
+    var selectedFiltersContainer = document.getElementById("selected-filters");
+
+    // Limpa o container antes de adicionar novos filtros
+    selectedFiltersContainer.innerHTML = "";
+
+    // Para cada filtro selecionado, crie um novo elemento com uma classe específica
+    selected.forEach(function(filter) {
+        var filterTag = document.createElement("div");
+        filterTag.classList.add("filter-tag"); // Classe CSS personalizada para cada filtro
+        filterTag.innerText = filter;
+
+        // Botão para remover o filtro
+        var removeBtn = document.createElement("span");
+        removeBtn.innerText = " X";
+        removeBtn.classList.add("remove-filter"); // Classe para o botão de remover
+        removeBtn.onclick = function() {
+            filterTag.remove(); // Remove o filtro visualmente ao clicar
+            removeFilter(filter); // Função para remover o filtro da lista
+        };
+
+        // Adiciona o botão de remover ao lado do filtro
+        filterTag.appendChild(removeBtn);
+        
+        // Adiciona o filtro individual ao container
+        selectedFiltersContainer.appendChild(filterTag);
+    });
 }
+
+// Função para adicionar um filtro
+function addFilter(filter) {
+    // Se o filtro ainda não foi selecionado, adicione-o
+    if (!selected.includes(filter)) {
+        selected.push(filter);
+        updateSelectedFilters(); // Atualiza a exibição dos filtros
+    }
+}
+
+// Função para remover um filtro
+function removeFilter(filter) {
+    // Encontre o índice do filtro selecionado
+    var index = selected.indexOf(filter);
+
+    // Se o filtro existir na lista de selecionados, remova-o
+    if (index > -1) {
+        selected.splice(index, 1);
+    }
+
+    // Atualize os filtros exibidos na tela
+    updateSelectedFilters();
+}
+
+// Função para aplicar os filtros (com base nos filtros selecionados)
+function applyFilters() {
+    console.log("Filtros selecionados:", selected);
+    // Aqui você pode adicionar a lógica para aplicar os filtros via AJAX ou enviar um formulário
+}
+
+// Exemplo de evento para adicionar filtros (você deve adaptar isso conforme seu HTML)
+document.getElementById("apply-filter-btn").onclick = function() {
+    // Adicione os filtros ao clicar no botão (os valores podem vir de inputs, por exemplo)
+    var selectedStatus = document.getElementById("status-select").value;
+    var selectedService = document.getElementById("service-select").value;
+
+    if (selectedStatus) {
+        addFilter(selectedStatus);
+    }
+
+    if (selectedService) {
+        addFilter(selectedService);
+    }
+
+    // Fecha o modal após aplicar
+    document.getElementById("filter-modal").style.display = "none";
+};
+
+// Exemplo de botão de aplicar todos os filtros
+document.getElementById("apply-all-filters-btn").onclick = function() {
+    applyFilters();
+};
+
+// Exemplo de evento para abrir o modal de filtros
+document.getElementById("open-filter-modal").onclick = function() {
+    document.getElementById("filter-modal").style.display = "block";
+};
+
+// Exemplo de evento para fechar o modal de filtros
+document.getElementById("close-filter-modal").onclick = function() {
+    document.getElementById("filter-modal").style.display = "none";
+};
 </script>
 {% endblock %}
