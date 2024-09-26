@@ -5,6 +5,8 @@ from django.contrib import messages
 from workflow.models import *
 from datetime import timedelta
 from django.utils.dateparse import parse_date
+from django.db.models import Q
+
 
 
 def index(request):
@@ -63,25 +65,28 @@ def getTimeLine(request):
 
 
 def getTarefas(request):
-    title = 'Quadro de Tarefas'
+    status_selecionados = request.GET.getlist('status', [])
+    tipo_servico_selecionados = request.GET.getlist('tipo_servico', [])
+
+    # Filtrar as tarefas de acordo com os filtros selecionados
     tarefas = Tarefa.objects.all()
-
-    # Filtrar por status
-    status_selecionados = request.GET.getlist('status')
+    query = Q()
+    
     if status_selecionados:
-        tarefas = tarefas.filter(status__in=status_selecionados)
-
-    # Filtrar por tipo de serviço
-    tipo_servico_selecionados = request.GET.getlist('tipo_servico')
+        query |= Q(status__in=status_selecionados)
+    
+    # Se houver tipos de serviço selecionados, adiciona um filtro OR para tipo de serviço
     if tipo_servico_selecionados:
-        tarefas = tarefas.filter(tipo_servico__in=tipo_servico_selecionados)
+        query |= Q(tipo_servico__in=tipo_servico_selecionados)
+    
+    # Aplica o filtro à consulta
+    tarefas = tarefas.filter(query)
 
-    context = {
+    # Passar os filtros selecionados de volta para o template
+    return render(request, 'workflow/getTarefas.html', {
         'tarefas': tarefas,
-        'status_choices': Tarefa.STATUS_CHOICES,
-        'tipo_servico_choices': Tarefa.TIPO_SERVICO_CHOICES,
         'status_selecionados': status_selecionados,
         'tipo_servico_selecionados': tipo_servico_selecionados,
-    }
-
-    return render(request, 'workflow/getTarefas.html', context)
+        'status_choices': Tarefa.STATUS_CHOICES,
+        'tipo_servico_choices': Tarefa.TIPO_SERVICO_CHOICES
+    })
