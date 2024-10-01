@@ -44,7 +44,10 @@
           {% endfor %}
         </div>
         </div>
-        <button id="apply-filter-btn" class="btn-filter-all">Aplicar Filtros</button>
+        <div class="buttons-modal">
+          <button id="applyFiltersBtn" class="btn-filter">Aplicar Filtros</button>
+          <button id="clearFiltersBtn" class="btn-filter">Limpar Filtros</button>
+        </div>
       </form>
     </div>
   </div>
@@ -110,33 +113,61 @@
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    var modal = document.getElementById("filterModal");
+    var modal = document.getElementById("filterModal");  // Modal
     var btn = document.getElementById("openFilterModal");
     var closeBtn = document.getElementById("closeFilterModal");
+    var applyFiltersBtn = document.getElementById("applyFiltersBtn"); // Botão de aplicar filtros
+    var clearFiltersBtn = document.getElementById("clearFiltersBtn"); // Botão de limpar filtros
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]'); // Todos os checkboxes
+    var selectedFiltersContainer = document.getElementById('selectedFiltersContainer');
+    var filterForm = document.getElementById("filterForm");
+
+    if (!applyFiltersBtn || !clearFiltersBtn || !filterForm) {
+        console.error("Elementos do modal ou botões não foram encontrados no DOM. Verifique os IDs.");
+        return;
+    }
 
     // Abrir o modal
     btn.onclick = function() {
         modal.style.display = "block";
-    }
+    };
 
     // Fechar o modal e submeter o formulário
     closeBtn.onclick = function() {
-        document.getElementById("filterForm").submit(); // Submete o formulário
-    }
+        filterForm.submit(); // Submete o formulário
+    };
 
     // Fechar o modal ao clicar fora dele e submeter o formulário
     window.onclick = function(event) {
         if (event.target == modal) {
-            document.getElementById("filterForm").submit(); // Submete o formulário
+            filterForm.submit(); // Submete o formulário
         }
-    }
-
-    // Aplicar filtros ao clicar no botão de aplicação (também submete o formulário)
-    document.getElementById("apply-filter-btn").onclick = function(event) {
-        event.preventDefault(); // Previne comportamento padrão de submit
-        document.getElementById("filterForm").submit(); // Submete o formulário
     };
+
+    // Aplicar filtros ao clicar no botão de aplicação
+    applyFiltersBtn.onclick = function(event) {
+        event.preventDefault(); // Previne o comportamento padrão de submit
+
+        // Submeter o formulário para aplicar os filtros
+        filterForm.submit();
+    };
+
+    // Limpar todos os filtros e submeter o formulário
+    clearFiltersBtn.addEventListener('click', function(event) {
+        event.preventDefault(); // Previne o comportamento padrão do botão
+
+        // Desmarca todos os checkboxes
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = false;
+        });
+
+        // Submete o formulário para atualizar a URL e limpar os filtros
+        filterForm.submit();
+    });
 });
+
+
+
   
 </script>
 {% endblock %}

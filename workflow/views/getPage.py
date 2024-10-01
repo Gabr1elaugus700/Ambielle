@@ -65,6 +65,7 @@ def getTimeLine(request):
 
 
 def getTarefas(request):
+    title = 'Tarefas'
     status_selecionados = request.GET.getlist('status', [])
     tipo_servico_selecionados = request.GET.getlist('tipo_servico', [])
 
@@ -84,6 +85,7 @@ def getTarefas(request):
 
     # Passar os filtros selecionados de volta para o template
     return render(request, 'workflow/getTarefas.html', {
+        'title': title,
         'tarefas': tarefas,
         'status_selecionados': status_selecionados,
         'tipo_servico_selecionados': tipo_servico_selecionados,
