@@ -2,10 +2,13 @@
     <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
     <ul>
         <li><a href=" {% url 'workflow:index' %}"><i class="fa-solid fa-house"></i></i><span class="text">Home</span></a></li>
-        <li><a href=" {% url 'workflow:createCliente' %}"><i class="fa-solid fa-user-plus"></i><span class="text">Clientes</span></a></li>
-        <li><a href=" {% url 'workflow:createTarefa' %}"><i class="fa-solid fa-screwdriver-wrench"></i><span class="text">Serviços</span></a></li>
+        <li><a href=" {% url 'workflow:getTarefas' %}"><i class="fa-solid fa-screwdriver-wrench"></i><span class="text">Tarefas</span></a></li>
+        <li><a href=" {% url 'workflow:createCliente' %}"><i class="fa-solid fa-user-plus"></i><span class="text">Cad. Clientes</span></a></li>
+        <li><a href=" {% url 'workflow:createTarefa' %}"><i class="fa-solid fa-screwdriver-wrench"></i><span class="text">Cad. Serviços</span></a></li>
+        <li><a href=" {% url 'workflow:getTimeLine' %}"><i class="fa-solid fa-screwdriver-wrench"></i><span class="text">Linha do Tempo</span></a></li>
+        
     </ul>
-</div>
+</div>1
 
 <script>
     function toggleSidebar() {
