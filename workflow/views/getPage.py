@@ -81,7 +81,7 @@ def getTarefas(request):
         query |= Q(tipo_servico__in=tipo_servico_selecionados)
     
     # Aplica o filtro à consulta
-    tarefas = tarefas.filter(query)
+    tarefas = tarefas.filter(query).order_by('prazo_final')
 
     # Passar os filtros selecionados de volta para o template
     return render(request, 'workflow/getTarefas.html', {

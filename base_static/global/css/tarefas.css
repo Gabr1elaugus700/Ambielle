@@ -51,7 +51,7 @@
 .filter-group {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin: 10px;
     flex-direction: column;
 }
 
@@ -90,6 +90,10 @@
     border: 1px solid #888;
     width: 70%;
     border-radius: 15px;
+}
+
+.modal-content form{
+    width: 98%;
 }
 
 .close {
@@ -139,6 +143,7 @@
     justify-content: center;
     flex-direction: column;
     gap: 8%;
+    width: 90%;
 }
 
 .tasks-row {
