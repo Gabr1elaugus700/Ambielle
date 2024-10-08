@@ -11,9 +11,10 @@ urlpatterns  = [
     path('ambielle/tarefas/', views.getTarefas, name='getTarefas'),
     #Create
     path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),
+    
     path('ambielle/cadastroServico/', views.createTarefa, name='createTarefa'),
 
     #Update
-
+    path('ambielle/<int:cliente_id>/update/', views.updateCliente, name='updateCliente'),
     #Delete
 ]
