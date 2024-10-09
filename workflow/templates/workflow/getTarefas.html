@@ -22,56 +22,82 @@
         <div class="filter-group">
           <h3>Status</h3>
           <div class="filter-content">
-          {% for status, label in status_choices %}
+            {% for status, label in status_choices %}
             <label>
               <input type="checkbox" name="status" value="{{ status }}" 
                      {% if status in status_selecionados %}checked{% endif %}>
               {{ label }}
             </label><br>
-          {% endfor %}
+            {% endfor %}
+          </div>
         </div>
-        </div>
-
+  
+        <!-- Filtros por Tipo de Serviço -->
         <div class="filter-group">
           <h3>Tipo de Serviço</h3>
           <div class="filter-content">
-          {% for tipo_servico, label in tipo_servico_choices %}
+            {% for tipo_servico, label in tipo_servico_choices %}
             <label>
               <input type="checkbox" name="tipo_servico" value="{{ tipo_servico }}"
                      {% if tipo_servico in tipo_servico_selecionados %}checked{% endif %}>
               {{ label }}
             </label><br>
-          {% endfor %}
+            {% endfor %}
+          </div>
         </div>
+  
+        <!-- Filtros por Data -->
+        <div class="filter-group filter-date">
+          <h3>Filtrar por Data</h3>
+          <label for="data_inicial">Data Inicial:</label>
+          <input type="date" id="data_inicial" name="data_inicial" 
+                 value="{{ data_inicial|default_if_none:'' }}">
+  
+          <label for="data_final">Data Final:</label>
+          <input type="date" id="data_final" name="data_final" 
+                 value="{{ data_final|default_if_none:'' }}">
         </div>
+  
+        <!-- Botões para Aplicar e Limpar Filtros -->
         <div class="buttons-modal">
-          <button id="applyFiltersBtn" class="btn-filter">Aplicar Filtros</button>
-          <button id="clearFiltersBtn" class="btn-filter">Limpar Filtros</button>
+          <button type="submit" id="applyFiltersBtn" class="btn-filter">Aplicar Filtros</button>
+          <button type="reset" id="clearFiltersBtn" class="btn-filter">Limpar Filtros</button>
         </div>
       </form>
     </div>
   </div>
+  
   <div class="filters">
     <h3>Filtros > </h3>
     <div id="filtros-selecionados" class="filtros-selecionados">  
+      
       {% if status_selecionados %}
-            {% for status in status_selecionados %}
-            <div >
-             <span class="tagFilter">{{ status }}</span> 
-            </div>
-            {% endfor %}
-        {% endif %}
-        
-        {% if tipo_servico_selecionados %}
-            {% for servico in tipo_servico_selecionados  %}
-            <div >
-             <span class="tagFilter">{{ servico }}</span> 
-            </div>
-            {% endfor %}
-        {% endif %}
-        {% if not status_selecionados and not tipo_servico_selecionados %}
-            <p>Exibindo tudo, nenhum filtro Selecionado.</p>
-        {% endif %}
+          {% for status in status_selecionados %}
+          <div >
+            <span class="tagFilter">{{ status }}</span> 
+          </div>
+          {% endfor %}
+      {% endif %}
+      
+      {% if tipo_servico_selecionados %}
+          {% for servico in tipo_servico_selecionados  %}
+          <div >
+            <span class="tagFilter">{{ servico }}</span> 
+          </div>
+          {% endfor %}
+      {% endif %}
+      {% if not status_selecionados and not tipo_servico_selecionados and not data_inicial%}
+          <p>Exibindo tudo, nenhum filtro Selecionado.</p>
+      {% endif %}
+
+      
+      {% if data_inicial or data_final %}
+        <p>
+          Data Filtrada:
+          {% if data_inicial %} Data Inicial: <span class="tagFilter">{{ data_inicial|date:"d/m/Y" }}</span> {% endif %}
+          {% if data_final %} Data Final: <span class="tagFilter">{{ data_final|date:"d/m/Y" }}</span> {% endif %}
+        </p>
+      {% endif %}
     </div>
   </div>  
     <div class="tasks-section">

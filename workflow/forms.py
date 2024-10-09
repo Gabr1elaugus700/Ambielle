@@ -6,7 +6,6 @@ from .models import Cliente, Tarefa, Servico
 
 
 class CreateCliente(forms.ModelForm):
-
     nome = forms.CharField(
         widget=forms.TextInput(
             attrs={
