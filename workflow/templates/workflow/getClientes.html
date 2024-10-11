@@ -13,18 +13,6 @@
           <th>#</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td style="text-align: center;">666</td>
-          <td>Pooltecnica Quimica</td>
-          <td style="text-align: center;">8</td>
-          <td>(44) 99115-5164</td>
-          <td>gabriel@pooltecnica.com.br</td>
-          <td style="text-align: center; vertical-align: middle;">
-            <a href="#"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-            <a href="#"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-          </td>
-        </tr>
         {% for cliente in clientes %}
           <tr>
             <td style="text-align: center;">{{ cliente.id }}</td>
@@ -33,37 +21,12 @@
             <td>{{ cliente.contato_principal }}</td>
             <td>{{ cliente.email }}</td>
             <td style="text-align: center; vertical-align: middle;">
-              <a href="#"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+              <a href="{% url "workflow:deleteCliente" cliente.id %}"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
               <a href="{% url "workflow:updateCliente" cliente.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
             </td>
           </tr>
         {% endfor %}
-        {% for cliente in clientes %}
-          <tr>
-            <td style="text-align: center;">{{ cliente.id }}</td>
-            <td>{{ cliente.nome }}</td>
-            <td style="text-align: center;">3</td>
-            <td>{{ cliente.contato_principal }}</td>
-            <td>{{ cliente.email }}</td>
-            <td style="text-align: center; vertical-align: middle;">
-              <a href="#"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-              <a href="#"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-            </td>
-          </tr>
-        {% endfor %}
-        {% for cliente in clientes %}
-          <tr>
-            <td style="text-align: center;">{{ cliente.id }}</td>
-            <td>{{ cliente.nome }}</td>
-            <td style="text-align: center;">3</td>
-            <td>{{ cliente.contato_principal }}</td>
-            <td>{{ cliente.email }}</td>
-            <td style="text-align: center; vertical-align: middle;">
-              <a href="#"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-              <a href="#"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-            </td>
-          </tr>
-        {% endfor %}
+        
       </tbody>
       <tfoot>
         <tr>

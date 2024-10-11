@@ -82,6 +82,12 @@ def updateCliente(request, cliente_id):
             context,
         )
       
+def deleteClientes(request, cliente_id):
+    cliente_id = get_object_or_404(Cliente, id=cliente_id)
+    cliente_id.delete()
+    
+    return redirect('workflow:getCliente')
+    
 def createTarefa(request):
     if request.method == 'POST':
 
