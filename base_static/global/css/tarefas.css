@@ -55,6 +55,19 @@
     flex-direction: column;
 }
 
+.filter-date{
+    display: flex;
+    align-items: center;
+}
+
+.filter-date input{
+    width: 160px;
+    font-size: larger;
+    font-family: var(--secondary-font);
+    align-items: center;
+}
+
+
 .filter-content {
     flex-wrap: wrap;
     width: 100%;

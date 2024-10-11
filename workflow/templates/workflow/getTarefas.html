@@ -47,15 +47,17 @@
         </div>
   
         <!-- Filtros por Data -->
-        <div class="filter-group filter-date">
+        <div class="filter-group">
           <h3>Filtrar por Data</h3>
-          <label for="data_inicial">Data Inicial:</label>
-          <input type="date" id="data_inicial" name="data_inicial" 
-                 value="{{ data_inicial|default_if_none:'' }}">
-  
-          <label for="data_final">Data Final:</label>
-          <input type="date" id="data_final" name="data_final" 
-                 value="{{ data_final|default_if_none:'' }}">
+          <div class="filter-date">
+            <label for="data_inicial">Data Inicial:</label>
+            <input type="date" id="data_inicial" name="data_inicial" 
+                  value="{{ data_inicial|default_if_none:'' }}">
+    
+            <label for="data_final">Data Final:</label>
+            <input type="date" id="data_final" name="data_final" 
+                  value="{{ data_final|default_if_none:'' }}">
+          </div>
         </div>
   
         <!-- Botões para Aplicar e Limpar Filtros -->
