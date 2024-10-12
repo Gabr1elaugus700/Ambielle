@@ -17,4 +17,5 @@ urlpatterns  = [
     #Update
     path('ambielle/<int:cliente_id>/update/', views.updateCliente, name='updateCliente'),
     #Delete
+    path('ambielle/<int:cliente_id>/delete/', views.deleteClientes, name='deleteCliente')
 ]
