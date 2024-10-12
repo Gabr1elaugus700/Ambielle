@@ -1,7 +1,7 @@
 .saudacao {
     margin-top: 25px;
     position: relative;
-    margin-left: 220px;
+    margin-left: 8%;
 }
 
 .saudacao h1 {
@@ -19,7 +19,7 @@
 }
 
 .container {
-    margin-left: 220px;
+    margin-left: 8%;
     margin-top: 50px;
     display: flex;
     align-items: center;
@@ -163,7 +163,7 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 220px;
+    margin-left: 8%;
 }
 
 .prox-demanda h2, .prox-demanda p {
@@ -191,7 +191,7 @@ h2 {
     flex-wrap: wrap;
     gap: 3%;
     margin-top: 20px;
-    margin-left: 200px;
+    margin-left: 8%;
 }
 
 .demand-cards-status {
