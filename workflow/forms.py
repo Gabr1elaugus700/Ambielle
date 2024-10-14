@@ -1,7 +1,9 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from . import models
 from django.contrib.auth.models import User
+
 from .models import Cliente, Tarefa, Servico
 
 
@@ -143,3 +145,6 @@ class CreateTarefaForm(forms.ModelForm):
     class Meta:
         model = Tarefa
         fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final'] 
+        
+class RegisterForm(UserCreationForm):
+    ...
