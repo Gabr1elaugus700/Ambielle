@@ -21,7 +21,7 @@
             <td>{{ cliente.contato_principal }}</td>
             <td>{{ cliente.email }}</td>
             <td style="text-align: center; vertical-align: middle;">
-              <a href="{% url "workflow:deleteCliente" cliente.id %}"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+              <a href="{% url "workflow:deleteCliente" cliente.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
               <a href="{% url "workflow:updateCliente" cliente.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
             </td>
           </tr>
