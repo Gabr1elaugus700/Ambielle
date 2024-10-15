@@ -88,10 +88,21 @@ def getTarefas(request):
         query &= Q(prazo_final__gte=data_inicial)
     elif data_final:
         query &= Q(prazo_final__lte=data_final)
-
+  
     # Aplicar o filtro à queryset
     tarefas = tarefas.filter(query).order_by('prazo_final')
 
+    status_colors = {
+        'Iniciado': '#32CD32',  #
+        'Coleta De Informações': '#FF8C00',  
+        'Execucao': '#00BFFF',  
+        'Aprovação Cliente': '#FFD700', 
+        'Concluído': '#32CD32',  
+        'Encerrado': '#B22222' 
+    }
+
+    for tarefa in tarefas:
+        tarefa.status_color = status_colors.get(tarefa.status, '#000000')
     # Renderizar o template com as tarefas filtradas
     return render(request, 'workflow/getTarefas.html', {
         'title': title,
@@ -101,5 +112,5 @@ def getTarefas(request):
         'status_choices': Tarefa.STATUS_CHOICES,
         'tipo_servico_choices': Tarefa.TIPO_SERVICO_CHOICES,
         'data_inicial': data_inicial,
-        'data_final': data_final
+        'data_final': data_final,
     }) 
