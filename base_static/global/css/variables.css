@@ -17,9 +17,8 @@
     background-color: var(--background-color);
 }
 
-#message-popup {
+.message {
     font-family: var(--secondary-font);
-    background-color: #4CAF50;
     color: white;
     padding: 15px;
     position: fixed;
@@ -37,4 +36,24 @@
     background-color: #fff;
     margin-top: 10px;
     transition: width 3s linear; /* Duração de 5 segundos */
+}
+
+.message.success {
+    background-color: rgba(0, 255, 0, 0.3);
+    border: 2px solid rgba(0, 255, 0, 90%);
+}
+
+.message.error {
+    background-color: rgba(255, 0, 0, 0.3);
+    border: 2px solid rgba(255, 0, 0, 90%);
+}
+
+.message.warning {
+    background-color: rgba(255, 255, 0, 0.3);
+    border: 2px solid rgba(255, 255, 0, 90%);
+}
+
+.message.info {
+    background-color: rgba(0, 0, 255, 0.3);
+    border: 2px solid rgba(0, 0, 255, 90%);
 }
