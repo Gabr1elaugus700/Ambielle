@@ -4,9 +4,10 @@
     font-family: var(--secondary-font);
     font-size: small;
     background-color: tomato;
-    color: aliceblue;
+    color: black;
     display: flex;
     align-items: center;
+    width: 40%;
 }
 
 h1{
