@@ -17,7 +17,7 @@
     {% if messages %}
     
       {% for message in messages %}
-        <div class="message {{message.tags}}">
+        <div id="message-popup" class="message {{message.tags}}">
             <span>{{ message }}</span>
       {% endfor %}
       <div class="progress-bar" id="progress-bar"></div>

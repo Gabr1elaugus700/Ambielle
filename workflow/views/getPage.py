@@ -34,7 +34,7 @@ def getCliente(request):
     title = 'Lista de Clientes'
 
     clientes = Cliente.objects.all()
-
+    
     context ={
         'title': title,
         'clientes': clientes,

@@ -21,6 +21,7 @@ class CreateCliente(forms.ModelForm):
     )
 
     endereco = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -32,6 +33,7 @@ class CreateCliente(forms.ModelForm):
     )
 
     razao_social = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -43,6 +45,7 @@ class CreateCliente(forms.ModelForm):
     )
 
     telefone = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -54,6 +57,7 @@ class CreateCliente(forms.ModelForm):
     )
 
     email = forms.EmailField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -64,6 +68,7 @@ class CreateCliente(forms.ModelForm):
     )
 
     contato_principal = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -75,6 +80,7 @@ class CreateCliente(forms.ModelForm):
     )
 
     contato_secundario = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',

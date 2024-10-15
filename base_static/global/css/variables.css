@@ -39,21 +39,17 @@
 }
 
 .message.success {
-    background-color: rgba(0, 255, 0, 0.3);
-    border: 2px solid rgba(0, 255, 0, 90%);
+    background-color: rgba(6, 154, 6, 0.9);
 }
 
 .message.error {
-    background-color: rgba(255, 0, 0, 0.3);
-    border: 2px solid rgba(255, 0, 0, 90%);
+    background-color: rgba(189, 10, 10, 0.9);
 }
 
 .message.warning {
-    background-color: rgba(255, 255, 0, 0.3);
-    border: 2px solid rgba(255, 255, 0, 90%);
+    background-color: rgba(186, 164, 2, 0.9);
 }
 
 .message.info {
-    background-color: rgba(0, 0, 255, 0.3);
-    border: 2px solid rgba(0, 0, 255, 90%);
+    background-color: rgba(12, 12, 222, 0.9);
 }
