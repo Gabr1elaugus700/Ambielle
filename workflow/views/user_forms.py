@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages, auth
-from workflow.forms import RegisterForm
+from workflow.forms import RegisterForm, RegisterUpdateForm
 from django.contrib.auth.forms import AuthenticationForm
 
 def register(request):
@@ -20,6 +20,34 @@ def register(request):
             'form': form
         }
     )
+    
+def user_update(request):
+    form = RegisterUpdateForm(instance=request.user)
+    
+    if request.method != 'POST':
+        return render(
+            request,
+            'workflow/register.html',
+            {
+                'form': form
+            }
+        )
+    
+    form = RegisterUpdateForm(data=request.POST, instance=request.user)
+    
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Usuário atualizado com sucesso!')
+        
+        return render(
+        request,
+        'workflow/register.html',
+        {
+            'form': form
+        }
+    )
+    messages.error(request, 'Erro ao atualizar o Usuário!')
+
     
 def login_view(request):
     

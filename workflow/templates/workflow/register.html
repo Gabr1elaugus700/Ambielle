@@ -7,7 +7,9 @@
       <div class="title-form">
         <h1>Registrar Usuários - Formulário Oculto</h1>
       </div>
-      <form action=" {% url 'workflow:register' %}" method="POST">
+      <form action="{{ form_action }}" 
+            method="POST"
+      >
         {% csrf_token %}
 
           <div class="form">

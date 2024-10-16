@@ -203,3 +203,32 @@ class RegisterForm(UserCreationForm):
             )
         
         return email
+    
+class RegisterUpdateForm(forms.ModelForm):
+    
+    first_name = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        min_length=3
+    )
+    
+    email = forms.EmailField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
+        required=True
+    )
+
+    
+    class Meta: 
+        model = User
+        fields = (
+            'first_name', 'last_name', 'email', 
+            'username' 
+        )
