@@ -20,5 +20,7 @@ urlpatterns  = [
     path('ambielle/<int:cliente_id>/delete/', views.deleteClientes, name='deleteCliente'),
     
     #User:
-    path('ambielle/user/register/', views.register, name='register')
+    path('user/register/', views.register, name='register'),
+    path('user/login/', views.login_view, name='login'),
+    path('user/logout/', views.logout_view, name='logout'),
 ]

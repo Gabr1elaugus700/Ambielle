@@ -1,0 +1,41 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+
+<div class="containerForm">
+    <div class="tela-form">
+      <div class="title-form">
+        <h1>Login</h1>
+      </div>
+      {% if user.is_authenticated %}
+        <p>
+            Você fez login como {{ user.username }}. 
+            Para sair, Clique <a href="{% url 'workflow:logout' %}" >aqui</a>.
+        </p>
+      {% else %}
+        <form action=" {% url 'workflow:login' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form">
+                {% for field in form %}
+                    <div class="form-label">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }} 
+                        {{ field.errors }}
+                        {% if field.help_text %}
+                        <p class="help">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="btn">
+                <button class="btn-form" type="submit">Entrar</button>
+            </div>
+            </div>
+        </form>
+        {% endif %}
+    </div>
+
+
+</div>
+{% endblock %}

@@ -25,7 +25,6 @@
 }
 
 .sidebar ul li a{
-
     display: flex;
     padding: 15px 20px;
     color: aliceblue;
@@ -34,6 +33,10 @@
     text-decoration: none;
 }
 
+.sidebar ul li:last-child {
+    position: absolute;
+    bottom: 35px; 
+}
 
 .sidebar ul li:hover {
     color: var(--secondary-color);
@@ -80,3 +83,4 @@
     width: 35px;    
     text-align: center; 
 }
+

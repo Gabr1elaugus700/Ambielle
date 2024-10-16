@@ -156,17 +156,32 @@ class CreateTarefaForm(forms.ModelForm):
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(
         required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
         label='Primeiro Nome',
         min_length=3
     )
     
     last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
         required=True,
         label='Segundo Nome',
         min_length=3
     )
     
     email = forms.EmailField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
         required=True,
         label='Email'
     )

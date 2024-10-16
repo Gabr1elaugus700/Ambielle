@@ -64,6 +64,17 @@ form{
     box-sizing: border-box;
 }
 
+.form-label input {
+    width: 100%; 
+    font-family: var(--secondary-font); 
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
 label {
     font-family: var(--primary-font); 
     padding: 5px;
