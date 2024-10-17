@@ -4,6 +4,7 @@ from workflow.forms import RegisterForm, RegisterUpdateForm
 from django.contrib.auth.forms import AuthenticationForm
 
 def register(request):
+    title = 'Cadastro De Usuários'
     form = RegisterForm()
     
     if request.method == 'POST':
@@ -17,11 +18,13 @@ def register(request):
         request,
         'workflow/register.html',
         {
+            'title': title,
             'form': form
         }
     )
     
 def user_update(request):
+    title = 'Atualizar Cadastro'
     form = RegisterUpdateForm(instance=request.user)
     
     if request.method != 'POST':
@@ -29,6 +32,7 @@ def user_update(request):
             request,
             'workflow/register.html',
             {
+                'title': title,
                 'form': form
             }
         )
@@ -43,19 +47,12 @@ def user_update(request):
         request,
         'workflow/register.html',
         {
+            'title': title,
             'form': form
         }
     )
         
-    return render(
-        request,
-        'workflow/register.html',
-        {
-            'form': form
-        }
-    )
-        
-    messages.error(request, 'Erro ao atualizar o Usuário!')
+    return redirect('workflow:update')
 
     
 def login_view(request):

@@ -34,7 +34,7 @@ class CreateCliente(forms.ModelForm):
     )
 
     razao_social = forms.CharField(
-        required=False,
+        required=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -58,7 +58,7 @@ class CreateCliente(forms.ModelForm):
     )
 
     email = forms.EmailField(
-        required=False,
+        required=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -233,7 +233,33 @@ class RegisterUpdateForm(forms.ModelForm):
         required=False
     )
     
+    email = forms.EmailField(
+        required=True
+    )    
+
+    def save(self, commit=True):
+        cleaned_data = self.cleaned_data
+        user = super().save(commit=False)
         
+        password = cleaned_data.get('password1')
+        
+        if password: 
+            user.set_password(password)
+            
+        if commit:
+            user.save()
+
+    def clean(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        
+        if password1 or password2:
+            if password1 != password2:
+                self.add_error(
+                    'password2',
+                    ValidationError('Senhas não são iguais')
+                )
+    
     def clean_email(self):
         email = self.cleaned_data.get('email')
         current_email = self.instance.email
@@ -246,6 +272,19 @@ class RegisterUpdateForm(forms.ModelForm):
                 )
         
         return email
+    
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+        
+        if password1:
+            try:
+                password_validation.validate_password(password1)
+            except ValidationError as errors:
+                self.add_error(
+                    'password1',
+                    ValidationError(errors)
+                )
+        return password1
     
     class Meta: 
         model = User
