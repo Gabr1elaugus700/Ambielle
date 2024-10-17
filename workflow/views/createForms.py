@@ -4,7 +4,9 @@ from workflow.forms import CreateCliente, CreateTarefaForm
 from workflow.models import Cliente
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='workflow:login')
 def createCliente(request):
     form_action = reverse('workflow:createCliente')
     
@@ -41,7 +43,8 @@ def createCliente(request):
             'workflow/createClientes.html',
             context,
         )
-   
+
+@login_required(login_url='workflow:login')   
 def updateCliente(request, cliente_id):
     cliente = get_object_or_404(
         Cliente, pk=cliente_id
@@ -81,7 +84,8 @@ def updateCliente(request, cliente_id):
             'workflow/createClientes.html',
             context,
         )
-      
+
+@login_required(login_url='workflow:login')      
 def deleteClientes(request, cliente_id):
     cliente_id = get_object_or_404(Cliente, id=cliente_id)
     cliente_id.delete()
@@ -90,7 +94,8 @@ def deleteClientes(request, cliente_id):
     messages.warning(request, 'Cliente Deletado!')
     
     return redirect('workflow:getCliente')
-    
+
+@login_required(login_url='workflow:login')   
 def createTarefa(request):
     if request.method == 'POST':
 

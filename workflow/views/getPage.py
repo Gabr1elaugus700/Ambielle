@@ -1,10 +1,12 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from workflow.models import *
 from datetime import timedelta
 from django.utils.dateparse import parse_date
 from django.db.models import Q
-from workflow.filters import TarefaDateFilter
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
+@login_required(login_url='workflow:login')
 def index(request):
     title = 'Home'
 
@@ -29,15 +31,20 @@ def index(request):
         'workflow/home.html',
         context,
     )
-    
+
+@login_required(login_url='workflow:login')
 def getCliente(request):
     title = 'Lista de Clientes'
 
     clientes = Cliente.objects.all()
+    paginator = Paginator(clientes, 1)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
     context ={
         'title': title,
-        'clientes': clientes,
+        'page_obj': page_obj
     }
 
     return render(
@@ -46,6 +53,7 @@ def getCliente(request):
         context,
     )
 
+@login_required(login_url='workflow:login')
 def getTimeLine(request):
     title = 'Linha Do Tempo'
 
@@ -59,7 +67,7 @@ def getTimeLine(request):
         context,
     )
 
-
+@login_required(login_url='workflow:login')
 def getTarefas(request):
     title = 'Tarefas'
     status_selecionados = request.GET.getlist('status', [])

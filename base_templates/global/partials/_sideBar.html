@@ -1,5 +1,5 @@
 
-
+{% if request.user.is_authenticated %}
     <div class="sidebar" id="sidebar">
         <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
         <ul>
@@ -12,13 +12,18 @@
             <li><a href=" {% url 'workflow:logout' %}"><i class="fa-solid fa-arrow-right-from-bracket "></i><span class="text">Logout</span></a></li>
             
         </ul>
-    </div>1
+    </div>
 
     <script>
         function toggleSidebar() {
             document.getElementById("sidebar").classList.toggle("expanded");
         }
     </script>
+{% endif %}
+
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
 
 
 

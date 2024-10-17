@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages, auth
 from workflow.forms import RegisterForm, RegisterUpdateForm
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 def register(request):
     title = 'Cadastro De Usuários'
@@ -23,6 +24,8 @@ def register(request):
         }
     )
     
+    
+@login_required(login_url='workflow:login')
 def user_update(request):
     title = 'Atualizar Cadastro'
     form = RegisterUpdateForm(instance=request.user)
@@ -54,7 +57,6 @@ def user_update(request):
         
     return redirect('workflow:update')
 
-    
 def login_view(request):
     
     title = 'Login'
@@ -80,6 +82,7 @@ def login_view(request):
         }
     )
     
+@login_required(login_url='workflow:login')
 def logout_view(request):
     auth.logout(request)
     return redirect('workflow:login')

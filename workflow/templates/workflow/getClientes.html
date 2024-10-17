@@ -13,7 +13,7 @@
           <th>#</th>
         </tr>
       </thead>
-        {% for cliente in clientes %}
+        {% for cliente in page_obj %}
           <tr>
             <td style="text-align: center;">{{ cliente.id }}</td>
             <td>{{ cliente.nome }}</td>
@@ -32,11 +32,30 @@
         <tr>
           <td colspan="6" class="tfoot-cell">
             <div class="pagination">
-              <a href="#">&laquo;</a>
-              <a href="#">1</a>
-              <a href="#">/</a>
-              <a href="#">5</a>
-              <a href="#">&raquo;</a>
+              <!-- Botões de navegação com ícones -->
+              <span class="step-links">
+                {% if page_obj.has_previous %}
+                  <a href="?page=1">
+                    <i class="fa-solid fa-angles-left"></i> <!-- Ícone para primeira página -->
+                  </a>
+                  <a href="?page={{ page_obj.previous_page_number }}">
+                    <i class="fa-solid fa-angle-left"></i> <!-- Ícone para página anterior -->
+                  </a>
+                {% endif %}
+
+                <span class="current">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                  <a href="?page={{ page_obj.next_page_number }}">
+                    <i class="fa-solid fa-angle-right"></i> <!-- Ícone para próxima página -->
+                  </a>
+                  <a href="?page={{ page_obj.paginator.num_pages }}">
+                    <i class="fa-solid fa-angles-right"></i> <!-- Ícone para última página -->
+                  </a>
+                {% endif %}
+              </span>
             </div>
           </td>
         </tr>
