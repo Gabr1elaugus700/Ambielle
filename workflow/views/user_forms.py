@@ -46,6 +46,15 @@ def user_update(request):
             'form': form
         }
     )
+        
+    return render(
+        request,
+        'workflow/register.html',
+        {
+            'form': form
+        }
+    )
+        
     messages.error(request, 'Erro ao atualizar o Usuário!')
 
     

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from . import models
 from django.contrib.auth.models import User
+from django.contrib.auth import password_validation
 
 from .models import Cliente, Tarefa, Servico
 
@@ -207,28 +208,48 @@ class RegisterForm(UserCreationForm):
 class RegisterUpdateForm(forms.ModelForm):
     
     first_name = forms.CharField(
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-            }
-        ),
-        min_length=3
+       min_length=2,
+       max_length=30,
+       required=True,
+       help_text='Obrigatório', 
+       error_messages={
+           'min_length': 'Por favor, Maior que duas letras'
+       }
     )
     
-    email = forms.EmailField(
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-            }
-        ),
-        required=True
+    password1 = forms.CharField(
+        label="Senha",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        help_text=password_validation.password_validators_help_text_html(),
+        required=False
     )
-
+    
+    password2 = forms.CharField(
+        label="Confirme a Senha",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        help_text=password_validation.password_validators_help_text_html(),
+        required=False
+    )
+    
+        
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        current_email = self.instance.email
+        
+        if current_email != email:
+            if User.objects.filter(email=email).exists():
+                self.add_error(
+                    'email',
+                    ValidationError('Email Já existente!', code='invalid')
+                )
+        
+        return email
     
     class Meta: 
         model = User
         fields = (
             'first_name', 'last_name', 'email', 
-            'username' 
+            'username', 
         )
