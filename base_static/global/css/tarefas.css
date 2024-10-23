@@ -91,7 +91,9 @@
     left: 0;
     top: 0;
     height: 100%;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
 }
 
 .modal-content {
@@ -108,6 +110,27 @@
     width: 98%;
 }
 
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 90%; /* Ajuste para ocupar mais espaço em telas menores */
+        margin: 10% auto; /* Maior margem superior para dar mais espaço */
+    }
+
+    .btn-filter-all {
+        font-size: 20px; /* Reduz o tamanho do texto do botão */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-content {
+        width: 95%; /* Ocupar praticamente toda a largura da tela */
+        padding: 15px; /* Reduz o padding em telas muito pequenas */
+    }
+
+    .btn-filter-all {
+        font-size: 18px; /* Ainda menor em telas muito pequenas */
+    }
+}
 .close {
     color: #aaa;
     float: right;

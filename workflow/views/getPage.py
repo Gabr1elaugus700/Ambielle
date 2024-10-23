@@ -37,7 +37,7 @@ def getCliente(request):
     title = 'Lista de Clientes'
 
     clientes = Cliente.objects.all()
-    paginator = Paginator(clientes, 1)
+    paginator = Paginator(clientes, 15)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
