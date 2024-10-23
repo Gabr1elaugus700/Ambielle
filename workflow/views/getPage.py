@@ -15,7 +15,7 @@ def index(request):
     
     demandas_execucao = Tarefa.objects.filter(status='Execucao', prazo_final__lte=data_limite).order_by('prazo_final')
     demandas_aprovacao = Tarefa.objects.filter(status='Aprovação Cliente', prazo_final__lte=data_limite).order_by('prazo_final')
-    demandas_coleta = Tarefa.objects.filter(status='Coleta de Informações', prazo_final__lte=data_limite).order_by('prazo_final')
+    demandas_coleta = Tarefa.objects.filter(status='Coleta De Informações', prazo_final__lte=data_limite).order_by('prazo_final')
     demandas_iniciado = Tarefa.objects.filter(status='Iniciado', prazo_final__lte=data_limite).order_by('prazo_final')
 
     context ={
