@@ -36,12 +36,12 @@
         <div class="filter-group">
           <h3>Tipo de Serviço</h3>
           <div class="filter-content">
-            {% for tipo_servico, label in tipo_servico_choices %}
-            <label>
-              <input type="checkbox" name="tipo_servico" value="{{ tipo_servico }}"
-                     {% if tipo_servico in tipo_servico_selecionados %}checked{% endif %}>
-              {{ label }}
-            </label><br>
+            {% for tipo in tipo_servico_choices %}
+              <label>
+                  <input type="checkbox" name="tipo_servico" value="{{ tipo.id }}"
+                        {% if tipo.id|stringformat:"s" in tipo_servico_selecionados %}checked{% endif %}>
+                  {{ tipo.nome }}
+              </label><br>
             {% endfor %}
           </div>
         </div>

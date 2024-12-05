@@ -98,7 +98,6 @@ class CreateCliente(forms.ModelForm):
 
 
 class CreateTarefaForm(forms.ModelForm):
-    
     cliente = forms.ModelChoiceField(
         queryset=Cliente.objects.all(),
         widget=forms.Select(
@@ -109,14 +108,14 @@ class CreateTarefaForm(forms.ModelForm):
         label='Cliente'
     )
     
-    tipo_servico = forms.ChoiceField(
-        choices=Tarefa.TIPO_SERVICO_CHOICES,
+    tipo_servico = forms.ModelChoiceField(
+        queryset=models.TipoServico.objects.all(),
         widget=forms.Select(
             attrs={
                 'class': 'form-control'
             }
         ),
-        label='Serviço'
+        label='Tipo de Serviço'
     )
     
     status = forms.ChoiceField(
@@ -152,8 +151,8 @@ class CreateTarefaForm(forms.ModelForm):
 
     class Meta:
         model = Tarefa
-        fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final'] 
-        
+        fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final']
+                
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(
         required=True,

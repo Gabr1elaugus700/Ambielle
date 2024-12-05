@@ -73,23 +73,18 @@ def getTarefas(request):
     status_selecionados = request.GET.getlist('status', [])
     tipo_servico_selecionados = request.GET.getlist('tipo_servico', [])
     
-    # Obtendo as datas da requisição
     data_inicial = parse_date(request.GET.get('data_inicial', ''))
     data_final = parse_date(request.GET.get('data_final', ''))
-    
-    # Filtrar as tarefas de acordo com os filtros selecionados
+
     tarefas = Tarefa.objects.all()
     query = Q()
-    
-    # Filtro por status
+
     if status_selecionados:
         query &= Q(status__in=status_selecionados)
     
-    # Filtro por tipo de serviço
     if tipo_servico_selecionados:
-        query &= Q(tipo_servico__in=tipo_servico_selecionados)
+        query &= Q(tipo_servico__id__in=tipo_servico_selecionados)
     
-    # Filtrar pelo prazo_final entre as datas
     if data_inicial and data_final:
         query &= Q(prazo_final__range=[data_inicial, data_final])
     elif data_inicial:
@@ -97,28 +92,30 @@ def getTarefas(request):
     elif data_final:
         query &= Q(prazo_final__lte=data_final)
   
-    # Aplicar o filtro à queryset
     tarefas = tarefas.filter(query).order_by('prazo_final')
 
+    tipo_servico_choices = TipoServico.objects.all()
+    status_choices = Tarefa.STATUS_CHOICES
+
     status_colors = {
-        'Iniciado': '#32CD32',  #
-        'Coleta De Informações': '#FF8C00',  
-        'Execucao': '#00BFFF',  
-        'Aprovação Cliente': '#FFD700', 
-        'Concluído': '#32CD32',  
-        'Encerrado': '#B22222' 
+        'Iniciado': '#32CD32',
+        'Coleta De Informações': '#FF8C00',
+        'Execucao': '#00BFFF',
+        'Aprovação Cliente': '#FFD700',
+        'Concluído': '#32CD32',
+        'Encerrado': '#B22222',
     }
 
     for tarefa in tarefas:
         tarefa.status_color = status_colors.get(tarefa.status, '#000000')
-    # Renderizar o template com as tarefas filtradas
+
     return render(request, 'workflow/getTarefas.html', {
         'title': title,
         'tarefas': tarefas,
         'status_selecionados': status_selecionados,
         'tipo_servico_selecionados': tipo_servico_selecionados,
-        'status_choices': Tarefa.STATUS_CHOICES,
-        'tipo_servico_choices': Tarefa.TIPO_SERVICO_CHOICES,
+        'status_choices': status_choices,
+        'tipo_servico_choices': tipo_servico_choices,
         'data_inicial': data_inicial,
         'data_final': data_final,
-    }) 
+    })
