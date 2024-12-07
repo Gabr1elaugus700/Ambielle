@@ -11,7 +11,7 @@ urlpatterns  = [
     path('ambielle/tarefas/', views.getTarefas, name='getTarefas'),
     #Create
     path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),
-    
+    path('ambielle/cadastroTipoServico/', views.createTipoServico, name='tipoServico'),
     path('ambielle/cadastroServico/', views.createTarefa, name='createTarefa'),
 
     #Update

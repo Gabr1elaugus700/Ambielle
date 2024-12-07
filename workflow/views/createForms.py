@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
-from workflow.forms import CreateCliente, CreateTarefaForm
+from workflow.forms import CreateCliente, CreateTarefaForm, CreateServico
 from workflow.models import Cliente
 from django.contrib import messages
 from django.urls import reverse
@@ -128,6 +128,42 @@ def createTarefa(request):
         return render(
             request, 
             'workflow/createServico.html',
+            context,
+        )
+
+@login_required(login_url='workflow:login')   
+def createTipoServico(request):
+    if request.method == 'POST':
+
+        title = 'Cadastro de tipos de Serviços'
+        form = CreateServico(request.POST)
+
+        context ={
+            'title': title,
+            'form': form,
+        }
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Serviço Cadastrado com Sucesso!')
+            return redirect('workflow:tipoServico')
+
+        return render(
+            request,
+            'workflow/createServico.html',
+            context,
+        )
+    
+    else:
+        title = 'Cadastro de tipos de Serviço'
+        context = {
+            'title': title,
+            'form': CreateServico
+        }
+
+        return render(
+            request, 
+            'workflow/tipoServico.html',
             context,
         )
     

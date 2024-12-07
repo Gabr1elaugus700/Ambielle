@@ -6,8 +6,16 @@ from . import models
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
 
-from .models import Cliente, Tarefa, Servico
+from .models import Cliente, Tarefa, TipoServico
 
+
+class CreateServico(forms.ModelForm):
+    class Meta:
+        model = TipoServico
+        fields = ['nome']
+        widgets = {
+            'tipo_servico': forms.Select(attrs={'class': 'form-control'}),
+        }
 
 class CreateCliente(forms.ModelForm):
     nome = forms.CharField(
