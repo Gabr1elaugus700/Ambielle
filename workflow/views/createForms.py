@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
 from workflow.forms import CreateCliente, CreateTarefaForm, CreateServico
-from workflow.models import Cliente
+from workflow.models import Cliente, TipoServico
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 @login_required(login_url='workflow:login')
 def createCliente(request):
@@ -156,9 +157,19 @@ def createTipoServico(request):
     
     else:
         title = 'Cadastro de tipos de Serviço'
+        
+        
+        tipos_ser = TipoServico.objects.all()
+        paginator = Paginator(tipos_ser, 15)
+        
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+    
+        
         context = {
             'title': title,
-            'form': CreateServico
+            'form': CreateServico,
+            'page_obj': page_obj
         }
 
         return render(
@@ -167,3 +178,49 @@ def createTipoServico(request):
             context,
         )
     
+
+
+    
+def updateTipoServico(request, servico_id):
+    servico = get_object_or_404(
+        TipoServico, pk=servico_id
+    )
+    form_action = reverse('workflow:updateTipoServico', args=(servico_id,))
+    
+    if request.method == 'POST':
+        title = 'Cadastro de Tipo de Serviço'
+        form = CreateServico(request.POST, instance=servico)
+
+        context ={
+            'title': title,
+            'form': form,
+            'form_action': form_action,
+        }
+
+        if form.is_valid():
+            servico = form.save()
+            messages.success(request, 'Cliente Cadastrado com Sucesso!')
+            return redirect('workflow:updateTipoServico', servico_id=servico.pk)
+
+        return render(
+            request,
+            'workflow/createClientes.html',
+            context,
+        )
+    
+    else:
+        title = 'Cadastro de Tipo de Servico'
+        context = {
+            'title': title,
+            'form': CreateServico(instance=servico)
+        }
+
+        return render(
+            request, 
+            'workflow/tipoServico.html',
+            context,
+        )
+
+
+def deleteTipoServico():
+    ...

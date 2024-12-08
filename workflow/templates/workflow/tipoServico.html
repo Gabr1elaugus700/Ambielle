@@ -29,6 +29,62 @@
       </form>
     </div>
 
+    <div class="lista">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>#</th>
+          </tr>
+        </thead>
+          {% for servico in page_obj %}
+            <tr>
+              <td style="text-align: center;">{{ servico.id }}</td>
+              <td>{{ servico.nome }}</td>
+              <td style="text-align: center; vertical-align: middle;">
+                <a href="{% url "workflow:deleteTipoServico" servico.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+                <a href="{% url "workflow:updateTipoServico" servico.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+              </td>
+            </tr>
+          {% endfor %}
+          
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6" class="tfoot-cell">
+              <div class="pagination">
+                <!-- Botões de navegação com ícones -->
+                <span class="step-links">
+                  {% if page_obj.has_previous %}
+                    <a href="?page=1">
+                      <i class="fa-solid fa-angles-left"></i> <!-- Ícone para primeira página -->
+                    </a>z
+                    <a href="?page={{ page_obj.previous_page_number }}">
+                      <i class="fa-solid fa-angle-left"></i> <!-- Ícone para página anterior -->
+                    </a>
+                  {% endif %}
+  
+                  <span class="current">
+                      Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                  </span>
+  
+                  {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">
+                      <i class="fa-solid fa-angle-right"></i> <!-- Ícone para próxima página -->
+                    </a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">
+                      <i class="fa-solid fa-angles-right"></i> <!-- Ícone para última página -->
+                    </a>
+                  {% endif %}
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
 
 </div>
 {% endblock %}

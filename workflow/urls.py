@@ -16,8 +16,10 @@ urlpatterns  = [
 
     #Update
     path('ambielle/<int:cliente_id>/update/', views.updateCliente, name='updateCliente'),
+    path('ambielle/tipoServico/<int:servico_id>/update/', views.updateTipoServico, name='updateTipoServico'),
     #Delete
     path('ambielle/<int:cliente_id>/delete/', views.deleteClientes, name='deleteCliente'),
+    path('ambielle/tipoServico/<int:servico_id>/delete/', views.deleteTipoServico, name='deleteTipoServico'),
     
     #User:
     path('user/register/', views.register, name='register'),
