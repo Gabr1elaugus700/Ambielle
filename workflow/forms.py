@@ -10,12 +10,19 @@ from .models import Cliente, Tarefa, TipoServico
 
 
 class CreateServico(forms.ModelForm):
+
+    nome = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Digite o Nome',
+                'class': 'form-control'
+            }
+        )
+    )
     class Meta:
-        model = TipoServico
-        fields = ['nome']
-        widgets = {
-            'tipo_servico': forms.Select(attrs={'class': 'form-control'}),
-        }
+        model = models.TipoServico
+        fields = ('nome',)
+        
 
 class CreateCliente(forms.ModelForm):
     nome = forms.CharField(

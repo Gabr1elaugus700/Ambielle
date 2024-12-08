@@ -177,50 +177,50 @@ def createTipoServico(request):
             'workflow/tipoServico.html',
             context,
         )
-    
 
 
-    
-def updateTipoServico(request, servico_id):
-    servico = get_object_or_404(
-        TipoServico, pk=servico_id
-    )
-    form_action = reverse('workflow:updateTipoServico', args=(servico_id,))
-    
+def updateTipoServico(request, servico_id=None):
+    servico = None
+    if servico_id:
+        servico = get_object_or_404(TipoServico, pk=servico_id)
+
     if request.method == 'POST':
-        title = 'Cadastro de Tipo de Serviço'
         form = CreateServico(request.POST, instance=servico)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Serviço salvo com sucesso!')
+            return redirect('workflow:tipoServico')  # Redirecione para a lista após salvar
+    else:
+        form = CreateServico(instance=servico)
 
-        context ={
-            'title': title,
+    form_action = reverse('workflow:updateTipoServico', args=(servico_id,)) if servico else reverse('workflow:tipoServico')
+
+    return render(
+        request,
+        'workflow/tipoServico.html',
+        {
             'form': form,
             'form_action': form_action,
-        }
+            'servico': servico,
+        },
+    )
 
-        if form.is_valid():
-            servico = form.save()
-            messages.success(request, 'Cliente Cadastrado com Sucesso!')
-            return redirect('workflow:updateTipoServico', servico_id=servico.pk)
+# def deleteTipoServico(request, servico_id):
+#     servico = get_object_or_404(TipoServico, pk=servico_id)
 
-        return render(
-            request,
-            'workflow/createClientes.html',
-            context,
-        )
+#     if request.method == "POST":
+#         servico.delete()
+#         messages.success(request, 'Serviço excluído com sucesso!')
+#         return redirect('workflow:tipoServico')  # Redirecione para a página de listagem
     
-    else:
-        title = 'Cadastro de Tipo de Servico'
-        context = {
-            'title': title,
-            'form': CreateServico(instance=servico)
-        }
+#     messages.error(request, 'A exclusão falhou. Tente novamente.')
+#     return redirect('workflow:tipoServico')
 
-        return render(
-            request, 
-            'workflow/tipoServico.html',
-            context,
-        )
-
-
-def deleteTipoServico():
-    ...
+def deleteTipoServico(request, servico_id):
+    servico_id = get_object_or_404(TipoServico, id=servico_id)
+    servico_id.delete()
+    
+    
+    messages.warning(request, 'Serviço Excluido!')
+    
+    return redirect('workflow:tipoServico')
