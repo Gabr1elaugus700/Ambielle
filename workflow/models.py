@@ -17,6 +17,7 @@ class Cliente(models.Model):
 
 class TipoServico(models.Model):
     nome = models.CharField(max_length=50, unique=True)
+    orgao = models.CharField(max_length=50, blank=True)
     
     def __str__(self):
         return f"{self.nome}"

@@ -35,6 +35,7 @@
           <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>Orgão</th>
             <th>#</th>
           </tr>
         </thead>
@@ -42,6 +43,7 @@
             <tr>
               <td style="text-align: center;">{{ servico.id }}</td>
               <td>{{ servico.nome }}</td>
+              <td style="text-align: center;">{{ servico.orgao }}</td>
               <td style="text-align: center; vertical-align: middle;">
                 <a href="{% url "workflow:deleteTipoServico" servico.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
                 <a href="{% url "workflow:updateTipoServico" servico.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>

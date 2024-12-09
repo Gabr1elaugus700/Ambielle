@@ -4,8 +4,8 @@ from .models import Cliente, Servico, Tarefa, Etapa, Suporte, Relatorio, TipoSer
 # Configuração da exibição dos tipos de serviço no Django Admin
 @admin.register(TipoServico)
 class TipoServicoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome')
-    search_fields = ('nome',)
+    list_display = ('id', 'nome', 'orgao')
+    search_fields = ('nome', 'orgao')
     ordering = ('nome',)
 
 # Configuração da exibição dos serviços no Django Admin

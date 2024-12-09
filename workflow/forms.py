@@ -19,9 +19,20 @@ class CreateServico(forms.ModelForm):
             }
         )
     )
+    orgao = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Qual o orgão?',
+                'class': 'form-control'
+            }
+        ),
+        label='Orgão Responsavel',
+    )    
+    
     class Meta:
         model = models.TipoServico
-        fields = ('nome',)
+        fields = ('nome', 'orgao')
         
 
 class CreateCliente(forms.ModelForm):
