@@ -119,3 +119,62 @@ def getTarefas(request):
         'data_inicial': data_inicial,
         'data_final': data_final,
     })
+
+@login_required(login_url='workflow:login')
+def get_tarefas_filtradas(request):
+    title = 'Tarefas Filtradas'
+    
+    # Filtros recebidos do formulário
+    cliente_selecionado = request.GET.get('cliente', None)
+    status_selecionados = request.GET.getlist('status', [])  # Lista de status selecionados
+    data_inicial = parse_date(request.GET.get('data_inicial', ''))
+    data_final = parse_date(request.GET.get('data_final', ''))
+    
+    # Lista de clientes disponíveis
+    clientes = Cliente.objects.all()
+
+    # Inicializa tarefas e query vazias
+    tarefas = Tarefa.objects.none()
+    query = Q()
+
+    # Aplica filtro por cliente
+    if cliente_selecionado:
+        query &= Q(cliente__id=cliente_selecionado)
+
+    # Aplica filtro por status, se não for "Todos"
+    if status_selecionados and 'todos' not in status_selecionados:
+        query &= Q(status__in=status_selecionados)
+
+    # Aplica filtro por datas
+    if data_inicial and data_final:
+        query &= Q(prazo_final__range=[data_inicial, data_final])
+    elif data_inicial:
+        query &= Q(prazo_final__gte=data_inicial)
+    elif data_final:
+        query &= Q(prazo_final__lte=data_final)
+
+    # Filtra tarefas apenas se houver cliente selecionado
+    if cliente_selecionado:
+        tarefas = Tarefa.objects.filter(query).order_by('prazo_final')
+
+    # Definição de escolhas de status
+    status_choices = [
+        ('Iniciado', 'Iniciado'),
+        ('Coleta De Informações', 'Coleta de Informações'),
+        ('Execucao', 'Execução'),
+        ('Aprovação Cliente', 'Aprovação Cliente'),
+        ('Concluído', 'Concluído'),
+        ('Encerrado', 'Encerrado'),
+    ]
+
+    # Passa dados para o template
+    return render(request, 'workflow/timeLine.html', {
+        'title': title,
+        'tarefas': tarefas,
+        'clientes': clientes,
+        'cliente_selecionado': cliente_selecionado,
+        'status_choices': status_choices,
+        'status_selecionados': status_selecionados,
+        'data_inicial': data_inicial,
+        'data_final': data_final,
+    })
