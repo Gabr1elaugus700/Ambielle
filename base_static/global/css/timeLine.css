@@ -10,7 +10,8 @@
 /* Estilo individual para cada checkbox e label */
 .checkbox-item {
     display: flex;
-    align-items: center; /* Centraliza checkbox e texto na vertical */
+    align-items: center;
+    font-family: var(--secondary-font);
 }
 
 
