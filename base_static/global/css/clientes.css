@@ -27,6 +27,35 @@ td {
     font-weight: 400;
 }
 
+td.sublist { /* Fundo mais claro para destacar */
+    border-top: 1px solid #ddd; /* Linha superior para separar do cliente */
+    padding: 16px; /* Maior espaçamento para a sublista */
+    font-size: 14px; /* Texto ligeiramente menor */
+    font-style: italic;
+    padding-left: 80px 0;
+    width: 100%; /* Estilo diferente para diferenciar */
+}
+
+/* Estilo para a lista de tarefas */
+td.sublist ul {
+    list-style-type: none; 
+    padding-left: 20px; /* Espaçamento interno para os itens */
+    margin: 8px 0; 
+}
+
+/* Estilo para os itens da lista de tarefas */
+td.sublist ul li {
+    margin-bottom: 6px; /* Espaçamento entre itens */
+    color: #111; /* Cor de texto */
+}
+
+/* Caso não existam tarefas */
+td.sublist p {
+    font-size: 14px;
+    color: #888; /* Cor cinza para o texto "Sem tarefas" */
+    margin: 0; /* Remove margem externa */
+}
+
 th {
     background-color: var(--secondary-color);
     color: aliceblue;

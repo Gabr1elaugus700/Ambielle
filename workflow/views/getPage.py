@@ -5,6 +5,7 @@ from django.utils.dateparse import parse_date
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Prefetch
 
 @login_required(login_url='workflow:login')
 def index(request):
@@ -36,15 +37,23 @@ def index(request):
 def getCliente(request):
     title = 'Lista de Clientes'
 
-    clientes = Cliente.objects.all()
-    paginator = Paginator(clientes, 15)
+    # Busca todos os clientes e otimiza a consulta para incluir as tarefas em aberto
+    clientes = Cliente.objects.prefetch_related(
+        Prefetch(
+            'tarefa_set',  # Substitua 'tarefa_set' pelo related_name definido no modelo, se houver.
+            queryset=Tarefa.objects.all(),  # Filtra apenas as tarefas em aberto.
+            to_attr='tarefas_em_aberto'  # Armazena as tarefas como um atributo no objeto Cliente.
+        )
+    )
 
+    # Paginação
+    paginator = Paginator(clientes, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    context ={
+    context = {
         'title': title,
-        'page_obj': page_obj
+        'page_obj': page_obj,
     }
 
     return render(

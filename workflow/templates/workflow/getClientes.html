@@ -25,6 +25,22 @@
               <a href="{% url "workflow:updateCliente" cliente.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
             </td>
           </tr>
+          <tr>
+            <td style="text-align: center;" class="sublist" colspan="6">
+              <strong>Tarefas:</strong>
+              {% if cliente.tarefas_em_aberto %}
+                <ul>
+                  {% for tarefa in cliente.tarefas_em_aberto %}
+                    <li>
+                      {{ tarefa.tipo_servico }} - <em>{{ tarefa.prazo_final|date:"d/m/Y" }}</em>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p>Sem tarefas.</p>
+              {% endif %}
+            </td>
+          </tr>
         {% endfor %}
         
       </tbody>
