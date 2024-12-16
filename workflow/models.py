@@ -136,7 +136,8 @@ class Suporte(models.Model):
 
     @property
     def valor_total(self):
-        return self.tempo_suporte * self.valor_hora
+        return (float(self.tempo_suporte) * float(self.valor_hora))
+
 
     def __str__(self):
         return f"Suporte para {self.cliente.nome} em {self.data_suporte}"

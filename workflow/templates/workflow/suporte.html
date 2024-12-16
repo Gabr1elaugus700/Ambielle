@@ -40,6 +40,8 @@
             <th>Data</th>
             <th>H. Ini</th>
             <th>H. Fim</th>
+            <th>Tempo Total</th>
+            <th>R$</th>
             {% comment %} <th>#</th> {% endcomment %}
           </tr>
         </thead>
@@ -49,10 +51,13 @@
               {% comment %} <td style="text-align: center;">{{ suporte.id }}</td> {% endcomment %}
               <td>{{ suporte.cliente.nome }}</td>
               <td>{{ suporte.descricao }}</td>
-              <td>{{ suporte.valor_hora }}</td>  <!-- Formatação de moeda -->
-              <td>{{ suporte.data_suporte|date:"d/m/Y" }}</td>
+              <td>R${{ suporte.valor_hora }}</td>  <!-- Formatação de moeda -->
+              <td>{{ suporte.data_suporte|date:"d/m" }}</td>
               <td>{{ suporte.hora_inicio }}</td>
               <td>{{ suporte.hora_fim }}</td>
+              <td>{{ suporte.tempo_suporte|floatformat:2 }}</td>
+              <td>R${{ suporte.valor_total|floatformat:2 }}</td>
+
               {% comment %} <td style="text-align: center; vertical-align: middle;">
                 <a href="{% url 'workflow:deleteSuporte' suporte.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
                 <a href="{% url 'workflow:updateSuporte' suporte.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
