@@ -1,0 +1,99 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+
+<div class="containerForm">
+    <div class="tela-form">
+      <div class="title-form">
+        <h1>Cadastro de Suporte</h1>
+      </div>
+      <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+          <div class="form">
+              {% for field in form %}
+                <div class="form-label">
+                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {{ field.errors }}
+                    {% if field.help_text %}
+                      <p class="help">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+              {% endfor %}
+          </div>
+          <div class="btn">
+            <button class="btn-form" type="submit">SALVAR</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="lista">
+      <table>
+        <thead>
+          <tr>
+            {% comment %} <th>ID</th> {% endcomment %}
+            <th>Cliente</th>
+            <th>Descrição</th>
+            <th>V/H</th>
+            <th>Data</th>
+            <th>H. Ini</th>
+            <th>H. Fim</th>
+            {% comment %} <th>#</th> {% endcomment %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for suporte in page_obj %}
+            <tr>
+              {% comment %} <td style="text-align: center;">{{ suporte.id }}</td> {% endcomment %}
+              <td>{{ suporte.cliente.nome }}</td>
+              <td>{{ suporte.descricao }}</td>
+              <td>{{ suporte.valor_hora }}</td>  <!-- Formatação de moeda -->
+              <td>{{ suporte.data_suporte|date:"d/m/Y" }}</td>
+              <td>{{ suporte.hora_inicio }}</td>
+              <td>{{ suporte.hora_fim }}</td>
+              {% comment %} <td style="text-align: center; vertical-align: middle;">
+                <a href="{% url 'workflow:deleteSuporte' suporte.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+                <a href="{% url 'workflow:updateSuporte' suporte.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+              </td> {% endcomment %}
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="8" class="tfoot-cell">
+              <div class="pagination">
+                <!-- Botões de navegação com ícones -->
+                <span class="step-links">
+                  {% if page_obj.has_previous %}
+                    <a href="?page=1">
+                      <i class="fa-solid fa-angles-left"></i> <!-- Ícone para primeira página -->
+                    </a>
+                    <a href="?page={{ page_obj.previous_page_number }}">
+                      <i class="fa-solid fa-angle-left"></i> <!-- Ícone para página anterior -->
+                    </a>
+                  {% endif %}
+    
+                  <span class="current">
+                      Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                  </span>
+    
+                  {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">
+                      <i class="fa-solid fa-angle-right"></i> <!-- Ícone para próxima página -->
+                    </a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">
+                      <i class="fa-solid fa-angles-right"></i> <!-- Ícone para última página -->
+                    </a>
+                  {% endif %}
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    
+</div>
+{% endblock %}

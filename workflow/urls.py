@@ -12,6 +12,7 @@ urlpatterns  = [
     #Create
     path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),
     path('ambielle/cadastroTipoServico/', views.createTipoServico, name='tipoServico'),
+    path('ambielle/cadastroSuporte/', views.definir_suporte, name='suporte'),
     path('ambielle/cadastroServico/', views.createTarefa, name='createTarefa'),
 
     #Update

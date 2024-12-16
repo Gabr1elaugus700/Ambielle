@@ -6,7 +6,7 @@ from . import models
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
 
-from .models import Cliente, Tarefa, TipoServico
+from .models import Cliente, Tarefa, TipoServico, Suporte
 
 
 class CreateServico(forms.ModelForm):
@@ -317,3 +317,51 @@ class RegisterUpdateForm(forms.ModelForm):
             'first_name', 'last_name', 'email', 
             'username', 
         )
+        
+class SuporteForm(forms.ModelForm):
+    cliente = forms.ModelChoiceField(
+        queryset=Cliente.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='Cliente',
+        required=True
+    )
+    
+    descricao = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        label='Descrição',
+        required=True,
+        min_length=10
+    )
+    
+    valor_hora = forms.DecimalField(
+        widget=forms.NumberInput(attrs={'class': 'form-control'}),
+        label='Valor por Hora',
+        required=True,
+        min_value=0.01,
+        max_digits=10,
+        decimal_places=2
+    )
+    
+    hora_inicio = forms.TimeField(
+        widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
+        label='Hora de Início',
+        required=True
+    )
+    
+    hora_fim = forms.TimeField(
+        widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
+        label='Hora de Fim',
+        required=True
+    )
+
+    class Meta:
+        model = Suporte
+        fields = ['cliente', 'descricao', 'valor_hora', 'hora_inicio', 'hora_fim']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        hora_inicio = cleaned_data.get("hora_inicio")
+        hora_fim = cleaned_data.get("hora_fim")
+
+        if hora_inicio and hora_fim and hora_fim < hora_inicio:
+            raise forms.ValidationError("A hora de fim não pode ser anterior à hora de início.")

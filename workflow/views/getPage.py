@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from workflow.models import *
 from datetime import timedelta
 from django.utils.dateparse import parse_date
@@ -6,10 +6,19 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
+from workflow.forms import CreateCliente, CreateTarefaForm, CreateServico, SuporteForm
 
 @login_required(login_url='workflow:login')
 def index(request):
     title = 'Home'
+
+    if request.method == 'POST':
+        form = SuporteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('workflow:index')  # Redireciona para uma lista de suporte após sucesso
+    else:
+        form = SuporteForm()
 
     hoje = timezone.now().date()
     data_limite = hoje + timedelta(days=20)
@@ -20,6 +29,7 @@ def index(request):
     demandas_iniciado = Tarefa.objects.filter(status='Iniciado', prazo_final__lte=data_limite).order_by('prazo_final')
 
     context ={
+        'form': form,
         'title': title,
         'demandas_execucao': demandas_execucao,
         'demandas_aprovacao': demandas_aprovacao,

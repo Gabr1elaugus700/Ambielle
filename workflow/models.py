@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.timezone import timedelta
 
 # Modelo para Clientes
 class Cliente(models.Model):
@@ -124,6 +125,18 @@ class Suporte(models.Model):
     data_suporte = models.DateField(default=timezone.now)
     hora_inicio = models.TimeField()
     hora_fim = models.TimeField()
+
+    @property
+    def tempo_suporte(self):
+        # Calcula a diferença entre hora_fim e hora_inicio
+        if self.hora_inicio and self.hora_fim:
+            delta = timezone.datetime.combine(self.data_suporte, self.hora_fim) - timezone.datetime.combine(self.data_suporte, self.hora_inicio)
+            return delta.total_seconds() / 3600  # Converte para horas
+        return 0
+
+    @property
+    def valor_total(self):
+        return self.tempo_suporte * self.valor_hora
 
     def __str__(self):
         return f"Suporte para {self.cliente.nome} em {self.data_suporte}"

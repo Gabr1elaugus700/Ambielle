@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
-from workflow.forms import CreateCliente, CreateTarefaForm, CreateServico
-from workflow.models import Cliente, TipoServico
+from workflow.forms import CreateCliente, CreateTarefaForm, CreateServico, SuporteForm
+from workflow.models import Cliente, TipoServico, Suporte
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -224,3 +224,29 @@ def deleteTipoServico(request, servico_id):
     messages.warning(request, 'Serviço Excluido!')
     
     return redirect('workflow:tipoServico')
+
+
+def definir_suporte(request):
+    
+    title = 'Cadastro de Suporte'
+    if request.method == 'POST':
+        form = SuporteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('workflow/suporte.html')  # Redireciona para uma lista de suporte após sucesso
+    else:
+        form = SuporteForm()
+    
+    page_obj = Paginator(Suporte.objects.all(), 10).get_page(request.GET.get('page'))  # Exibe 10 itens por página
+    
+    context = {
+        'title': title,
+        'form': form,
+        'page_obj': page_obj,  # Passa a página de suportes para o template
+    }
+
+    return render(
+        request,
+        'workflow/suporte.html',
+        context,
+    )
