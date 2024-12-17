@@ -25,54 +25,10 @@ class TipoServico(models.Model):
 
 # Modelo para Serviços
 class Servico(models.Model):
-    # # ANVISA = 'Anvisa'
-    # # CIVIL = 'Civil'
-    # # DEFESA_PF = 'Defesa PF'
-    # # EXERCITO = 'Exército'
-    # # GESTAO_PROCESSOS = 'Gestão de Processos'
-    # # IBAMA = 'Ibama'
-    # # ISO_9001 = 'ISO 9001'
-    # # IAT = 'IAT'
-    # # LIDERANCA = 'Liderança'
-    # # MAPA_PF = 'Mapa Da PF'
-    # # POLICIA_FEDERAL = 'Polícia Federal'
-    # # PRODIR = 'PRODIR'
-    # # RDC_ANVISA = 'RDC Anvisa'
-    # # RECURSOS_HUMANOS = 'Recursos Humanos'
-    # # REGULATORIO = 'Regulatório'
-    # # SASSMAQ = 'SASSMAQ'
-    # # SINIR = 'SINIR'
-    # # TREINAMENTO_EBOOK = 'Treinamento (E-book)'
-    # # TREINAMENTO_ONLINE = 'Treinamento (On-line)'
-    # # TREINAMENTO_PRESENCIAL = 'Treinamento (Presencial)'
 
-    # TIPO_SERVICO_CHOICES = [
-    #     (ANVISA, 'Anvisa'),
-    #     (CIVIL, 'Civil'),
-    #     (DEFESA_PF, 'Defesa PF'),
-    #     (EXERCITO, 'Exército'),
-    #     (GESTAO_PROCESSOS, 'Gestão de Processos'),
-    #     (IBAMA, 'Ibama'),
-    #     (ISO_9001, 'ISO 9001'),
-    #     (IAT, 'IAT'),
-    #     (LIDERANCA, 'Liderança'),
-    #     (MAPA_PF, 'Mapa Da PF'),
-    #     (POLICIA_FEDERAL, 'Polícia Federal'),
-    #     (PRODIR, 'PRODIR'),
-    #     (RDC_ANVISA, 'RDC Anvisa'),
-    #     (RECURSOS_HUMANOS, 'Recursos Humanos'),
-    #     (REGULATORIO, 'Regulatório'),
-    #     (SASSMAQ, 'SASSMAQ'),
-    #     (SINIR, 'SINIR'),
-    #     (TREINAMENTO_EBOOK, 'Treinamento (E-book)'),
-    #     (TREINAMENTO_ONLINE, 'Treinamento (On-line)'),
-    #     (TREINAMENTO_PRESENCIAL, 'Treinamento (Presencial)'),
-    # ]
-
-   
     tipo_servico = models.ForeignKey(
         TipoServico,
-        on_delete=models.CASCADE,  # Define o que acontece se o tipo de serviço for excluído
+        on_delete=models.CASCADE, 
         related_name="servicos"
     )
     
@@ -100,6 +56,7 @@ class Tarefa(models.Model):
     data_inicio = models.DateField(default=timezone.now)
     prazo_final = models.DateField(null=True, blank=True)
     observacoes = models.TextField(blank=True, null=True)
+    valor_total_servico = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
         return f"Tarefa {self.id} para {self.cliente.nome}"
@@ -124,7 +81,7 @@ class Suporte(models.Model):
     valor_hora = models.DecimalField(max_digits=10, decimal_places=2, default=75.00)
     data_suporte = models.DateField(default=timezone.now)
     hora_inicio = models.TimeField()
-    hora_fim = models.TimeField()
+    hora_fim = models.TimeField(blank=True)
 
     @property
     def tempo_suporte(self):
@@ -133,6 +90,7 @@ class Suporte(models.Model):
             delta = timezone.datetime.combine(self.data_suporte, self.hora_fim) - timezone.datetime.combine(self.data_suporte, self.hora_inicio)
             return delta.total_seconds() / 3600  # Converte para horas
         return 0
+    
 
     @property
     def valor_total(self):

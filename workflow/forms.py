@@ -167,7 +167,16 @@ class CreateTarefaForm(forms.ModelForm):
     prazo_final = forms.DateField(
         widget=forms.DateInput(
             attrs={
-                'type': 'date',
+                'class': 'form-control'
+            }
+        ),
+        label="Valor Serviço",
+        required=False
+    )
+    
+    valor_total_servico = forms.DecimalField(
+        widget=forms.NumberInput(
+            attrs={
                 'class': 'form-control'
             }
         ),
@@ -175,9 +184,11 @@ class CreateTarefaForm(forms.ModelForm):
         required=False
     )
 
+
+
     class Meta:
         model = Tarefa
-        fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final']
+        fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final', 'valor_total_servico']
                 
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(
@@ -351,7 +362,7 @@ class SuporteForm(forms.ModelForm):
     hora_fim = forms.TimeField(
         widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
         label='Hora de Fim',
-        required=True
+        required=False
     )
 
     class Meta:
