@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
-from django.utils.timezone import timedelta
+from django.utils.timezone import make_aware
+from datetime import datetime
+from decimal import Decimal
 
 # Modelo para Clientes
 class Cliente(models.Model):
@@ -81,26 +83,30 @@ class Suporte(models.Model):
     valor_hora = models.DecimalField(max_digits=10, decimal_places=2, default=75.00)
     data_suporte = models.DateField(default=timezone.now)
     hora_inicio = models.TimeField()
-    hora_fim = models.TimeField(blank=True)
+    hora_fim = models.TimeField(blank=True, null=True)
 
     @property
     def tempo_suporte(self):
-        # Calcula a diferença entre hora_fim e hora_inicio
+        """
+        Calcula o tempo total de suporte em horas, somente se 'hora_fim' estiver preenchida.
+        """
         if self.hora_inicio and self.hora_fim:
-            delta = timezone.datetime.combine(self.data_suporte, self.hora_fim) - timezone.datetime.combine(self.data_suporte, self.hora_inicio)
-            return delta.total_seconds() / 3600  # Converte para horas
-        return 0
-    
+            inicio = make_aware(datetime.combine(self.data_suporte, self.hora_inicio))
+            fim = make_aware(datetime.combine(self.data_suporte, self.hora_fim))
+            delta = fim - inicio
+            return delta.total_seconds() / 3600  # Retorna em horas
+        return 0  # Se 'hora_fim' não estiver preenchida, retorna 0
 
     @property
     def valor_total(self):
-        return (float(self.tempo_suporte) * float(self.valor_hora))
-
+        """
+        Calcula o valor total do suporte baseado no tempo e no valor por hora.
+        """
+        return Decimal(self.tempo_suporte) * self.valor_hora  # Converte o tempo para Decimal
 
     def __str__(self):
         return f"Suporte para {self.cliente.nome} em {self.data_suporte}"
-
-
+    
 # Modelo para Relatórios
 class Relatorio(models.Model):
     tarefa = models.ForeignKey(Tarefa, on_delete=models.CASCADE)
