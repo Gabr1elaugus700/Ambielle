@@ -186,6 +186,18 @@ def get_tarefas_filtradas(request):
         ('Encerrado', 'Encerrado'),
     ]
 
+    status_colors = {
+        'Iniciado': '#32CD32',
+        'Coleta De Informações': '#FF8C00',
+        'Execucao': '#00BFFF',
+        'Aprovação Cliente': '#FFD700',
+        'Concluído': '#32CD32',
+        'Encerrado': '#B22222',
+    }
+
+    for tarefa in tarefas:
+        tarefa.status_color = status_colors.get(tarefa.status, '#000000')
+
     # Passa dados para o template
     return render(request, 'workflow/timeLine.html', {
         'title': title,
