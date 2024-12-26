@@ -68,19 +68,20 @@
     {% if tarefas %}
       {% for task in tarefas %}
       <div class="task-card">
-        <div class="task-header">
+        <div class="task-header" style="background-color: {{ task.status_color }};">
           <div class="task-dateCli">
             <h3>{{ task.cliente }}</h3>
-            <div class="date">{{ task.prazo_final|date:'d/m/y' }}</div>
-          </div>
-          <div class="status">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 18 18" fill="none">
-              <circle cx="9" cy="9" r="8.5" fill="{{ task.status_color }}" stroke="black" />
-            </svg>
+            <span class="date"> {{ task.status }} </span>
+            
           </div>
         </div>
         <div class="info">
-          <p><strong>Status:</strong> {{ task.status }}</p>
+          <p><strong>Prazo Final:</strong><div class="date">{{ task.prazo_final|date:'d/m/y' }}</div></p>
+          {% if task.valor_total_servico %}
+            <p><strong>Valor Serviço:</strong> R${{ task.valor_total_servico }}</p>
+          {% else %}
+            <p>Valor não informado!</p>
+          {% endif %}
           <p><strong>Serviço:</strong> {{ task.tipo_servico }}</p>
           {% if task.observacoes %}
           <p>{{ task.observacoes }}</p>

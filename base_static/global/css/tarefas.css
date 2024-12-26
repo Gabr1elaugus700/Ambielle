@@ -196,8 +196,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: aliceblue;
-    background-color: var(--secondary-color);
+    color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    border-radius: 10px;
 }
 
 .task-dateCli {
@@ -213,16 +215,9 @@
     margin: 0;
 }
 
-.task-header .status {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    padding: 7px;
-    width: 30px;
-}
 
 .task-card {
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     color: var(--secondary-color);
     margin: 10px;
     width: 350px;
