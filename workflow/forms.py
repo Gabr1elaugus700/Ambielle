@@ -58,7 +58,30 @@ class CreateCliente(forms.ModelForm):
         label='Endereço',
         # help_text='Nome de Exibição'
     )
-
+    
+    numero = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '991'
+            }
+        ),
+        label='Numero',
+        # help_text='Nome de Exibição'
+    )
+    bairro = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Centro'
+            }
+        ),
+        label='Bairro',
+        # help_text='Nome de Exibição'
+    )
+    
     cnpj = forms.CharField(
         required=True,
         widget=forms.TextInput(
@@ -133,7 +156,7 @@ class CreateCliente(forms.ModelForm):
 
     class Meta:
         model = models.Cliente
-        fields = ('fantasia', 'endereco', 'cnpj', 'razao_social', 'telefone', 'email', 'contato_principal', 'contato_secundario')
+        fields = ('fantasia', 'endereco', 'numero', 'bairro', 'cnpj', 'razao_social', 'telefone', 'email', 'contato_principal', 'contato_secundario')
 
 
 class CreateTarefaForm(forms.ModelForm):
@@ -180,11 +203,11 @@ class CreateTarefaForm(forms.ModelForm):
     prazo_final = forms.DateField(
         widget=forms.DateInput(
             attrs={
+                'type': 'date',
                 'class': 'form-control'
             }
         ),
-        label="Valor Serviço",
-        required=False
+        label="Data Término:"
     )
     
     valor_total_servico = forms.DecimalField(
@@ -193,15 +216,19 @@ class CreateTarefaForm(forms.ModelForm):
                 'class': 'form-control'
             }
         ),
-        label="Prazo Final",
+        label="Valor do Serviço",
         required=False
     )
-
-
-
+    
+    observacoes = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        label="Observações",
+        required=False
+    )
+    
     class Meta:
         model = Tarefa
-        fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final', 'valor_total_servico']
+        fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final', 'valor_total_servico', 'observacoes' ]
                 
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(
