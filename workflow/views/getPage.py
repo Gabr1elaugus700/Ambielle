@@ -20,6 +20,9 @@ def index(request):
     else:
         form = SuporteForm()
 
+    clientes = Cliente.objects.count()
+    # tarefas_em_aberto = Tarefa.objects.filter()
+
     hoje = timezone.now().date()
     data_limite = hoje + timedelta(days=20)
     
@@ -28,6 +31,13 @@ def index(request):
     demandas_coleta = Tarefa.objects.filter(status='Coleta De Informações', prazo_final__lte=data_limite).order_by('prazo_final')
     demandas_iniciado = Tarefa.objects.filter(status='Iniciado', prazo_final__lte=data_limite).order_by('prazo_final')
 
+    tarefas_em_aberto = (
+        demandas_aprovacao.count() + 
+        demandas_coleta.count() + 
+        demandas_execucao.count() + 
+        demandas_iniciado.count()   
+    )
+
     context ={
         'form': form,
         'title': title,
@@ -35,6 +45,8 @@ def index(request):
         'demandas_aprovacao': demandas_aprovacao,
         'demandas_coleta': demandas_coleta,
         'demandas_iniciado': demandas_iniciado,
+        'clientes': clientes, 
+        'tarefas_em_aberto': tarefas_em_aberto
     }
 
     return render(

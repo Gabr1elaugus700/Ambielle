@@ -36,10 +36,10 @@ class CreateServico(forms.ModelForm):
         
 
 class CreateCliente(forms.ModelForm):
-    nome = forms.CharField(
+    fantasia = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Digite o Nome',
+                'placeholder': 'Fantasia',
                 'class': 'form-control'
             }
         ),
@@ -58,6 +58,19 @@ class CreateCliente(forms.ModelForm):
         label='Endereço',
         # help_text='Nome de Exibição'
     )
+
+    cnpj = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Informe o CNPJ'
+            }
+        ),
+        label='CNPJ',
+        # help_text='Nome de Exibição'
+    )
+    
 
     razao_social = forms.CharField(
         required=True,
@@ -120,7 +133,7 @@ class CreateCliente(forms.ModelForm):
 
     class Meta:
         model = models.Cliente
-        fields = ('nome', 'endereco', 'razao_social', 'telefone', 'email', 'contato_principal', 'contato_secundario')
+        fields = ('fantasia', 'endereco', 'cnpj', 'razao_social', 'telefone', 'email', 'contato_principal', 'contato_secundario')
 
 
 class CreateTarefaForm(forms.ModelForm):

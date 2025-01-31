@@ -19,8 +19,8 @@ class ServicoAdmin(admin.ModelAdmin):
 # Configuração da exibição dos clientes no Django Admin
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'razao_social', 'telefone', 'email', 'contato_principal')
-    search_fields = ('nome', 'razao_social', 'email', 'contato_principal')
+    list_display = ('nome', 'razao_social', 'cnpj', 'telefone', 'email', 'contato_principal')
+    search_fields = ('nome', 'razao_social', 'cnpj', 'email', 'contato_principal')
     list_filter = ('razao_social',)
     ordering = ('nome',)
 

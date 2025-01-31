@@ -1,58 +1,37 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
+<div class="saudacao-container">
   <div class="saudacao">
-    <h1>Olá, <strong>{{ user.first_name }}</strong></h1>
-    <span>Veja o que temos à fazer:</span>
-    
+      <h1>Olá, <strong>{{ user.first_name }}</strong></h1>
+      <span>Veja o que temos à fazer:</span>
   </div>
 
+  <div class="container">
+      <div class="card">
+          <h2>Clientes Atendidos<span class="dot yellow"></span></h2>
+          <div class="progress-info">
+              <span class="numberof"> {{clientes}} </span>
+          </div>
+      </div>
 
-<div class="container">
-  <div class="card">
-    <h2>Tarefas Ativas <span class="dot yellow"></span></h2>
-    <div class="progress-info">
-      <span class="numberof">7/15</span>
-      <span class="percent">80%</span>
-    </div>
-    <div class="progress-bar yellow"></div>
-  </div>
-
-  <div class="card">
-    <h2>Regulatório <span class="dot blue"></span></h2>
-    <div class="progress-info">
-      <span class="numberof">10/31</span>
-      <span class="percent">80%</span>
-    </div>
-    <div class="progress-bar blue"></div>
-  </div>
-
-  <div class="card">
-    <h2>Qualidade <span class="dot green"></span></h2>
-    <div class="progress-info">
-      <span class="numberof">24/41</span>
-      <span class="percent">80%</span>
-    </div>
-    <div class="progress-bar green"></div>
-  </div>
-
-  <div class="card">
-    <h2>Capacitação <span class="dot red"></span></h2>
-    <div class="progress-info">
-      <span class="numberof">1/5</span>
-      <span class="percent">80%</span>
-    </div>
-    <div class="progress-bar red"></div>
+      <div class="card">
+          <h2>Em Atendimento<span class="dot blue"></span></h2>
+          <div class="progress-info">
+              <span class="numberof">{{tarefas_em_aberto}}</span>
+          </div>
+      </div>
   </div>
 </div>
+
 <div class="demand-container">
   <div class="prox-demanda">
     <div class="principal">
-      <h2>Próximas demandas:</h2>
-      <p>Próximos 20 dias</p>
+      <h2>Próximas do Vencimento</h2>
+      {% comment %} <p>Próximos 20 dias</p> {% endcomment %}
     </div>
 
-    <a href=" {% url 'workflow:getTarefas' %}">Ver todas demandas</a>
+    <a href=" {% url 'workflow:get_tarefas_filtradas' %}">Ver todas demandas</a>
   </div>
 
 

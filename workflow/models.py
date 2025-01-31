@@ -8,12 +8,15 @@ from decimal import Decimal
 class Cliente(models.Model):
     nome = models.CharField(max_length=255)
     endereco = models.CharField(max_length=255)
+    numero = models.IntegerField(null=True)
+    bairro = models.CharField(max_length=255, blank=True, null=True)
     razao_social = models.CharField(max_length=255, blank=True, null=True)
     telefone = models.CharField(max_length=15)
     email = models.EmailField()
     contato_principal = models.CharField(max_length=255)
     contato_secundario = models.CharField(max_length=255, blank=True, null=True)
     proposta_link = models.URLField(blank=True, null=True)
+    cnpj = models.CharField(max_length=15)
 
     def __str__(self):
         return f"{self.nome}"
