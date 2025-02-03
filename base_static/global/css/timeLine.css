@@ -1,22 +1,145 @@
-/* Estilo para o grupo de checkboxes */
-.checkbox-group {
+.atividade {
+    min-width: 40rem;
+}
+
+/* Estilo para os cards */
+.tasks-row {
     display: flex;
-    font-family: var(--primary-font);
-    align-items: baseline;
+    padding: 15px;
+    justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 15px;
+    gap: 15px;
 }
 
-/* Estilo individual para cada checkbox e label */
-.checkbox-item {
+/* Barra lateral colorida */
+.task-status-bar {
+    width: 25px; /* Define a largura da barra lateral */
+    height: 100%; /* Faz a barra ocupar toda a altura do card */
+    border-radius: 10px 0 0 10px; /* Mantém o arredondamento apenas do lado esquerdo */
+    background-color: var(--primary-color); /* Cor dinâmica */
+}
+
+/* Ajuste do conteúdo */
+.task-content {
+    background-color: white; /* Deixe o conteúdo branco para que a barra lateral se destaque */
+    padding: 6px;
+    width: 100%;
     display: flex;
-    align-items: center;
-    font-family: var(--secondary-font);
+    flex-direction: column;
 }
 
-/* Texto do label */
-.checkbox-item label {
+/* Aplicação dinâmica da cor */
+.task-card {
+    display: flex;
+    align-items: stretch;
+    max-width: 25rem;
+    max-height: 30rem;
+    min-width: 25rem;
+    border-radius: 10px;
+    border: 3px solid var(--secondary-color);
     font-family: var(--secondary-font);
-    font-size: 16px;
+    overflow: hidden;
+    background-color: var(--status-color); /* Define a cor de fundo do card */
+}
+
+.task-card .task-status-bar {
+    background-color: var(--status-color); /* Aplica a cor dinamicamente */
+}
+
+
+.task-header {
+    padding: 8px;
+    border-bottom: 2px solid var(--secondary-color);
+    text-align: center;
+    font-weight: bold;
+}
+
+.task-dateCli h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.task-dateCli .date {
+    font-size: 14px;
+    color: gray;
+}
+
+.info {
+    padding: 10px;
+}
+
+.info p {
+    margin: 5px 0;
+}
+
+.date {
+    font-weight: bold;
+}
+
+/* Responsividade: Divide para duas colunas em telas menores */
+@media (max-width: 900px) {
+    .task-card {
+        flex: 1 1 45%; /* Cada card ocupa metade da largura */
+    }
+}
+
+/* Responsividade: Apenas 1 card por linha em telas muito pequenas */
+@media (max-width: 600px) {
+    .task-card {
+        flex: 1 1 100%; /* Cada card ocupa 100% da largura */
+    }
+}
+
+/* Estiliza o botão de abrir o modal */
+.open-modal-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    max-width: 15rem;
+    margin-left: 6%;
+    border: var(--secondary-color) solid 2px ;
+    transition: 0.3s;
     cursor: pointer;
 }
+
+/* Estilização do modal */
+/* Estilização do modal */
+.modal {
+    display: none; /* Esconde o modal por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background-color: aliceblue;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 700px;
+    position: relative;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Botão de fechar */
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+

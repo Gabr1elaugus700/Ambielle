@@ -103,13 +103,17 @@ def getTarefas(request):
     title = 'Tarefas'
     status_selecionados = request.GET.getlist('status', [])
     tipo_servico_selecionados = request.GET.getlist('tipo_servico', [])
-    
+
     data_inicial = parse_date(request.GET.get('data_inicial', ''))
     data_final = parse_date(request.GET.get('data_final', ''))
 
+    # Busca todas as tarefas inicialmente
     tarefas = Tarefa.objects.all()
+
+    # Criar uma query vazia para adicionar filtros
     query = Q()
 
+    # Aplica filtros apenas se o usuário selecionar algo
     if status_selecionados:
         query &= Q(status__in=status_selecionados)
     
@@ -122,12 +126,18 @@ def getTarefas(request):
         query &= Q(prazo_final__gte=data_inicial)
     elif data_final:
         query &= Q(prazo_final__lte=data_final)
-  
-    tarefas = tarefas.filter(query).order_by('prazo_final')
+
+    # Se pelo menos um filtro foi aplicado, filtra os resultados
+    if request.GET:  # Se houver parâmetros na URL
+        tarefas = tarefas.filter(query)
+
+    # Ordena as tarefas
+    tarefas = tarefas.order_by('prazo_final')
 
     tipo_servico_choices = TipoServico.objects.all()
     status_choices = Tarefa.STATUS_CHOICES
 
+    # Definição de cores para os status
     status_colors = {
         'Iniciado': '#32CD32',
         'Coleta De Informações': '#FF8C00',
@@ -156,37 +166,43 @@ def get_tarefas_filtradas(request):
     title = 'Tarefas Filtradas'
     
     # Filtros recebidos do formulário
-    cliente_selecionado = request.GET.get('cliente', None)
-    status_selecionados = request.GET.getlist('status', [])  # Lista de status selecionados
+    cliente_selecionado = request.GET.get('cliente', 'todos')  # Valor padrão: "todos"
+    status_selecionados = request.GET.getlist('status', [])  
     data_inicial = parse_date(request.GET.get('data_inicial', ''))
     data_final = parse_date(request.GET.get('data_final', ''))
-    
+
     # Lista de clientes disponíveis
     clientes = Cliente.objects.all()
 
-    # Inicializa tarefas e query vazias
-    tarefas = Tarefa.objects.none()
-    query = Q()
+    # Se não há filtros aplicados, carregue todas as tarefas
+    if not request.GET:
+        tarefas = Tarefa.objects.all()
+    else:
+        tarefas = Tarefa.objects.all()  # Agora, começamos com todas as tarefas
+        query = Q()
 
-    # Aplica filtro por cliente
-    if cliente_selecionado:
-        query &= Q(cliente__id=cliente_selecionado)
+        # Aplica filtro por cliente, se não for "todos"
+        if cliente_selecionado and cliente_selecionado != "todos":
+            query &= Q(cliente__id=cliente_selecionado)
 
-    # Aplica filtro por status, se não for "Todos"
-    if status_selecionados and 'todos' not in status_selecionados:
-        query &= Q(status__in=status_selecionados)
+        # Aplica filtro por status, se não for "Todos"
+        if status_selecionados and 'todos' not in status_selecionados:
+            query &= Q(status__in=status_selecionados)
 
-    # Aplica filtro por datas
-    if data_inicial and data_final:
-        query &= Q(prazo_final__range=[data_inicial, data_final])
-    elif data_inicial:
-        query &= Q(prazo_final__gte=data_inicial)
-    elif data_final:
-        query &= Q(prazo_final__lte=data_final)
+        # Aplica filtro por datas
+        if data_inicial and data_final:
+            query &= Q(prazo_final__range=[data_inicial, data_final])
+        elif data_inicial:
+            query &= Q(prazo_final__gte=data_inicial)
+        elif data_final:
+            query &= Q(prazo_final__lte=data_final)
 
-    # Filtra tarefas apenas se houver cliente selecionado
-    if cliente_selecionado:
-        tarefas = Tarefa.objects.filter(query).order_by('prazo_final')
+        # Aplica filtros somente se houver pelo menos um
+        if query:
+            tarefas = tarefas.filter(query)
+
+    # Ordenação das tarefas
+    tarefas = tarefas.order_by('prazo_final')
 
     # Definição de escolhas de status
     status_choices = [
