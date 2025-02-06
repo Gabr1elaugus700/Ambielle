@@ -1,6 +1,44 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
+<div class="relatorio-container">
+  <h2>Exportar Relatórios</h2>
+
+  <!-- Botões de exportação -->
+  <div class="btn-relatorios">
+      <!-- Relatório de Clientes -->
+      <button class="btn-download" onclick="baixarCSV('clientes')">📂 CSV - Clientes</button>
+      <button class="btn-download" onclick="baixarPDF('clientes')">📄 PDF - Clientes</button>
+
+      <!-- Relatório de Clientes x Serviços -->
+      <button class="btn-download" onclick="baixarCSV('clientes_servicos')">📂 CSV - Clientes x Serviços</button>
+      <button class="btn-download" onclick="baixarPDF('clientes_servicos')">📄 PDF - Clientes x Serviços</button>
+
+      <!-- Relatório de Clientes x Serviços x Valores -->
+      <button class="btn-download" onclick="baixarCSV('clientes_servicos_valores')">📂 CSV - Clientes x Serviços x Valores</button>
+      <button class="btn-download" onclick="baixarPDF('clientes_servicos_valores')">📄 PDF - Clientes x Serviços x Valores</button>
+
+      <!-- Relatório de Clientes x Suporte -->
+      <button class="btn-download" onclick="baixarCSV('clientes_suporte')">📂 CSV - Clientes x Suporte</button>
+      <button class="btn-download" onclick="baixarPDF('clientes_suporte')">📄 PDF - Clientes x Suporte</button>
+
+      <!-- Relatório de Demandas por Cliente -->
+      <button class="btn-download" onclick="baixarCSV('demandas_por_cliente')">📂 CSV - Demandas por Cliente</button>
+      <button class="btn-download" onclick="baixarPDF('demandas_por_cliente')">📄 PDF - Demandas por Cliente</button>
+  </div>
+</div>
+
+<!-- Script para chamar as URLs de exportação -->
+<script>
+  function baixarCSV(tipoRelatorio) {
+      window.location.href = `/exportar-csv/${tipoRelatorio}/`;
+  }
+
+  function baixarPDF(tipoRelatorio) {
+      window.location.href = `/exportar-pdf/${tipoRelatorio}/`;
+  }
+</script>
+
   <div class="lista">
     <table>
       <thead>

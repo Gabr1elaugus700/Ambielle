@@ -22,6 +22,12 @@ urlpatterns  = [
     path('ambielle/<int:cliente_id>/delete/', views.deleteClientes, name='deleteCliente'),
     path('ambielle/tipoServico/<int:servico_id>/delete/', views.deleteTipoServico, name='deleteTipoServico'),
     
+    #Relatórios
+        #CSV
+    path('exportar-csv/<str:relatorio_tipo>/', views.export_relatorio_csv, name='exportar_csv'),
+        #PDF
+    path('exportar-pdf/<str:relatorio_tipo>/', views.export_relatorio_pdf, name='exportar_pdf'),
+    
     #User:
     path('user/register/', views.register, name='register'),
     path('user/update/', views.user_update, name='user_update'),

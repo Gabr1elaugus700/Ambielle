@@ -5,8 +5,9 @@
 /* Estilo para os cards */
 .tasks-row {
     display: flex;
-    padding: 15px;
+    padding: min(5em, 3%);
     justify-content: center;
+    flex: 1 1 0;
     flex-wrap: wrap;
     gap: 15px;
 }
@@ -16,30 +17,31 @@
     width: 25px; /* Define a largura da barra lateral */
     height: 100%; /* Faz a barra ocupar toda a altura do card */
     border-radius: 10px 0 0 10px; /* Mantém o arredondamento apenas do lado esquerdo */
-    background-color: var(--primary-color); /* Cor dinâmica */
+    background-color: var(--primary-color);
 }
 
 /* Ajuste do conteúdo */
 .task-content {
     background-color: white; /* Deixe o conteúdo branco para que a barra lateral se destaque */
-    padding: 6px;
+    padding: min(1em, 2%);
     width: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
+    overflow-y: auto; /* Permite rolagem apenas no conteúdo */
+    max-height: 13.5rem; /* Define um limite para a rolagem */
 }
 
 /* Aplicação dinâmica da cor */
 .task-card {
     display: flex;
     align-items: stretch;
-    max-width: 25rem;
-    max-height: 30rem;
-    min-width: 25rem;
+    max-height: 15.5rem;
+    width: 25rem;
     border-radius: 10px;
     border: 3px solid var(--secondary-color);
     font-family: var(--secondary-font);
-    overflow: hidden;
-    background-color: var(--status-color); /* Define a cor de fundo do card */
+    overflow-y: hidden;
 }
 
 .task-card .task-status-bar {
@@ -64,9 +66,6 @@
     color: gray;
 }
 
-.info {
-    padding: 10px;
-}
 
 .info p {
     margin: 5px 0;

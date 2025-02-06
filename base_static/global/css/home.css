@@ -38,7 +38,6 @@
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.35) inset;
-
 }
 
 h2 {
@@ -181,15 +180,22 @@ h2 {
 
 .demand-cards-wrapper {
     display: flex;
+    flex: 1 1 0;
     flex-wrap: wrap;
-    gap: 50px;
     margin-top: 20px;
-    margin-left: 5%;
+    padding: min(5em, 3%);
+    gap: 10px;
+    justify-content: center;
 }
 
 .demand-cards-status {
     flex-direction: column;
     font-family: var(--secondary-font);
+    flex: 1 1 0;
+    min-height: 15vh;
+    min-width: 25rem;
+    max-width: 30rem;
+    flex-wrap: wrap;
 }
 
 .status{
@@ -220,24 +226,14 @@ h2 {
     background-color: var(--primary-color);
     border: 2px solid #333;
     border-radius: 15px;
-    padding: 15px;
-    width: 100%;
-    height: 286px;
+    padding: min(2em, 3%);
     font-family: var(--secondary-font);
-    transition: all 0.3s ease; /* Transição suave para o hover */
+    transition: all 0.3s ease; 
     box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.35) inset;
-    max-width: 250rem;
 }
 
 .demand-card:hover{
     transform: translateY(-5px);
-}
-
-.demand-card h3 {
-    background-color: rebeccapurple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .demand-card p {
@@ -279,16 +275,16 @@ h2 {
 
 .container {
     display: flex;
-    gap: 30px; /* Espaço entre os cards */
+    gap: 30px; 
 }
 
 
 
 /* Estilo responsivo */
-@media (max-width: 1150px) {
+/* @media (max-width: 1150px) {
     .demand-cards-wrapper {
         justify-content: center;
-        background-color: #228B22;/* Mantém os cards centralizados */
+        background-color: #228B22;
     }
     
     .demand-card {
@@ -296,18 +292,18 @@ h2 {
         min-width: 30rem; 
 
     }
-}
+} */
 
 /* Se a tela for menor que 768px, exibe 1 card por linha */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .demand-cards-wrapper {
-        flex-direction: column; /* Os cards agora empilham verticalmente */
+        flex-direction: column;
         align-items: center;
         min-width: 30rem; 
     }
     
     .demand-card {
-        width: 90%; /* Mantém os cards responsivos */
+        width: 90%; 
     }
 }
-
+ */
