@@ -24,7 +24,7 @@ urlpatterns  = [
     
     #Relatórios
         #CSV
-    path('exportar-csv/<str:relatorio_tipo>/', views.export_relatorio_csv, name='exportar_csv'),
+    path('exportar-xlsx/<str:relatorio_tipo>/', views.export_relatorio_xlsx, name='exportar_xlsx'),
         #PDF
     path('exportar-pdf/<str:relatorio_tipo>/', views.export_relatorio_pdf, name='exportar_pdf'),
     
