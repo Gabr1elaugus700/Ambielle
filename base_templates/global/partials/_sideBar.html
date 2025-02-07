@@ -1,31 +1,83 @@
-
 {% if request.user.is_authenticated %}
-    <div class="sidebar" id="sidebar">
-        <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
-        <ul>
-            <li><a href=" {% url 'workflow:index' %}"><i class="fa-solid fa-house"></i></i><span class="text">Home</span></a></li>
-            <!-- <li><a href=" {% url 'workflow:getTarefas' %}"><i class="fa-solid fa-list-check"></i><span class="text">Tarefas</span></a></li> -->
-            <li><a href=" {% url 'workflow:createCliente' %}"><i class="fa-solid fa-user-plus"></i><span class="text">Cad. Clientes</span></a></li>
-            <li><a href=" {% url 'workflow:createTarefa' %}"><i class="fa-solid fa-briefcase"></i><span class="text">Cad. Serviços</span></a></li>
-            <li><a href=" {% url 'workflow:tipoServico' %}"><i class="fa-solid fa-screwdriver-wrench"></i><span class="text">Cad. Tipo Serviços</span></a></li>
-            <li><a href=" {% url 'workflow:suporte' %}"><i class="fa-regular fa-clock"></i><span class="text">Suporte</span></a></li>
-            <li><a href=" {% url 'workflow:get_tarefas_filtradas' %}"><i class="fa-light fa-timeline"></i><span class="text">Linha do Tempo</span></a></li>
-            <li><a href=" {% url 'workflow:getCliente' %}"><i class="fa-regular fa-address-card"></i><span class="text">Clientes</span></a></li>
-            <li><a href=" {% url 'workflow:logout' %}"><i class="fa-solid fa-arrow-right-from-bracket "></i><span class="text">Logout</span></a></li>
-            
-        </ul>
-    </div>
+{% load static %}
+<nav class="sidebar" id="sidebar">
+    <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
+    <ul>
+        <li class="li-nor">
+            <a href="{% url 'workflow:index' %}">
+                <img src="{% static 'global/svg/home.svg' %}" alt="Ícone">
+                <span class="text">Home</span>
+            </a>
+        </li>
 
-    <script>
-        function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("expanded");
-        }
-    </script>
+        <li class="dropdown">
+            <button class="dropdown-btn">
+                <img src="{% static 'global/svg/personadd.svg' %}" alt="Ícone">
+                <span class="text">Clientes</span>
+                <img src="{% static 'global/svg/arrow.svg' %}" class="arrow-icon">
+            </button>
+            <ul class="sub-menu">
+                <li class="li-sub"><a href="{% url 'workflow:createCliente' %}">Cadastro</a></li>
+                <li class="li-sub"><a href="{% url 'workflow:getCliente' %}">Listar</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <button class="dropdown-btn">
+                <img src="{% static 'global/svg/task.svg' %}" alt="Ícone">
+                <span class="text">Serviços</span>
+                <img src="{% static 'global/svg/arrow.svg' %}" class="arrow-icon">
+            </button>
+            <ul class="sub-menu">
+                <li class="li-sub"><a href="{% url 'workflow:createTarefa' %}">Cad. Serviços</a></li>
+                <li class="li-sub"><a href="{% url 'workflow:tipoServico' %}">Cad. Tipo Serviços</a></li>
+            </ul>
+        </li>
+
+        <li class="li-nor">
+            <a href="{% url 'workflow:suporte' %}">
+                <img src="{% static 'global/svg/watch.svg' %}" alt="Ícone">
+                <span class="text">Suporte</span>
+            </a>
+        </li>
+<!-- 
+        <li>
+            <a href="{% url 'workflow:get_tarefas_filtradas' %}">
+                <img src="{% static 'global/svg/task.svg' %}" alt="Ícone">
+                <span class="text">Serviços</span>
+            </a>
+        </li> -->
+<!-- 
+        <li>
+            <a href="{% url 'workflow:getCliente' %}">
+                <img src="{% static 'global/svg/iconTest.svg' %}" alt="Ícone">
+                <span class="text">Clientes</span>
+            </a>
+        </li> -->
+
+        <li class="li-nor">
+            <a href="{% url 'workflow:logout' %}">
+                <img src="{% static 'global/svg/logout.svg' %}" alt="Ícone">
+                <span class="text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("expanded");
+    }
+
+    document.querySelectorAll(".dropdown-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            this.nextElementSibling.classList.toggle("show");
+            this.querySelector(".arrow-icon").classList.toggle("rotate");
+        });
+    });
+</script>
 {% endif %}
 
 <div class="content">
     {% block content %}{% endblock %}
 </div>
-
-
-

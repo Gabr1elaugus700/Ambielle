@@ -6,47 +6,73 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: fixed; 
+    position: fixed;
     top: 0;
     left: 0;
-    height: 100vh; 
-    z-index: 1000; 
+    height: 100vh;
+    z-index: 1000;
 }
 
 .sidebar.expanded {
     width: 200px;
     border-radius: 5px;
+    padding: 5px;
 }
 
 .sidebar ul {
     list-style-type: none;
-    padding: 20px 0;
+    padding: 0;
     margin-top: 50px;
+    width: 100%;
 }
 
-.sidebar ul li a{
+.sidebar ul li {
+    width: 100%;
+    justify-content: center;
+}
+
+.sidebar ul li a,
+.dropdown-btn {
     display: flex;
-    padding: 15px 20px;
+    align-items: center;
+    padding: 12px 15px;
     color: aliceblue;
     cursor: pointer;
     transition: 0.3s ease;
     text-decoration: none;
+    border: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+.sidebar ul li a img,
+.dropdown-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 }
 
 .sidebar ul li:last-child {
     position: absolute;
-    bottom: 35px; 
+    bottom: 35px;
 }
 
 .sidebar ul li:hover {
     color: var(--secondary-color);
-    background-color: var(--primary-color);
-    border-radius: 10px;
-    transform: scale(1.2);
+    background-color: var(--hover-sidebar);
+    border-radius: 5px;
+    transform: scale(1.05);
+    width: 100%;
+}
+
+.sidebar.sidebar.expanded ul li:hover{
+    color: var(--secondary-color);
+    background-color: var(--hover-sidebar);
+    border-radius: 5px;
 }
 
 .sidebar ul li .text {
-    margin-left: 15px;
+    margin-left: 10px;
     display: none;
     transition: opacity 0.3s ease;
 }
@@ -54,9 +80,8 @@
 .sidebar.expanded ul li .text {
     display: inline-block;
     opacity: 1;
-    margin-left: 15px;
+    display: flex;
 }
-
 .toggle-btn {
     position: absolute;
     top: 10px;
@@ -68,19 +93,75 @@
     cursor: pointer;
 }
 
+/* Ajusta conteúdo ao expandir */
 .content {
-    margin-left: 60px; 
+    margin-left: 60px;
     padding: 20px;
     transition: margin-left 0.3s ease;
 }
 
 .sidebar.expanded ~ .content {
-    margin-left: 200px; 
+    margin-left: 200px;
 }
 
-.sidebar ul li i {
-    font-size: 18px; 
-    width: 35px;    
-    text-align: center; 
+.sidebar ul li{
+    font-size: 18px;
+    width: 40px;
+    justify-content: center;
 }
 
+/* ✅ Correção no Dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown:hover{
+    transition: none;
+}
+
+.dropdown-btn {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    background-color: transparent;
+    color: aliceblue;
+    font-size: 14px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+.sub-menu {
+    display: none;
+    align-items: center;
+    list-style: none;
+    width: 100%;
+}
+.dropdown ul a{
+    display: flex;
+}
+
+.sidebar.expanded .sub-menu .li-sub{
+    position: relative;
+    align-items: center;
+    color: aliceblue;
+    background-color: brown;
+    width: 100%;
+}
+
+/* Ajusta o comportamento do dropdown */
+.show {
+    display: block;
+    width: 100%;
+}
+
+/* Ícone de seta */
+.arrow-icon {
+    width: 15px;
+    height: 15px;
+    transition: transform 0.3s ease;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}

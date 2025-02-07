@@ -22,7 +22,7 @@ h1{
 
 .tela-form{
     background-color: blue;
-    width: 40%;
+    width: 150vh;
     background-color: var(--primary-color);
     display: flex;
     justify-content: center;

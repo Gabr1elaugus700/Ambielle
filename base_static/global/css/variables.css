@@ -5,6 +5,7 @@
 
     --primary-color: #6fddd8;
     --secondary-color: #181D21;
+    --hover-sidebar: #3e4246;
     --background-color: #D1D2D4;
     --color-alt-list: #98f8f3;
     --padding: 16px;
@@ -14,8 +15,15 @@
     --secondary-font: 'Roboto Mono', sans-serif;
  }
 
- body {
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
     background-color: var(--background-color);
+    min-height: 100vh;
+    min-height: 100vh;
+    grid-template-columns: auto ;
 }
 
 .message {
