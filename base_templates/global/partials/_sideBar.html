@@ -2,7 +2,7 @@
 {% load static %}
 <nav class="sidebar" id="sidebar">
     <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
-    <ul>
+    <ul class="nav">
         <li class="li-nor">
             <a href="{% url 'workflow:index' %}">
                 <img src="{% static 'global/svg/home.svg' %}" alt="Ícone">
@@ -10,29 +10,31 @@
             </a>
         </li>
 
-        <li class="dropdown">
-            <button class="dropdown-btn">
+        <li class="li-nor">
+            <a href="javascript:void(0);" class="dropdown-btn" role="button">
                 <img src="{% static 'global/svg/personadd.svg' %}" alt="Ícone">
                 <span class="text">Clientes</span>
                 <img src="{% static 'global/svg/arrow.svg' %}" class="arrow-icon">
-            </button>
+            </a>
             <ul class="sub-menu">
-                <li class="li-sub"><a href="{% url 'workflow:createCliente' %}">Cadastro</a></li>
-                <li class="li-sub"><a href="{% url 'workflow:getCliente' %}">Listar</a></li>
+                <a href="{% url 'workflow:createCliente' %}">Cadastro</a>
+                <a href="{% url 'workflow:getCliente' %}">Listar</a>
             </ul>
         </li>
+        
 
-        <li class="dropdown">
-            <button class="dropdown-btn">
+        <li class="li-nor">
+            <a href="javascript:void(0);" class="dropdown-btn" role="button">
                 <img src="{% static 'global/svg/task.svg' %}" alt="Ícone">
                 <span class="text">Serviços</span>
                 <img src="{% static 'global/svg/arrow.svg' %}" class="arrow-icon">
-            </button>
+            </a>
             <ul class="sub-menu">
-                <li class="li-sub"><a href="{% url 'workflow:createTarefa' %}">Cad. Serviços</a></li>
-                <li class="li-sub"><a href="{% url 'workflow:tipoServico' %}">Cad. Tipo Serviços</a></li>
+                <a href="{% url 'workflow:createTarefa' %}">Cad. Serviços</a>
+                <a href="{% url 'workflow:tipoServico' %}">Cad. Tipo Serviços</a>
             </ul>
         </li>
+        
 
         <li class="li-nor">
             <a href="{% url 'workflow:suporte' %}">
@@ -65,16 +67,31 @@
 </nav>
 
 <script>
-    function toggleSidebar() {
+document.addEventListener("DOMContentLoaded", function () {
+    // Alternar menu lateral
+    document.querySelector(".toggle-btn").addEventListener("click", function () {
         document.getElementById("sidebar").classList.toggle("expanded");
-    }
+    });
 
+    // Alternar submenus
     document.querySelectorAll(".dropdown-btn").forEach(button => {
         button.addEventListener("click", function () {
-            this.nextElementSibling.classList.toggle("show");
-            this.querySelector(".arrow-icon").classList.toggle("rotate");
+            let submenu = this.nextElementSibling;
+            let arrow = this.querySelector(".arrow-icon");
+
+            if (submenu.classList.contains("show")) {
+                submenu.style.maxHeight = null; // Fecha o submenu
+                submenu.classList.remove("show");
+                arrow.style.transform = "rotate(0deg)";
+            } else {
+                submenu.style.maxHeight = submenu.scrollHeight + "px"; // Expande dinamicamente
+                submenu.classList.add("show");
+                arrow.style.transform = "rotate(90deg)";
+            }
         });
     });
+});
+
 </script>
 {% endif %}
 

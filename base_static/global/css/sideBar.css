@@ -16,14 +16,22 @@
 .sidebar.expanded {
     width: 200px;
     border-radius: 5px;
-    padding: 5px;
+    padding: 15px;
 }
 
-.sidebar ul {
+.sidebar.expanded  .li-nor{
+    width: 100%;
+}
+
+.sidebar .nav {
     list-style-type: none;
     padding: 0;
     margin-top: 50px;
     width: 100%;
+}
+
+.sidebar.expanded ul .show{
+    display: block;
 }
 
 .sidebar ul li {
@@ -32,7 +40,7 @@
 }
 
 .sidebar ul li a,
-.dropdown-btn {
+.sub-menu {
     display: flex;
     align-items: center;
     padding: 12px 15px;
@@ -56,20 +64,20 @@
     position: absolute;
     bottom: 35px;
 }
-
+/* 
 .sidebar ul li:hover {
     color: var(--secondary-color);
     background-color: var(--hover-sidebar);
     border-radius: 5px;
     transform: scale(1.05);
     width: 100%;
-}
+} */
 
-.sidebar.sidebar.expanded ul li:hover{
+/* .sidebar.sidebar.expanded ul li:hover{
     color: var(--secondary-color);
     background-color: var(--hover-sidebar);
     border-radius: 5px;
-}
+} */
 
 .sidebar ul li .text {
     margin-left: 10px;
@@ -121,31 +129,20 @@
 
 .dropdown-btn {
     display: flex;
-    justify-content: space-between;
+    justify-content: center,;
     padding: 12px 15px;
     background-color: transparent;
     color: aliceblue;
     font-size: 14px;
     width: 100%;
+    height: 100%;
     border: none;
     cursor: pointer;
 }
 
 .sub-menu {
     display: none;
-    align-items: center;
     list-style: none;
-    width: 100%;
-}
-.dropdown ul a{
-    display: flex;
-}
-
-.sidebar.expanded .sub-menu .li-sub{
-    position: relative;
-    align-items: center;
-    color: aliceblue;
-    background-color: brown;
     width: 100%;
 }
 
@@ -164,4 +161,8 @@
 
 .rotate {
     transform: rotate(90deg);
+}
+
+#sidebar.sidebar.expanded ul.nav li.li-nor ul.sub-menu.show{
+    min-height: 80px;
 }
