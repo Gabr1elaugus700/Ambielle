@@ -1,4 +1,3 @@
-
 .errorlist{
     list-style: none;
     font-family: var(--secondary-font);
@@ -18,11 +17,10 @@ h1{
     display: flex;
     justify-content: center;
     align-content: center;
-}
 
+}
 .tela-form{
-    background-color: blue;
-    width: 150vh;
+    max-width: 400vh;
     background-color: var(--primary-color);
     display: flex;
     justify-content: center;

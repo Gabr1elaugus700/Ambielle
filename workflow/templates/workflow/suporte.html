@@ -1,104 +1,168 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
+  <button class="open-modal-btn">Cadastrar Suporte</button>
 
-<div class="containerForm">
-    <div class="tela-form">
-      <div class="title-form">
-        <h1>Cadastro de Suporte</h1>
-      </div>
-      <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-
+  <!-- Modal -->
+  <div id="filterModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close-modal" style="cursor: pointer; position: absolute; top: 10px; right: 10px;">&times;</span> <!-- Botão de fechar -->
+      <div class="tela-form">
+        <div class="title-form">
+          <h1>Cadastro de Suporte</h1>
+        </div>
+        <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          
           <div class="form">
-              {% for field in form %}
-                <div class="form-label">
-                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {{ field.errors }}
-                    {% if field.help_text %}
-                      <p class="help">{{ field.help_text }}</p>
-                    {% endif %}
-                </div>
-              {% endfor %}
+            {% for field in form %}
+              <div class="form-label">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+                {% if field.help_text %}
+                  <p class="help">{{ field.help_text }}</p>
+                {% endif %}
+              </div>
+            {% endfor %}
           </div>
+          
           <div class="btn">
             <button class="btn-form" type="submit">SALVAR</button>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-
-    <div class="lista">
-      <table>
-        <thead>
+  </div>
+  
+  <!-- Tabela de Suportes -->
+  <div class="lista">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Cliente
+            <a href="?sort=cliente&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+            </a>
+          </th>
+          <th>
+            Descrição
+            <a href="?sort=descricao&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+            </a>
+          </th>
+          <th>
+            V/H
+            <a href="?sort=valor_hora&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+            </a>
+          </th>
+          <th>
+            Data
+            <a href="?sort=data_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+            </a>
+          </th>
+          <th>
+            H. Ini
+            <a href="?sort=hora_inicio&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+            </a>
+          </th>   
+          <th>
+            H. Fim
+            <a href="?sort=hora_fim&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+            </a>
+          </th>
+          <th>
+            Tempo Total
+            <a href="?sort=tempo_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+            </a>
+          </th>
+          <th>
+            R$
+            <a href="?sort=valor_total&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+            </a>
+          </th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for suporte in page_obj %}
           <tr>
-            {% comment %} <th>ID</th> {% endcomment %}
-            <th>Cliente</th>
-            <th>Descrição</th>
-            <th>V/H</th>
-            <th>Data</th>
-            <th>H. Ini</th>
-            <th>H. Fim</th>
-            <th>Tempo Total</th>
-            <th>R$</th>
-            {% comment %} <th>#</th> {% endcomment %}
+            <td>{{ suporte.cliente.nome }}</td>
+            <td>{{ suporte.descricao }}</td>
+            <td>R${{ suporte.valor_hora|floatformat:2 }}</td> <!-- Formatação de moeda -->
+            <td>{{ suporte.data_suporte|date:"d/m" }}</td>
+            <td>{{ suporte.hora_inicio }}</td>
+            <td>{{ suporte.hora_fim }}</td>
+            <td>{{ suporte.tempo_suporte|floatformat:2 }}</td>
+            <td>R${{ suporte.valor_total|floatformat:2 }}</td>
           </tr>
-        </thead>
-        <tbody>
-          {% for suporte in page_obj %}
-            <tr>
-              {% comment %} <td style="text-align: center;">{{ suporte.id }}</td> {% endcomment %}
-              <td>{{ suporte.cliente.nome }}</td>
-              <td>{{ suporte.descricao }}</td>
-              <td>R${{ suporte.valor_hora }}</td>  <!-- Formatação de moeda -->
-              <td>{{ suporte.data_suporte|date:"d/m" }}</td>
-              <td>{{ suporte.hora_inicio }}</td>
-              <td>{{ suporte.hora_fim }}</td>
-              <td>{{ suporte.tempo_suporte|floatformat:2 }}</td>
-              <td>R${{ suporte.valor_total|floatformat:2 }}</td>
-
-              {% comment %} <td style="text-align: center; vertical-align: middle;">
-                <a href="{% url 'workflow:deleteSuporte' suporte.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-                <a href="{% url 'workflow:updateSuporte' suporte.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-              </td> {% endcomment %}
-            </tr>
-          {% endfor %}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="8" class="tfoot-cell">
-              <div class="pagination">
-                <!-- Botões de navegação com ícones -->
-                <span class="step-links">
-                  {% if page_obj.has_previous %}
-                    <a href="?page=1">
-                      <i class="fa-solid fa-angles-left"></i> <!-- Ícone para primeira página -->
-                    </a>
-                    <a href="?page={{ page_obj.previous_page_number }}">
-                      <i class="fa-solid fa-angle-left"></i> <!-- Ícone para página anterior -->
-                    </a>
-                  {% endif %}
-    
-                  <span class="current">
-                      Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-                  </span>
-    
-                  {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">
-                      <i class="fa-solid fa-angle-right"></i> <!-- Ícone para próxima página -->
-                    </a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">
-                      <i class="fa-solid fa-angles-right"></i> <!-- Ícone para última página -->
-                    </a>
-                  {% endif %}
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="8" class="tfoot-cell">
+            <div class="pagination">
+              <span class="step-links">
+                {% if page_obj.has_previous %}
+                  <a href="?page=1">
+                    <i class="fa-solid fa-angles-left"></i>
+                  </a>
+                  <a href="?page={{ page_obj.previous_page_number }}">
+                    <i class="fa-solid fa-angle-left"></i>
+                  </a>
+                {% endif %}
+                
+                <span class="current">
+                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
                 </span>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-    
-</div>
+                
+                {% if page_obj.has_next %}
+                  <a href="?page={{ page_obj.next_page_number }}">
+                    <i class="fa-solid fa-angle-right"></i>
+                  </a>
+                  <a href="?page={{ page_obj.paginator.num_pages }}">
+                    <i class="fa-solid fa-angles-right"></i>
+                  </a>
+                {% endif %}
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Pega os elementos do modal
+      var modal = document.getElementById("filterModal");
+      var openBtn = document.querySelector(".open-modal-btn");
+      var closeBtn = document.querySelector(".close-modal");
+
+      // Quando o botão for clicado, mostra o modal
+      openBtn.addEventListener("click", function () {
+          modal.style.display = "flex";
+      });
+
+      // Quando clicar no botão de fechar, esconde o modal
+      closeBtn.addEventListener("click", function () {
+          modal.style.display = "none";
+      });
+
+      // Fecha o modal se clicar fora dele
+      window.addEventListener("click", function (event) {
+          if (event.target === modal) {
+              modal.style.display = "none";
+          }
+      });
+    });
+  </script>
+
 {% endblock %}

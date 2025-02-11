@@ -227,26 +227,38 @@ def deleteTipoServico(request, servico_id):
 
 
 def definir_suporte(request):
-    
     title = 'Cadastro de Suporte'
+    
+    # Obtém o parâmetro 'sort' da URL (caso não exista, usa 'id' como padrão)
+    sort_by = request.GET.get('sort', 'id')
+    
+    # Obtém o parâmetro 'order' da URL (caso não exista, usa 'asc' como padrão)
+    order = request.GET.get('order', 'asc')
+    
+    # Se a ordenação for descendente, adiciona o sinal '-' ao campo de ordenação
+    if order == 'desc':
+        sort_by = '-' + sort_by
+    
+    # Obtém os suportes ordenados com base no parâmetro 'sort_by'
+    suportes = Suporte.objects.all().order_by(sort_by)
+    
+    # Paginação - Exibe 10 itens por página
+    page_obj = Paginator(suportes, 10).get_page(request.GET.get('page'))
+    
     if request.method == 'POST':
         form = SuporteForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('workflow/suporte.html')  # Redireciona para uma lista de suporte após sucesso
+            return redirect('workflow:support_list')  # Redireciona para a lista de suportes após sucesso
     else:
         form = SuporteForm()
-    
-    page_obj = Paginator(Suporte.objects.all(), 10).get_page(request.GET.get('page'))  # Exibe 10 itens por página
     
     context = {
         'title': title,
         'form': form,
         'page_obj': page_obj,  # Passa a página de suportes para o template
+        'sort_by': sort_by,  # Passa o campo de ordenação para o template
+        'order': order,  # Passa o tipo de ordenação (asc/desc) para o template
     }
 
-    return render(
-        request,
-        'workflow/suporte.html',
-        context,
-    )
+    return render(request, 'workflow/suporte.html', context)

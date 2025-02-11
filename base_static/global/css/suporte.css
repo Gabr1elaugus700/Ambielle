@@ -1,0 +1,6 @@
+.suporte-tela{
+    display: flex;
+    max-width: 200vh;
+    flex: 1 1 0;
+    background-color: red;
+}
