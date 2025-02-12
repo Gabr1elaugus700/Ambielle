@@ -33,7 +33,7 @@ class Servico(models.Model):
 
     tipo_servico = models.ForeignKey(
         TipoServico,
-        on_delete=models.CASCADE, 
+        on_delete=models.CASCADE,
         related_name="servicos"
     )
     

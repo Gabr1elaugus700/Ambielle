@@ -1,28 +1,7 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-<div class="relatorio-container">
-  <h2>Exportar Relatórios</h2>
 
-  <!-- Botões de exportação -->
-  <div class="btn-relatorios"><!-- Botão para exportar Excel -->
-    <button class="btn-download" onclick="baixarExcel('clientes')">📊 Excel - Clientes</button>
-    <button class="btn-download" onclick="baixarExcel('clientes_servicos')">📊 Excel - Clientes x Serviços</button>
-    <button class="btn-download" onclick="baixarExcel('clientes_servicos_valores')">📊 Excel - Clientes x Serviços x Valores</button>
-    <button class="btn-download" onclick="baixarExcel('clientes_suporte')">📊 Excel - Clientes x Suporte</button>
-    <button class="btn-download" onclick="baixarExcel('demandas_por_cliente')">📊 Excel - Demandas por Cliente</button>
-    
-    <script>
-        function baixarExcel(tipoRelatorio) {
-            window.location.href = `/exportar-xlsx/${tipoRelatorio}/`;
-        }
-        function baixarPDF(tipoRelatorio) {
-          window.location.href = `/exportar-pdf/${tipoRelatorio}/`;
-      }
-    </script>
-    
-  </div>
-</div>
 
   <div class="lista">
     <table>

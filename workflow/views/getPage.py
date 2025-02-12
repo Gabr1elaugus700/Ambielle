@@ -24,7 +24,7 @@ def index(request):
     # tarefas_em_aberto = Tarefa.objects.filter()
 
     hoje = timezone.now().date()
-    data_limite = hoje + timedelta(days=20)
+    data_limite = hoje + timedelta(days=450)
     
     demandas_execucao = Tarefa.objects.filter(status='Execucao', prazo_final__lte=data_limite).order_by('prazo_final')
     demandas_aprovacao = Tarefa.objects.filter(status='Aprovação Cliente', prazo_final__lte=data_limite).order_by('prazo_final')
@@ -237,3 +237,17 @@ def get_tarefas_filtradas(request):
         'data_inicial': data_inicial,
         'data_final': data_final,
     })
+    
+@login_required(login_url='workflow:login')
+def getRelatorios(request):
+    title = 'Relatórios PDF & XLSX'
+
+    context ={
+        'title': title,
+    }
+
+    return render(
+        request,
+        'workflow/relatorios.html',
+        context,
+    )

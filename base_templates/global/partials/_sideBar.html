@@ -30,6 +30,7 @@
                 <img src="{% static 'global/svg/arrow.svg' %}" class="arrow-icon">
             </a>
             <ul class="sub-menu">
+                <a href="{% url 'workflow:get_tarefas_filtradas' %}">Tarefas</a>
                 <a href="{% url 'workflow:createTarefa' %}">Cad. Serviços</a>
                 <a href="{% url 'workflow:tipoServico' %}">Cad. Tipo Serviços</a>
             </ul>
@@ -42,6 +43,13 @@
                 <span class="text">Suporte</span>
             </a>
         </li>
+        <li class="li-nor">
+            <a href="{% url 'workflow:relatorios' %}">
+                <img src="{% static 'global/svg/relatorios.svg' %}" alt="Ícone">
+                <span class="text">Relatórios</span>
+            </a>
+        </li>
+
 <!-- 
         <li>
             <a href="{% url 'workflow:get_tarefas_filtradas' %}">
