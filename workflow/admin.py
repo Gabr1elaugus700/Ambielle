@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cliente, Servico, Tarefa, Etapa, Suporte, Relatorio, TipoServico
+from .models import Cliente, Servico, Tarefa, Etapa, Suporte, Relatorio, TipoServico, Licenca
 
 # Configuração da exibição dos tipos de serviço no Django Admin
 @admin.register(TipoServico)
@@ -56,3 +56,21 @@ class RelatorioAdmin(admin.ModelAdmin):
     search_fields = ('cliente__nome', 'tarefa__tipo_servico__nome', 'tipo_relatorio')
     list_filter = ('tipo_relatorio',)
     date_hierarchy = 'data_relatorio'
+
+@admin.register(Licenca)
+class LicencaAdmin(admin.ModelAdmin):
+    list_display = ('descricao', 'cliente', 'data_vencimento', 'tipo_licenca', 'renovacao_iniciada')
+    list_filter = ('tipo_licenca', 'renovacao_iniciada', 'data_vencimento')  # Filtros laterais
+    search_fields = ('descricao', 'cliente__nome')  # Campo de busca
+    ordering = ('data_vencimento',)  # Ordena pela data de vencimento
+    list_editable = ('renovacao_iniciada',)  # Permite editar esse campo direto na lista
+
+    # Exibir os detalhes no formulário de edição
+    fieldsets = (
+        ('Informações da Licença', {
+            'fields': ('cliente', 'descricao', 'tipo_licenca')
+        }),
+        ('Validade', {
+            'fields': ('data_vencimento', 'renovacao_iniciada')
+        }),
+    )

@@ -20,6 +20,9 @@ def index(request):
     else:
         form = SuporteForm()
 
+    
+    limite = datetime.today().date() + timedelta(days=30)  # Licenças vencendo nos próximos 30 dias
+    licencas_proximas = Licenca.objects.filter(data_vencimento__lte=limite)
     clientes = Cliente.objects.count()
     # tarefas_em_aberto = Tarefa.objects.filter()
 
@@ -46,7 +49,8 @@ def index(request):
         'demandas_coleta': demandas_coleta,
         'demandas_iniciado': demandas_iniciado,
         'clientes': clientes, 
-        'tarefas_em_aberto': tarefas_em_aberto
+        'tarefas_em_aberto': tarefas_em_aberto,
+        'licencas': licencas_proximas
     }
 
     return render(

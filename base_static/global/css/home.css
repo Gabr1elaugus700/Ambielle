@@ -24,8 +24,8 @@
     align-items: center;
     gap: 20px;
     font-family: var(--secondary-font);
-    column-gap: 40px;
     margin-right: 6%;
+    flex-wrap: wrap;
 }
 
 .card {
@@ -273,40 +273,6 @@ h2 {
     flex: 2; /* Faz o texto ocupar o espaço disponível */
 }
 
-.container {
-    display: flex;
-    gap: 30px; 
-}
-
-
-
-/* Estilo responsivo */
-/* @media (max-width: 1150px) {
-    .demand-cards-wrapper {
-        justify-content: center;
-        background-color: #228B22;
-    }
-    
-    .demand-card {
-        width: 80%;
-        min-width: 30rem; 
-
-    }
-} */
-
-/* Se a tela for menor que 768px, exibe 1 card por linha */
-/* @media (max-width: 768px) {
-    .demand-cards-wrapper {
-        flex-direction: column;
-        align-items: center;
-        min-width: 30rem; 
-    }
-    
-    .demand-card {
-        width: 90%; 
-    }
-}
- */
  #popupLicencas {
     display: none;
     position: fixed;
@@ -320,10 +286,8 @@ h2 {
 #popupContent {
     background: white;
     padding: 20px;
-    width: 80%;
-    max-width: 500px;
+    width: 80vh;
     margin: 10% auto;
-    border-radius: 8px;
 }
 
 #fecharPopup {
@@ -334,4 +298,13 @@ h2 {
 
 #alertCard{
     cursor: pointer;
+}
+
+#tabelaLicencas {
+    width: 100%;
+    margin-top: 10px;
+}
+#tabelaLicencas th, #tabelaLicencas td {
+    padding: 8px;
+    text-align: center;
 }

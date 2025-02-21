@@ -11,20 +11,39 @@
   <div class="container">
       <div class="card" id="alertCard">
           <h2>Alerta<span class="dot orange"></span></h2>
-              <div class="progress-info"></div>
+              <div class="progress-info">
+                <span class="numberof"> {{clientes}} </span>
+              </div>
       </div>
       
       <div id="popupLicencas">
         <div id="popupContent">
             <span id="fecharPopup">&times;</span>
             <h3>Licenças para Vencer</h3>
-            <div id="listaLicencas">
-                <thead>
-                  <th>Vencendo</th>
-                  <th>Cliente</th>
-                  <th>Data</th>
-                </thead>
-            </div>
+            <table id="tabelaLicencas">
+              <thead>
+                  <tr>
+                      <th>Cliente</th>
+                      <th>Data de Vencimento</th>
+                      <th>Tipo</th>
+                      <th>Iniciado?</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for licenca in licencas %}
+                  <tr>
+                      <td>{{ licenca.cliente.nome }}</td>
+                      <td>{{ licenca.data_vencimento }}</td>
+                      <td>{{ licenca.tipo_licenca }}</td>
+                      <td>{% if licenca.renovacao_iniciada %}✅ Sim{% else %}❌ Não{% endif %}</td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                      <td colspan="5">Nenhuma licença para vencer nos próximos 30 dias.</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
         </div>
     </div>
       <div class="card">
