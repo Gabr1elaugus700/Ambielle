@@ -121,3 +121,13 @@ class Relatorio(models.Model):
 
     def __str__(self):
         return f"Relatório {self.id} para {self.cliente.nome}"
+
+class Licenca(models.Model):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name="licencas")
+    descricao = models.CharField(max_length=255)
+    data_vencimento = models.DateField()
+    tipo_licenca = models.CharField(max_length=20, default='OUTRO')
+    renovacao_iniciada = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.descricao} - {self.data_vencimento}"

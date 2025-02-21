@@ -9,6 +9,24 @@
   
 
   <div class="container">
+      <div class="card" id="alertCard">
+          <h2>Alerta<span class="dot orange"></span></h2>
+              <div class="progress-info"></div>
+      </div>
+      
+      <div id="popupLicencas">
+        <div id="popupContent">
+            <span id="fecharPopup">&times;</span>
+            <h3>Licenças para Vencer</h3>
+            <div id="listaLicencas">
+                <thead>
+                  <th>Vencendo</th>
+                  <th>Cliente</th>
+                  <th>Data</th>
+                </thead>
+            </div>
+        </div>
+    </div>
       <div class="card">
           <h2>Clientes Atendidos<span class="dot yellow"></span></h2>
           <div class="progress-info">
@@ -106,5 +124,38 @@
       </div>
   </div>
 </div>
+<script>
+  document.getElementById("alertCard").onclick = function() {
+    document.getElementById("popupLicencas").style.display = "block";
+
+    // Simulação de busca de licenças para vencer
+    fetch('/api/licencas-para-vencer')  // Altere para o seu endpoint real
+        .then(response => response.json())
+        .then(data => {
+            let lista = document.getElementById("listaLicencas");
+            lista.innerHTML = ''; // Limpa a lista antes de adicionar os novos itens
+
+            data.licencas.forEach(licenca => {
+                let item = document.createElement('div');
+                item.textContent = `Licença: ${licenca.nome} - Vence em: ${licenca.dataVencimento}`;
+                lista.appendChild(item);
+            });
+        })
+        .catch(error => console.error('Erro ao buscar licenças:', error));
+};
+
+// Fechar popup
+document.getElementById("fecharPopup").onclick = function() {
+    document.getElementById("popupLicencas").style.display = "none";
+};
+
+// Fechar ao clicar fora do conteúdo
+window.onclick = function(event) {
+    if (event.target === document.getElementById("popupLicencas")) {
+        document.getElementById("popupLicencas").style.display = "none";
+    }
+};
+
+</script>
 
 {% endblock %}
