@@ -2,7 +2,7 @@
     margin-top: 15px;
     position: relative;
     margin-left: 5%;
-    width: 50%;
+    width: 100%;
 }
 
 .saudacao h1 {
@@ -19,28 +19,31 @@
     color: #666;
 }
 
-.container {
+.alertas{
     display: flex;
-    align-items: center;
+    flex: 1;
+    justify-content: end;
+    padding: 25px;
     gap: 20px;
-    font-family: var(--secondary-font);
-    margin-right: 6%;
-    flex-wrap: wrap;
+    margin-right: 25px;
+    max-height: 180px;
 }
 
-.card {
+.saudacao-container{
+    display: flex;
+    margin: 0;
+}
+.cardHome {
     background-color: var(--primary-color);
     border: 2px solid black;
     border-radius: 10px;
-    width: 250px;
     text-align: center;
-    display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.35) inset;
+    width: 150px;
 }
 
-h2 {
+.cardHome h2 {
+    font-family: var(--secondary-font);
     font-size: 16px;
     margin: 0;
     font-weight: 500;
@@ -182,9 +185,9 @@ h2 {
     display: flex;
     flex: 1 1 0;
     flex-wrap: wrap;
-    margin-top: 20px;
-    padding: min(5em, 3%);
+    margin-top: 15px;
     gap: 10px;
+    margin-right: 25px;
     justify-content: center;
 }
 
@@ -226,6 +229,7 @@ h2 {
     background-color: var(--primary-color);
     border: 2px solid #333;
     border-radius: 15px;
+    gap: 10px;
     padding: min(2em, 3%);
     font-family: var(--secondary-font);
     transition: all 0.3s ease; 
@@ -261,17 +265,6 @@ h2 {
     color: yellow;
 } 
 
-.saudacao-container {
-    display: flex;
-    align-items: center; /* Alinha os itens verticalmente */
-    justify-content: center; /* Centraliza horizontalmente */
-    width: 100%; /* Garante que ocupa toda a largura */
-    gap: 50px; /* Dá espaço entre o texto e os cards */
-}
-
-.saudacao {
-    flex: 2; /* Faz o texto ocupar o espaço disponível */
-}
 
  #popupLicencas {
     display: none;
