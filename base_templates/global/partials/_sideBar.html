@@ -1,104 +1,100 @@
 {% if request.user.is_authenticated %}
 {% load static %}
-<nav class="sidebar" id="sidebar">
-    <button class="toggle-btn" onclick="toggleSidebar()">&#9776;</button>
-    <ul class="nav">
-        <li class="li-nor">
-            <a href="{% url 'workflow:index' %}">
-                <img src="{% static 'global/svg/home.svg' %}" alt="Ícone">
-                <span class="text">Home</span>
-            </a>
-        </li>
+<nav class="navbar navbar-dark bg-dark fixed-top sm">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="margin-left: 50px;" href="{% url 'workflow:index' %}">Sistema De Controle - Ambielle</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="sidebarOffcanvas"
+            aria-labelledby="sidebarOffcanvasLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'workflow:index' %}">
+                            <img src="{% static 'global/svg/home.svg' %}" alt="Ícone" class="me-2"> Home
+                        </a>
+                    </li>
 
-        <li class="li-nor">
-            <a href="javascript:void(0);" class="dropdown-btn" role="button">
-                <img src="{% static 'global/svg/personadd.svg' %}" alt="Ícone">
-                <span class="text">Clientes</span>
-                <img src="{% static 'global/svg/arrow.svg' %}" class="arrow-icon">
-            </a>
-            <ul class="sub-menu">
-                <a href="{% url 'workflow:createCliente' %}">Cadastro</a>
-                <a href="{% url 'workflow:getCliente' %}">Listar</a>
-            </ul>
-        </li>
-        
+                    <!-- Dropdown Clientes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <img src="{% static 'global/svg/personadd.svg' %}" alt="Ícone" class="me-2"> Clientes
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="{% url 'workflow:createCliente' %}">Cadastro</a></li>
+                            <li><a class="dropdown-item" href="{% url 'workflow:getCliente' %}">Listar</a></li>
+                        </ul>
+                    </li>
 
-        <li class="li-nor">
-            <a href="javascript:void(0);" class="dropdown-btn" role="button">
-                <img src="{% static 'global/svg/task.svg' %}" alt="Ícone">
-                <span class="text">Serviços</span>
-                <img src="{% static 'global/svg/arrow.svg' %}" class="arrow-icon">
-            </a>
-            <ul class="sub-menu">
-                <a href="{% url 'workflow:get_tarefas_filtradas' %}">Tarefas</a>
-                <a href="{% url 'workflow:createTarefa' %}">Cad. Serviços</a>
-                <a href="{% url 'workflow:tipoServico' %}">Cad. Tipo Serviços</a>
-            </ul>
-        </li>
-        
+                    <!-- Dropdown Serviços -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <img src="{% static 'global/svg/task.svg' %}" alt="Ícone" class="me-2"> Serviços
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="{% url 'workflow:get_tarefas_filtradas' %}">Tarefas</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'workflow:createTarefa' %}">Cad. Serviços</a></li>
+                            <li><a class="dropdown-item" href="{% url 'workflow:tipoServico' %}">Cad. Tipo Serviços</a>
+                            </li>
+                        </ul>
+                    </li>
 
-        <li class="li-nor">
-            <a href="{% url 'workflow:suporte' %}">
-                <img src="{% static 'global/svg/watch.svg' %}" alt="Ícone">
-                <span class="text">Suporte</span>
-            </a>
-        </li>
-        <li class="li-nor">
-            <a href="{% url 'workflow:relatorios' %}">
-                <img src="{% static 'global/svg/relatorios.svg' %}" alt="Ícone">
-                <span class="text">Relatórios</span>
-            </a>
-        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'workflow:suporte' %}">
+                            <img src="{% static 'global/svg/watch.svg' %}" alt="Ícone" class="me-2"> Suporte
+                        </a>
+                    </li>
 
-<!-- 
-        <li>
-            <a href="{% url 'workflow:get_tarefas_filtradas' %}">
-                <img src="{% static 'global/svg/task.svg' %}" alt="Ícone">
-                <span class="text">Serviços</span>
-            </a>
-        </li> -->
-<!-- 
-        <li>
-            <a href="{% url 'workflow:getCliente' %}">
-                <img src="{% static 'global/svg/iconTest.svg' %}" alt="Ícone">
-                <span class="text">Clientes</span>
-            </a>
-        </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'workflow:relatorios' %}">
+                            <img src="{% static 'global/svg/relatorios.svg' %}" alt="Ícone" class="me-2"> Relatórios
+                        </a>
+                    </li>
 
-        <li class="li-nor">
-            <a href="{% url 'workflow:logout' %}">
-                <img src="{% static 'global/svg/logout.svg' %}" alt="Ícone">
-                <span class="text">Logout</span>
-            </a>
-        </li>
-    </ul>
+                    <li class="nav-item mt-auto">
+                        <a class="nav-link text-danger" href="{% url 'workflow:logout' %}">
+                            <img src="{% static 'global/svg/logout.svg' %}" alt="Ícone" class="me-2"> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </nav>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    // Alternar menu lateral
-    document.querySelector(".toggle-btn").addEventListener("click", function () {
-        document.getElementById("sidebar").classList.toggle("expanded");
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+        // Alternar menu lateral
+        document.querySelector(".toggle-btn").addEventListener("click", function () {
+            document.getElementById("sidebar").classList.toggle("expanded");
+        });
 
-    // Alternar submenus
-    document.querySelectorAll(".dropdown-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            let submenu = this.nextElementSibling;
-            let arrow = this.querySelector(".arrow-icon");
+        // Alternar submenus
+        document.querySelectorAll(".dropdown-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let submenu = this.nextElementSibling;
+                let arrow = this.querySelector(".arrow-icon");
 
-            if (submenu.classList.contains("show")) {
-                submenu.style.maxHeight = null; // Fecha o submenu
-                submenu.classList.remove("show");
-                arrow.style.transform = "rotate(0deg)";
-            } else {
-                submenu.style.maxHeight = submenu.scrollHeight + "px"; // Expande dinamicamente
-                submenu.classList.add("show");
-                arrow.style.transform = "rotate(90deg)";
-            }
+                if (submenu.classList.contains("show")) {
+                    submenu.style.maxHeight = null; // Fecha o submenu
+                    submenu.classList.remove("show");
+                    arrow.style.transform = "rotate(0deg)";
+                } else {
+                    submenu.style.maxHeight = submenu.scrollHeight + "px"; // Expande dinamicamente
+                    submenu.classList.add("show");
+                    arrow.style.transform = "rotate(90deg)";
+                }
+            });
         });
     });
-});
 
 </script>
 {% endif %}

@@ -30,6 +30,7 @@ body {
 main {
     /* Permite que o conteúdo principal cresça para ocupar o espaço disponível */
     flex: 1;
+    margin-top: 2%;
     /* Usa o modelo de layout Flexbox para o conteúdo principal */
     display: flex;
     /* Centraliza os itens no eixo transversal (vertical) */
