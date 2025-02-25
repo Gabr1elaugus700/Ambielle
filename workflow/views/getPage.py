@@ -6,9 +6,11 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
-from workflow.forms import SuporteForm
+from workflow.forms import CreateCliente, SuporteForm
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.contrib import messages
 
 @login_required(login_url='workflow:login')
 def index(request):
@@ -89,7 +91,7 @@ def getCliente(request):
         'workflow/getClientes.html',
         context,
     )
-    
+
 @login_required(login_url='workflow:login')
 def alterar_status_tarefa(request, tarefa_id):
     if request.method == "POST":

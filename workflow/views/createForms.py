@@ -6,85 +6,43 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 @login_required(login_url='workflow:login')
 def createCliente(request):
-    form_action = reverse('workflow:createCliente')
-    
+    form = CreateCliente(request.POST or None)
+    form_action = reverse('workflow:createCliente')  # ✅ Define o action corretamente
+
     if request.method == 'POST':
-        title = 'Cadastro De Clientes'
-        form = CreateCliente(request.POST)
-
-        context ={
-            'title': title,
-            'form': form,
-            'form_action': form_action,
-        }
-
         if form.is_valid():
-            cliente = form.save()
-            messages.success(request, 'Cliente Cadastrado com Sucesso!')
-            return redirect('workflow:updateCliente', cliente_id=cliente.pk)
+            form.save()
+            return JsonResponse({'message': 'success'})
 
-        return render(
-            request,
-            'workflow/createClientes.html',
-            context,
-        )
-    
-    else:
-        title = 'Cadastro De Clientes'
-        context = {
-            'title': title,
-            'form': CreateCliente
-        }
+        return JsonResponse({
+            'message': 'error',
+            'html': render_to_string('workflow/createClientes.html', {'form': form, 'form_action': form_action})
+        })
 
-        return render(
-            request, 
-            'workflow/createClientes.html',
-            context,
-        )
+    return render(request, 'workflow/createClientes.html', {'form': form, 'form_action': form_action})
 
-@login_required(login_url='workflow:login')   
+@login_required(login_url='workflow:login')
 def updateCliente(request, cliente_id):
-    cliente = get_object_or_404(
-        Cliente, pk=cliente_id
-    )
-    form_action = reverse('workflow:updateCliente', args=(cliente_id,))
-    
+    cliente = get_object_or_404(Cliente, pk=cliente_id)
+    form = CreateCliente(request.POST or None, instance=cliente)
+    form_action = reverse('workflow:updateCliente', args=(cliente_id,))  # ✅ Define corretamente para update
+
     if request.method == 'POST':
-        title = 'Cadastro De Clientes'
-        form = CreateCliente(request.POST, instance=cliente)
-
-        context ={
-            'title': title,
-            'form': form,
-            'form_action': form_action,
-        }
-
         if form.is_valid():
-            cliente = form.save()
-            messages.success(request, 'Cliente Cadastrado com Sucesso!')
-            return redirect('workflow:updateCliente', cliente_id=cliente.pk)
+            form.save()
+            return JsonResponse({'message': 'success'})
 
-        return render(
-            request,
-            'workflow/createClientes.html',
-            context,
-        )
-    
-    else:
-        title = 'Cadastro De Clientes'
-        context = {
-            'title': title,
-            'form': CreateCliente(instance=cliente)
-        }
+        return JsonResponse({
+            'message': 'error',
+            'html': render_to_string('workflow/createClientes.html', {'form': form, 'form_action': form_action})
+        })
 
-        return render(
-            request, 
-            'workflow/createClientes.html',
-            context,
-        )
+    return render(request, 'workflow/createClientes.html', {'form': form, 'form_action': form_action})
 
 @login_required(login_url='workflow:login')      
 def deleteClientes(request, cliente_id):

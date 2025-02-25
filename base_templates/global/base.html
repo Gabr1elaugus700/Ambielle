@@ -5,7 +5,7 @@
     {% include "global/partials/_head.html" %}
 </head>
 
-<body>
+<body style="background-color: #d8d8d8;">
     {% include "global/partials/_sideBar.html" %}
     {% block content %}
 
@@ -13,41 +13,41 @@
 
     {% endblock content %}
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Modal de filtro
-            const modalFilter = document.getElementById("filterModal");
-            const openFilterBtn = document.querySelector(".open-modal-btn");
-            const closeFilterBtn = modalFilter.querySelector(".close-modal");
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     // Modal de filtro
+        //     const modalFilter = document.getElementById("filterModal");
+        //     const openFilterBtn = document.querySelector(".open-modal-btn");
+        //     const closeFilterBtn = modalFilter.querySelector(".close-modal");
 
-            // Modal de edição de tarefa
-            const modalEdit = document.getElementById("modal-editar-tarefa");
-            const closeEditBtn = modalEdit.querySelector(".close");
+        //     // Modal de edição de tarefa
+        //     const modalEdit = document.getElementById("modal-editar-tarefa");
+        //     const closeEditBtn = modalEdit.querySelector(".close");
 
-            // Quando o botão "Filtrar Atividades" for clicado, abre o modal
-            openFilterBtn.addEventListener("click", function () {
-                modalFilter.style.display = "flex";
-            });
+        //     // Quando o botão "Filtrar Atividades" for clicado, abre o modal
+        //     openFilterBtn.addEventListener("click", function () {
+        //         modalFilter.style.display = "flex";
+        //     });
 
-            // Quando o botão de fechar do modal de filtro for clicado, fecha o modal
-            closeFilterBtn.addEventListener("click", function () {
-                modalFilter.style.display = "none";
-            });
+        //     // Quando o botão de fechar do modal de filtro for clicado, fecha o modal
+        //     closeFilterBtn.addEventListener("click", function () {
+        //         modalFilter.style.display = "none";
+        //     });
 
-            // Quando o botão de fechar do modal de edição de tarefa for clicado, fecha o modal
-            closeEditBtn.addEventListener("click", function () {
-                modalEdit.style.display = "none";
-            });
+        //     // Quando o botão de fechar do modal de edição de tarefa for clicado, fecha o modal
+        //     closeEditBtn.addEventListener("click", function () {
+        //         modalEdit.style.display = "none";
+        //     });
 
-            // Fecha o modal ao clicar fora dele
-            window.addEventListener("click", function (event) {
-                if (event.target === modalFilter) {
-                    modalFilter.style.display = "none";
-                }
-                if (event.target === modalEdit) {
-                    modalEdit.style.display = "none";
-                }
-            });
-        });
+        //     // Fecha o modal ao clicar fora dele
+        //     window.addEventListener("click", function (event) {
+        //         if (event.target === modalFilter) {
+        //             modalFilter.style.display = "none";
+        //         }
+        //         if (event.target === modalEdit) {
+        //             modalEdit.style.display = "none";
+        //         }
+        //     });
+        // });
 
     </script>
 </body>

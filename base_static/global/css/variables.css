@@ -50,7 +50,7 @@ section {
     color: white;
     padding: 15px;
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     right: 20px;
     z-index: 1000;
     border-radius: 5px;
@@ -121,4 +121,15 @@ section {
     float: right;
     font-size: 28px;
     cursor: pointer;
+}
+
+.errorlist{
+    list-style: none;
+    font-family: var(--secondary-font);
+    font-size: small;
+    background-color: tomato;
+    color: black;
+    display: flex;
+    align-items: center;
+    width: 40%;
 }
