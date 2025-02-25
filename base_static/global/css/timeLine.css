@@ -5,7 +5,6 @@
 /* Estilo para os cards */
 .tasks-row {
     display: flex;
-    padding: min(5em, 3%);
     justify-content: center;
     flex: 1 1 0;
     flex-wrap: wrap;
@@ -15,8 +14,7 @@
 /* Barra lateral colorida */
 .task-status-bar {
     width: 25px; /* Define a largura da barra lateral */
-    height: 100%; /* Faz a barra ocupar toda a altura do card */
-    border-radius: 10px 0 0 10px; /* Mantém o arredondamento apenas do lado esquerdo */
+    height: 100%;  /* Mantém o arredondamento apenas do lado esquerdo */
     background-color: var(--primary-color);
 }
 
@@ -36,7 +34,7 @@
 .task-card {
     display: flex;
     align-items: stretch;
-    max-height: 15.5rem;
+    max-height: 17rem;
     width: 25rem;
     border-radius: 10px;
     border: 3px solid var(--secondary-color);
@@ -48,13 +46,35 @@
     background-color: var(--status-color); /* Aplica a cor dinamicamente */
 }
 
-
 .task-header {
-    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Mantém os elementos afastados */
+    padding: 8px; /* Adiciona um espaçamento interno */
     border-bottom: 2px solid var(--secondary-color);
-    text-align: center;
-    font-weight: bold;
 }
+
+.task-header .task-dateCli {
+    padding: 8px;
+    
+    text-align: left; /* Ajusta para alinhamento correto */
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha à esquerda */
+}
+
+.task-header button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto; /* Joga o botão para a direita */
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+
 
 .task-dateCli h3 {
     margin: 0;

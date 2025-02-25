@@ -8,8 +8,12 @@
         display: none;
     }
   </style>
-  <button class="open-modal-btn">Filtrar Atividades</button>
 
+  <main>
+
+    <section>
+        <button class="open-modal-btn">Filtrar Atividades</button>
+    </section>
   <div id="filterModal" class="modal">
     <div class="modal-content">
         
@@ -76,47 +80,48 @@
         </div>
     </div>
   </div>
-
-  <div class="tasks-section">
-    <div class="tasks-row">
-      {% if tarefas %}
-        {% for task in tarefas %}
-        <div class="task-card" style="--status-color: {{ task.status_color }};">
-            <div class="task-status-bar"></div>
-            <div class="task-content">
-                <div class="task-header">
-                    <div class="task-dateCli">
-                        <h3>{{ task.cliente }}</h3>
-                        <span class="date">{{ task.status }}</span>
+  <section>
+    <div class="tasks-section" style="padding-top: 0px;">
+        <div class="tasks-row">
+        {% if tarefas %}
+            {% for task in tarefas %}
+            <div class="task-card" style="--status-color: {{ task.status_color }};">
+                <div class="task-status-bar"></div>
+                <div class="task-content">
+                    <div class="task-header">
+                        <div class="task-dateCli">
+                            <h3>{{ task.cliente }}</h3>
+                            <span class="date">{{ task.status }}</span>
+                        </div>
+                        <!-- Botão de edição -->
+                        <button class="btn-editar" data-id="{{ task.id }}" data-status="{{ task.status }}">
+                            ✏️ 
+                        </button>
                     </div>
-                    <!-- Botão de edição -->
-                    <button class="btn-editar" data-id="{{ task.id }}" data-status="{{ task.status }}">
-                        ✏️ Editar
-                    </button>
-                </div>
-                <div class="info">
-                    <p><strong>Prazo Final:</strong> <span class="date">{{ task.prazo_final|date:'d/m/y' }}</span></p>
-                    {% if task.valor_total_servico %}
-                        <p><strong>Valor Serviço:</strong> R${{ task.valor_total_servico }}</p>
-                    {% else %}
-                        <p>Valor não informado!</p>
-                    {% endif %}
-                    <p><strong>Serviço:</strong> {{ task.tipo_servico }}</p>
-                    {% if task.observacoes %}
-                        <p>{{ task.observacoes }}</p>
-                    {% else %}
-                        <p>Nenhuma Observação cadastrada.</p>
-                    {% endif %}
+                    <div class="info">
+                        <p><strong>Prazo Final:</strong> <span class="date">{{ task.prazo_final|date:'d/m/y' }}</span></p>
+                        {% if task.valor_total_servico %}
+                            <p><strong>Valor Serviço:</strong> R${{ task.valor_total_servico }}</p>
+                        {% else %}
+                            <p>Valor não informado!</p>
+                        {% endif %}
+                        <p><strong>Serviço:</strong> {{ task.tipo_servico }}</p>
+                        {% if task.observacoes %}
+                            <p>{{ task.observacoes }}</p>
+                        {% else %}
+                            <p>Nenhuma Observação cadastrada.</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-    {% else %}
+            {% endfor %}
+        {% else %}
 
-        <p>Nenhuma tarefa encontrada. Ajuste os filtros e tente novamente.</p>
-      {% endif %}
+            <p>Nenhuma tarefa encontrada. Ajuste os filtros e tente novamente.</p>
+        {% endif %}
+        </div>
     </div>
-  </div>
+  </section>
 
     <div id="modal-editar-tarefa" class="modal">
       <div class="modal-content">
@@ -135,6 +140,7 @@
           </form>
     </div>
 </div>
+</main>
 <script>
     document.querySelectorAll(".btn-editar").forEach(button => {
         button.addEventListener("click", function () {
