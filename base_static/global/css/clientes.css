@@ -1,122 +1,19 @@
 .lista {
     display: flex;
-    align-items: center;
-    width: 100%;
+    flex: 1;
     justify-content: center;
-}
-
-table {
-    border-collapse: separate;
-    border-spacing: 0;
-    margin: 20px 0;
-    font-size: 18px;
-    width: 160vh;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.35) inset;
-    border: 2px solid var(--secondary-color);
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-tbody,
-th,
-td {
-    padding: 12px;
-    text-align: center;
-    font-family: var(--secondary-font);
-    font-size: 16px;
-    font-weight: 400;
-}
-
-td.sublist { /* Fundo mais claro para destacar */
-    border-top: 1px solid #ddd; /* Linha superior para separar do cliente */
-    padding: 16px; /* Maior espaçamento para a sublista */
-    font-size: 14px; /* Texto ligeiramente menor */
-    font-style: italic;
-    padding-left: 80px 0;
-    width: 100%; /* Estilo diferente para diferenciar */
-}
-
-/* Estilo para a lista de tarefas */
-td.sublist ul {
-    list-style-type: none; 
-    padding-left: 20px; /* Espaçamento interno para os itens */
-    margin: 8px 0; 
-}
-
-/* Estilo para os itens da lista de tarefas */
-td.sublist ul li {
-    margin-bottom: 6px; /* Espaçamento entre itens */
-    color: #111; /* Cor de texto */
-}
-
-/* Caso não existam tarefas */
-td.sublist p {
-    font-size: 14px;
-    color: #888; /* Cor cinza para o texto "Sem tarefas" */
-    margin: 0; /* Remove margem externa */
-}
-
-th {
-    background-color: var(--secondary-color);
-    color: aliceblue;
-    font-family: var(--primary-font);
-    font-size: medium;
-    text-align: center;
-    width: 18%;
-}
-
-th,
-a{
-    text-align: center;
-}
-
-th,
-a, i {
-    transition: 0.3s ease;
-}
-
-th,
-a, i:hover {
-    transform: scale(1.2);
-}
-
-tr:nth-child(even) {
-    background-color: var(--primary-color);
-}
-
-tr:nth-child(odd) {
-    background-color: var(--color-alt-list);
-}
-
-tfoot .tfoot-cell {
-    text-align: center;
-    padding: 10px;
-    background-color: var(--primary-color)
+    width: 100%;
+    padding: 80px;
 }
 
 .pagination {
-    display: inline-flex;
-    background-color: var(--color-alt-list);
-    border-radius: 10px;
+    display: flex;
+    justify-content: center;
     padding: 5px;
-    
 }
 
 .pagination a {
     text-decoration: none;
     font-size: 16px;
     color: var(--secondary-color);
-    font-family: var(--secondary-font);
-    margin: 0 5px; /* Ajuste o espaçamento entre os links conforme necessário */
 }
-
-/* 
-table .pagination a.active {
-    background-color: #4CAF50;
-    color: white;
-    border: 1px solid #4CAF50;
-} */
-/* 
-table .pagination a:hover:not(.active) {
-    background-color: #ddd;
-} */

@@ -92,7 +92,7 @@
 /* Estiliza o botão de abrir o modal */
 .open-modal-btn {
     background-color: var(--primary-color);
-    color: white;
+    color: black;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;

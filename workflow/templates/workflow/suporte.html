@@ -1,168 +1,379 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-  <button class="open-modal-btn">Cadastrar Suporte</button>
+  <main>
+    <section>
+      <button type="button" class="open-modal-btn" data-bs-toggle="modal" data-bs-target="#filterModal">Cadastrar Suporte</button>
 
-  <!-- Modal -->
-  <div id="filterModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <span class="close-modal" style="cursor: pointer; position: absolute; top: 10px; right: 10px;">&times;</span> <!-- Botão de fechar -->
-      <div class="tela-form">
-        <div class="title-form">
-          <h1>Cadastro de Suporte</h1>
-        </div>
-        <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          
-          <div class="form">
-            {% for field in form %}
-              <div class="form-label">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {{ field.errors }}
-                {% if field.help_text %}
-                  <p class="help">{{ field.help_text }}</p>
-                {% endif %}
-              </div>
-            {% endfor %}
-          </div>
-          
-          <div class="btn">
-            <button class="btn-form" type="submit">SALVAR</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Tabela de Suportes -->
-  <div class="lista">
-    <table>
-      <thead>
-        <tr>
-          <th>
-            Cliente
-            <a href="?sort=cliente&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-            </a>
-          </th>
-          <th>
-            Descrição
-            <a href="?sort=descricao&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-            </a>
-          </th>
-          <th>
-            V/H
-            <a href="?sort=valor_hora&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-            </a>
-          </th>
-          <th>
-            Data
-            <a href="?sort=data_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-            </a>
-          </th>
-          <th>
-            H. Ini
-            <a href="?sort=hora_inicio&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-            </a>
-          </th>   
-          <th>
-            H. Fim
-            <a href="?sort=hora_fim&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-            </a>
-          </th>
-          <th>
-            Tempo Total
-            <a href="?sort=tempo_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-            </a>
-          </th>
-          <th>
-            R$
-            <a href="?sort=valor_total&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-              <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-            </a>
-          </th>
-        </tr>
-      </thead>
-      
-      <tbody>
-        {% for suporte in page_obj %}
-          <tr>
-            <td>{{ suporte.cliente.nome }}</td>
-            <td>{{ suporte.descricao }}</td>
-            <td>R${{ suporte.valor_hora|floatformat:2 }}</td> <!-- Formatação de moeda -->
-            <td>{{ suporte.data_suporte|date:"d/m" }}</td>
-            <td>{{ suporte.hora_inicio }}</td>
-            <td>{{ suporte.hora_fim }}</td>
-            <td>{{ suporte.tempo_suporte|floatformat:2 }}</td>
-            <td>R${{ suporte.valor_total|floatformat:2 }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="8" class="tfoot-cell">
-            <div class="pagination">
-              <span class="step-links">
-                {% if page_obj.has_previous %}
-                  <a href="?page=1">
-                    <i class="fa-solid fa-angles-left"></i>
-                  </a>
-                  <a href="?page={{ page_obj.previous_page_number }}">
-                    <i class="fa-solid fa-angle-left"></i>
-                  </a>
-                {% endif %}
-                
-                <span class="current">
-                  Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-                </span>
-                
-                {% if page_obj.has_next %}
-                  <a href="?page={{ page_obj.next_page_number }}">
-                    <i class="fa-solid fa-angle-right"></i>
-                  </a>
-                  <a href="?page={{ page_obj.paginator.num_pages }}">
-                    <i class="fa-solid fa-angles-right"></i>
-                  </a>
-                {% endif %}
-              </span>
+      <!-- Modal Bootstrap -->
+      <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="filterModalLabel">Cadastro de Suporte</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
+            <div class="modal-body">
+              <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                  {% for field in form %}
+                    <div class="form-label">
+                      <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                      {{ field }}
+                      {{ field.errors }}
+                      {% if field.help_text %}
+                        <p class="form-text">{{ field.help_text }}</p>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="open-modal-btn">Salvar</button>
+                  <button type="button" class="open-modal-btn" data-bs-dismiss="modal">Fechar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Tabela -->
+    <section>
+      <div class="lista" style="padding-top: 0;">
+        <table class="table table-striped table-hover table-bordered">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">
+                Cliente
+                <a href="?sort=cliente&order={% if order == 'asc' %}
+                    
+                    
+                    desc
 
+
+                  {% else %}
+                    
+                    
+                    asc
+
+
+                  {% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}
+                      
+                      
+                      fa-arrow-up
+
+
+                    {% else %}
+                      
+                      
+                      fa-arrow-down
+
+
+                    {% endif %}"
+                    style="margin-left: 5px;">
+
+                  </i>
+                </a>
+              </th>
+              <th scope="col">
+                Descrição
+                <a href="?sort=descricao&order={% if order == 'asc' %}
+                    
+                    
+                    desc
+
+
+                  {% else %}
+                    
+                    
+                    asc
+
+
+                  {% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}
+                      
+                      
+                      fa-arrow-up
+
+
+                    {% else %}
+                      
+                      
+                      fa-arrow-down
+
+
+                    {% endif %}"
+                    style="margin-left: 5px;">
+
+                  </i>
+                </a>
+              </th>
+              <th scope="col">
+                V/H
+                <a href="?sort=valor_hora&order={% if order == 'asc' %}
+                    
+                    
+                    desc
+
+
+                  {% else %}
+                    
+                    
+                    asc
+
+
+                  {% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}
+                      
+                      
+                      fa-arrow-up
+
+
+                    {% else %}
+                      
+                      
+                      fa-arrow-down
+
+
+                    {% endif %}"
+                    style="margin-left: 5px;">
+
+                  </i>
+                </a>
+              </th>
+              <th scope="col">
+                Data
+                <a href="?sort=data_suporte&order={% if order == 'asc' %}
+                    
+                    
+                    desc
+
+
+                  {% else %}
+                    
+                    
+                    asc
+
+
+                  {% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}
+                      
+                      
+                      fa-arrow-up
+
+
+                    {% else %}
+                      
+                      
+                      fa-arrow-down
+
+
+                    {% endif %}"
+                    style="margin-left: 5px;">
+
+                  </i>
+                </a>
+              </th>
+              <th scope="col">
+                H. Ini
+                <a href="?sort=hora_inicio&order={% if order == 'asc' %}
+                    
+                    
+                    desc
+
+
+                  {% else %}
+                    
+                    
+                    asc
+
+
+                  {% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}
+                      
+                      
+                      fa-arrow-up
+
+
+                    {% else %}
+                      
+                      
+                      fa-arrow-down
+
+
+                    {% endif %}"
+                    style="margin-left: 5px;">
+
+                  </i>
+                </a>
+              </th>
+              <th scope="col">
+                H. Fim
+                <a href="?sort=hora_fim&order={% if order == 'asc' %}
+                    
+                    
+                    desc
+
+
+                  {% else %}
+                    
+                    
+                    asc
+
+
+                  {% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}
+                      
+                      
+                      fa-arrow-up
+
+
+                    {% else %}
+                      
+                      
+                      fa-arrow-down
+
+
+                    {% endif %}"
+                    style="margin-left: 5px;">
+
+                  </i>
+                </a>
+              </th>
+              <th scope="col">
+                Tempo Total
+                <a href="?sort=tempo_suporte&order={% if order == 'asc' %}
+                    
+                    
+                    desc
+
+
+                  {% else %}
+                    
+                    
+                    asc
+
+
+                  {% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}
+                      
+                      
+                      fa-arrow-up
+
+
+                    {% else %}
+                      
+                      
+                      fa-arrow-down
+
+
+                    {% endif %}"
+                    style="margin-left: 5px;">
+
+                  </i>
+                </a>
+              </th>
+              <th scope="col">
+                R$
+                <a href="?sort=valor_total&order={% if order == 'asc' %}
+                    
+                    
+                    desc
+
+
+                  {% else %}
+                    
+                    
+                    asc
+
+
+                  {% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}
+                      
+                      
+                      fa-arrow-up
+
+
+                    {% else %}
+                      
+                      
+                      fa-arrow-down
+
+
+                    {% endif %}"
+                    style="margin-left: 5px;">
+
+                  </i>
+                </a>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for suporte in page_obj %}
+              <tr>
+                <td>{{ suporte.cliente.nome }}</td>
+                <td>{{ suporte.descricao }}</td>
+                <td>R${{ suporte.valor_hora|floatformat:2 }}</td>
+                <td>{{ suporte.data_suporte|date:'d/m' }}</td>
+                <td>{{ suporte.hora_inicio }}</td>
+                <td>{{ suporte.hora_fim }}</td>
+                <td>{{ suporte.tempo_suporte|floatformat:2 }}</td>
+                <td>R${{ suporte.valor_total|floatformat:2 }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="8" class="tfoot-cell">
+                <div class="pagination">
+                  <span class="step-links">
+                    {% if page_obj.has_previous %}
+                      <a href="?page=1"><i class="fa-solid fa-angles-left"></i></a>
+                      <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-angle-left"></i></a>
+                    {% endif %}
+
+                    <span class="current">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+                    {% if page_obj.has_next %}
+                      <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-angle-right"></i></a>
+                      <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-angles-right"></i></a>
+                    {% endif %}
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+  </main>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('DOMContentLoaded', function () {
       // Pega os elementos do modal
-      var modal = document.getElementById("filterModal");
-      var openBtn = document.querySelector(".open-modal-btn");
-      var closeBtn = document.querySelector(".close-modal");
-
+      var modal = document.getElementById('filterModal')
+      var openBtn = document.querySelector('.open-modal-btn')
+      var closeBtn = document.querySelector('.close-modal')
+    
       // Quando o botão for clicado, mostra o modal
-      openBtn.addEventListener("click", function () {
-          modal.style.display = "flex";
-      });
-
+      openBtn.addEventListener('click', function () {
+        modal.style.display = 'flex'
+      })
+    
       // Quando clicar no botão de fechar, esconde o modal
-      closeBtn.addEventListener("click", function () {
-          modal.style.display = "none";
-      });
-
+      closeBtn.addEventListener('click', function () {
+        modal.style.display = 'none'
+      })
+    
       // Fecha o modal se clicar fora dele
-      window.addEventListener("click", function (event) {
-          if (event.target === modal) {
-              modal.style.display = "none";
-          }
-      });
-    });
+      window.addEventListener('click', function (event) {
+        if (event.target === modal) {
+          modal.style.display = 'none'
+        }
+      })
+    })
   </script>
-
 {% endblock %}

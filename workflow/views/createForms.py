@@ -227,6 +227,7 @@ def deleteTipoServico(request, servico_id):
 
 
 def definir_suporte(request):
+    
     title = 'Cadastro de Suporte'
     
     # Obtém o parâmetro 'sort' da URL (caso não exista, usa 'id' como padrão)
@@ -249,7 +250,7 @@ def definir_suporte(request):
         form = SuporteForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('workflow:support_list')  # Redireciona para a lista de suportes após sucesso
+            return redirect('workflow:suporte')
     else:
         form = SuporteForm()
     

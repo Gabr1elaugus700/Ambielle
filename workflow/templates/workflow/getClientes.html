@@ -2,82 +2,69 @@
 
 {% block content %}
 
-
+<section>
   <div class="lista">
-    <table>
-      <thead>
+    <table class="table table-striped table-hover table-bordered">
+      <thead class="table-dark">
         <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Projetos</th>
-          <th>Contato</th>
-          <th>Email</th>
-          <th>#</th>
+          <th scope="col">ID</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Projetos</th>
+          <th scope="col">Contato</th>
+          <th scope="col">Email</th>
+          <th scope="col">Ações</th>
         </tr>
       </thead>
+      <tbody>
         {% for cliente in page_obj %}
-          <tr>
-            <td style="text-align: center;">{{ cliente.id }}</td>
-            <td>{{ cliente.nome }}</td>
-            <td style="text-align: center;">3</td>
-            <td>{{ cliente.contato_principal }}</td>
-            <td>{{ cliente.email }}</td>
-            <td style="text-align: center; vertical-align: middle;">
-              <a href="{% url "workflow:deleteCliente" cliente.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-              <a href="{% url "workflow:updateCliente" cliente.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-            </td>
-          </tr>
-          {% comment %} <tr>
-            <td style="text-align: center;" class="sublist" colspan="6">
-              <strong>Tarefas:</strong>
-              {% if cliente.tarefas_em_aberto %}
-                <ul>
-                  {% for tarefa in cliente.tarefas_em_aberto %}
-                    <li>
-                      {{ tarefa.tipo_servico }} - <em>{{ tarefa.prazo_final|date:"d/m/Y" }}</em>
-                    </li>
-                  {% endfor %}
-                </ul>
-              {% else %}
-                <p>Sem tarefas.</p>
-              {% endif %}
-            </td>
-          </tr> {% endcomment %}
+        <tr>
+          <td>{{ cliente.id }}</td>
+          <td>{{ cliente.nome }}</td>
+          <td style="text-align: center;">3</td>  <!-- Ajustar valor real depois -->
+          <td>{{ cliente.contato_principal }}</td>
+          <td>{{ cliente.email }}</td>
+          <td class="text-center">
+            <a href="{% url 'workflow:deleteCliente' cliente.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');">
+              <i class="fa-regular fa-trash-can text-danger"></i>
+            </a>
+            &nbsp;
+            <a href="{% url 'workflow:updateCliente' cliente.id %}">
+              <i class="fa-regular fa-pen-to-square text-primary"></i>
+            </a>
+          </td>
+        </tr>
         {% endfor %}
-        
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="6" class="tfoot-cell">
+          <td colspan="6" class="tfoot-cell text-center">
             <div class="pagination">
-              <!-- Botões de navegação com ícones -->
-              <span class="step-links">
-                {% if page_obj.has_previous %}
-                  <a href="?page=1">
-                    <i class="fa-solid fa-angles-left"></i> <!-- Ícone para primeira página -->
-                  </a>z
-                  <a href="?page={{ page_obj.previous_page_number }}">
-                    <i class="fa-solid fa-angle-left"></i> <!-- Ícone para página anterior -->
-                  </a>
-                {% endif %}
+              {% if page_obj.has_previous %}
+              <a href="?page=1">
+                <i class="fa-solid fa-angles-left"></i>
+              </a>
+              <a href="?page={{ page_obj.previous_page_number }}">
+                <i class="fa-solid fa-angle-left"></i>
+              </a>
+              {% endif %}
 
-                <span class="current">
-                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-                </span>
-
-                {% if page_obj.has_next %}
-                  <a href="?page={{ page_obj.next_page_number }}">
-                    <i class="fa-solid fa-angle-right"></i> <!-- Ícone para próxima página -->
-                  </a>
-                  <a href="?page={{ page_obj.paginator.num_pages }}">
-                    <i class="fa-solid fa-angles-right"></i> <!-- Ícone para última página -->
-                  </a>
-                {% endif %}
+              <span class="current">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
               </span>
+
+              {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">
+                <i class="fa-solid fa-angle-right"></i>
+              </a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">
+                <i class="fa-solid fa-angles-right"></i>
+              </a>
+              {% endif %}
             </div>
           </td>
         </tr>
       </tfoot>
     </table>
   </div>
+</section>
 {% endblock %}
