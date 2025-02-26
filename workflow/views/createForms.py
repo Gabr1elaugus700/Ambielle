@@ -26,23 +26,45 @@ def createCliente(request):
 
     return render(request, 'workflow/createClientes.html', {'form': form, 'form_action': form_action})
 
-@login_required(login_url='workflow:login')
+@login_required(login_url='workflow:login')   
 def updateCliente(request, cliente_id):
-    cliente = get_object_or_404(Cliente, pk=cliente_id)
-    form = CreateCliente(request.POST or None, instance=cliente)
-    form_action = reverse('workflow:updateCliente', args=(cliente_id,))  # ✅ Define corretamente para update
-
+    cliente = get_object_or_404(
+        Cliente, pk=cliente_id
+    )
+    form_action = reverse('workflow:updateCliente', args=(cliente_id,))
+    
     if request.method == 'POST':
+        form = CreateCliente(request.POST, instance=cliente)
+
         if form.is_valid():
-            form.save()
-            return JsonResponse({'message': 'success'})
+            cliente = form.save()
+            messages.success(request, 'Cliente Cadastrado com Sucesso!')
+            return redirect('workflow:updateCliente', cliente_id=cliente.pk)
+        
+        context ={
+            'form': form,
+            'form_action': form_action,
+        }
+        return render(
+            request,
+            'workflow/createClientes.html',
+            context,
+        )
+    
+    else:
+        form = CreateCliente(instance=cliente)
 
-        return JsonResponse({
-            'message': 'error',
-            'html': render_to_string('workflow/createClientes.html', {'form': form, 'form_action': form_action})
-        })
+        context = {
+            'form': form,
+            'form_action': form_action,
+        }
 
-    return render(request, 'workflow/createClientes.html', {'form': form, 'form_action': form_action})
+    return render(
+        request, 
+        'workflow/createClientes.html',
+        context,
+    )  
+
 
 @login_required(login_url='workflow:login')      
 def deleteClientes(request, cliente_id):
@@ -90,51 +112,35 @@ def createTarefa(request):
             context,
         )
 
-@login_required(login_url='workflow:login')   
+@login_required(login_url='workflow:login')
 def createTipoServico(request):
+    form = CreateServico(request.POST or None)
+
     if request.method == 'POST':
-
-        title = 'Cadastro de tipos de Serviços'
-        form = CreateServico(request.POST)
-
-        context ={
-            'title': title,
-            'form': form,
-        }
-
         if form.is_valid():
             form.save()
             messages.success(request, 'Serviço Cadastrado com Sucesso!')
-            return redirect('workflow:tipoServico')
+            return JsonResponse({'message': 'success'})  # ✅ Retorno para AJAX
 
-        return render(
-            request,
-            'workflow/createServico.html',
-            context,
-        )
-    
-    else:
-        title = 'Cadastro de tipos de Serviço'
-        
-        
-        tipos_ser = TipoServico.objects.all()
-        paginator = Paginator(tipos_ser, 15)
-        
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-    
-        
-        context = {
-            'title': title,
-            'form': CreateServico,
-            'page_obj': page_obj
-        }
+        return JsonResponse({
+            'message': 'error',
+            'html': render_to_string('workflow/createServico.html', {'form': form, 'form_action': form_action})
+        })
 
-        return render(
-            request, 
-            'workflow/tipoServico.html',
-            context,
-        )
+    # Se for GET, renderiza normalmente a página com a lista de serviços
+    title = 'Cadastro de tipos de Serviço'
+    tipos_ser = TipoServico.objects.all()
+    paginator = Paginator(tipos_ser, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'title': title,
+        'form': form,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'workflow/tipoServico.html', context)
 
 
 def updateTipoServico(request, servico_id=None):

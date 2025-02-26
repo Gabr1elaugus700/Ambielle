@@ -1,92 +1,127 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
+  <main>
+    <section>
+      <button type="button" class="open-modal-btn" data-url="{% url 'workflow:tipoServico' %}">Criar Tipo de Serviço</button>
 
-<div class="containerForm">
-    <div class="tela-form">
-      <div class="title-form">
-        <h1>Cadastro de Tipos de Serviço</h1>
-      </div>
-      <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-
-          <div class="form">
-              {% for field in form %}
-                <div class="form-label">
-                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {{ field.errors }}
-                    {% if field.help_text %}
-                      <p class="help">{{ field.help_text }}</p>
-                    {% endif %}
-                </div>
-              {% endfor %}
-          </div>
-          <div class="btn">
-            <button class="btn-form" type="submit">SALVAR</button>
+      <!-- Modal Bootstrap -->
+      <div class="modal fade" id="tipoServicoModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content" style="padding: 0px;">
+            <div class="modal-body" id="modal-form-content" style="padding: 0px;">
+              <!-- O formulário será carregado aqui via AJAX -->
+            </div>
           </div>
         </div>
-      </form>
-    </div>
-
-    <div class="lista">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Orgão</th>
-            <th>#</th>
-          </tr>
-        </thead>
-          {% for servico in page_obj %}
+      </div>
+    </section>
+    <section>
+      <div class="lista" style="padding-top: 0px;">
+        <table class="table table-striped table-hover table-bordered">
+          <thead class="table-dark">
             <tr>
-              <td style="text-align: center;">{{ servico.id }}</td>
-              <td>{{ servico.nome }}</td>
-              <td style="text-align: center;">{{ servico.orgao }}</td>
-              <td style="text-align: center; vertical-align: middle;">
-                <a href="{% url "workflow:deleteTipoServico" servico.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
-                <a href="{% url "workflow:updateTipoServico" servico.id %}"><i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+              <th>Nome</th>
+              <th>Área Responsável</th>
+              <th>#</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for servico in page_obj %}
+              <tr>
+                <td>{{ servico.nome }}</td>
+                <!-- Ajustar valor real depois -->
+                <td>{{ servico.orgao }}</td>
+                <td style="text-align: center; vertical-align: middle;">
+                  <a href="{% url 'workflow:deleteTipoServico' servico.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+                  <a href="#" class="edit-servico" data-url="{% url 'workflow:updateTipoServico' servico.id %}">
+                    <i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; color: var(--secondary-color);"></i>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="8" class="tfoot-cell">
+                <div class="pagination">
+                  <span class="step-links">
+                    {% if page_obj.has_previous %}
+                      <a href="?page=1"><i class="fa-solid fa-angles-left"></i></a>
+                      <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-angle-left"></i></a>
+                    {% endif %}
+
+                    <span class="current">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+                    {% if page_obj.has_next %}
+                      <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-angle-right"></i></a>
+                      <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-angles-right"></i></a>
+                    {% endif %}
+                  </span>
+                </div>
               </td>
             </tr>
-          {% endfor %}
-          
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="6" class="tfoot-cell">
-              <div class="pagination">
-                <!-- Botões de navegação com ícones -->
-                <span class="step-links">
-                  {% if page_obj.has_previous %}
-                    <a href="?page=1">
-                      <i class="fa-solid fa-angles-left"></i> <!-- Ícone para primeira página -->
-                    </a>z
-                    <a href="?page={{ page_obj.previous_page_number }}">
-                      <i class="fa-solid fa-angle-left"></i> <!-- Ícone para página anterior -->
-                    </a>
-                  {% endif %}
-  
-                  <span class="current">
-                      Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-                  </span>
-  
-                  {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">
-                      <i class="fa-solid fa-angle-right"></i> <!-- Ícone para próxima página -->
-                    </a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">
-                      <i class="fa-solid fa-angles-right"></i> <!-- Ícone para última página -->
-                    </a>
-                  {% endif %}
-                </span>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-
-
-</div>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = new bootstrap.Modal(document.getElementById('tipoServicoModal'))
+      const modalContent = document.getElementById('modal-form-content')
+    
+      function carregarFormulario(url) {
+        fetch(url)
+          .then((response) => response.text())
+          .then((html) => {
+            modalContent.innerHTML = html
+            modal.show()
+            ativarEnvioFormulario()
+          })
+          .catch((error) => console.error('Erro ao carregar o formulário:', error))
+      }
+    
+      function ativarEnvioFormulario() {
+        const form = modalContent.querySelector('form')
+        if (form) {
+          form.addEventListener('submit', function (e) {
+            e.preventDefault()
+            const formData = new FormData(this)
+    
+            fetch(this.action, {
+              method: 'POST',
+              body: formData
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.message === 'success') {
+                  modal.hide()
+                  location.reload()
+                } else {
+                  modalContent.innerHTML = data.html
+                  ativarEnvioFormulario()
+                }
+              })
+              .catch((error) => console.error('Erro ao enviar o formulário:', error))
+          })
+        }
+      }
+    
+      // Botão para abrir modal de criação
+      document.querySelector('.open-modal-btn').addEventListener('click', function (event) {
+        event.preventDefault()
+        carregarFormulario(this.getAttribute('data-url'))
+      })
+    
+      // Botão para abrir modal de edição
+      document.addEventListener('click', function (event) {
+        if (event.target.closest('.edit-servico')) {
+          event.preventDefault()
+          const url = event.target.closest('.edit-servico').getAttribute('data-url')
+          carregarFormulario(url)
+        }
+      })
+    })
+  </script>
 {% endblock %}

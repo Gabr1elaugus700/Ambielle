@@ -1,0 +1,28 @@
+<div class="containerForm">
+  <div class="tela-form">
+    <div class="title-form">
+      <h1>Cadastro de Tipos de Serviço</h1>
+    </div>
+    <form method="post" action="{{ form_action }}">
+      {% csrf_token %}
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {% if form.instance.pk %}
+            Editar Tipo de Serviço
+          {% else %}
+            Cadastrar Tipo de Serviço
+          {% endif %}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">{{ form.as_p }}</div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
