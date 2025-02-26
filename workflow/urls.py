@@ -9,6 +9,7 @@ urlpatterns  = [
     path('ambielle/listaClientes/', views.getCliente, name='getCliente'),
     path('ambielle/tarefas/', views.get_tarefas_filtradas, name='get_tarefas_filtradas'),
     path('ambielle/relatorios/', views.getRelatorios, name='relatorios'),
+    path('ambielle/listaTipoServico/', views.listaTipoServico, name='listaTipoServico'),
     # path('ambielle/tarefas/', views.getTarefas, name='getTarefas'),
     #Create
     path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),

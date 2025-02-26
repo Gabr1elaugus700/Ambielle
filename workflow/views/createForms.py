@@ -112,61 +112,52 @@ def createTarefa(request):
             context,
         )
 
+
+
 @login_required(login_url='workflow:login')
 def createTipoServico(request):
     form = CreateServico(request.POST or None)
+    form_action = reverse('workflow:tipoServico')  # Define o action correto
 
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            messages.success(request, 'Serviço Cadastrado com Sucesso!')
-            return JsonResponse({'message': 'success'})  # ✅ Retorno para AJAX
+            messages.success(request, 'Serviço cadastrado com sucesso!')
+            return JsonResponse({'message': 'success'})
 
         return JsonResponse({
             'message': 'error',
-            'html': render_to_string('workflow/createServico.html', {'form': form, 'form_action': form_action})
+            'html': render_to_string('workflow/tipoServicoForm.html', {'form': form, 'form_action': form_action})
         })
 
-    # Se for GET, renderiza normalmente a página com a lista de serviços
-    title = 'Cadastro de tipos de Serviço'
-    tipos_ser = TipoServico.objects.all()
-    paginator = Paginator(tipos_ser, 15)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-        'title': title,
-        'form': form,
-        'page_obj': page_obj,
-    }
-
-    return render(request, 'workflow/tipoServico.html', context)
+    return render(request, 'workflow/tipoServicoForm.html', {'form': form, 'form_action': form_action})
 
 
-def updateTipoServico(request, servico_id=None):
-    servico = None
-    if servico_id:
-        servico = get_object_or_404(TipoServico, pk=servico_id)
+@login_required(login_url='workflow:login')
+def updateTipoServico(request, servico_id):
+    servico = get_object_or_404(TipoServico, pk=servico_id)
+    form_action = reverse('workflow:updateTipoServico', args=[servico_id])
 
     if request.method == 'POST':
         form = CreateServico(request.POST, instance=servico)
+        
         if form.is_valid():
             form.save()
-            messages.success(request, 'Serviço salvo com sucesso!')
-            return redirect('workflow:tipoServico')  # Redirecione para a lista após salvar
+            messages.success(request, 'Serviço atualizado com sucesso!')
+            return JsonResponse({'message': 'success'})
+
+        return JsonResponse({
+            'message': 'error',
+            'html': render_to_string('workflow/tipoServicoForm.html', {'form': form, 'form_action': form_action})
+        })
+
     else:
         form = CreateServico(instance=servico)
 
-    form_action = reverse('workflow:updateTipoServico', args=(servico_id,)) if servico else reverse('workflow:tipoServico')
-
     return render(
         request,
-        'workflow/tipoServico.html',
-        {
-            'form': form,
-            'form_action': form_action,
-            'servico': servico,
-        },
+        'workflow/tipoServicoForm.html',
+        {'form': form, 'form_action': form_action}
     )
 
 # def deleteTipoServico(request, servico_id):

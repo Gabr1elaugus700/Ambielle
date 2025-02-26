@@ -274,3 +274,27 @@ def getRelatorios(request):
         'workflow/relatorios.html',
         context,
     )
+
+@login_required(login_url='workflow:login')
+def listaTipoServico(request):
+    title = 'Lista de Tipos de Serviço'
+
+    # Buscar todos os serviços
+    tipos_servico = TipoServico.objects.all()
+
+    # Paginação: 15 itens por página
+    paginator = Paginator(tipos_servico, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Criar um formulário vazio para uso no modal
+    # form = CreateServico()
+
+    context = {
+        'title': title,
+        'page_obj': page_obj # Lista paginada dos serviços
+        # 'form': form,  # Formulário para o modal
+        # 'form_action': reverse('workflow:createTipoServico')  # URL do cadastro
+    }
+
+    return render(request, 'workflow/tipoServico.html', context)
