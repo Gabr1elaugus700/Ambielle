@@ -92,20 +92,7 @@ def getCliente(request):
         context,
     )
 
-@login_required(login_url='workflow:login')
-def alterar_status_tarefa(request, tarefa_id):
-    if request.method == "POST":
-        tarefa = get_object_or_404(Tarefa, id=tarefa_id)
-        novo_status = request.POST.get("status")
 
-        if novo_status in dict(Tarefa.STATUS_CHOICES):
-            tarefa.status = novo_status
-            tarefa.save()
-            return JsonResponse({"success": True, "novo_status": tarefa.get_status_display()})
-        else:
-            return JsonResponse({"success": False, "error": "Status inválido"}, status=400)
-
-    return JsonResponse({"success": False, "error": "Método não permitido"}, status=405)
 
 @login_required(login_url='workflow:login')
 def getTimeLine(request):

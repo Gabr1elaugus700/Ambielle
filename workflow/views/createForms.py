@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from workflow.models import *
 
 @login_required(login_url='workflow:login')
 def createCliente(request):
@@ -111,7 +112,25 @@ def createTarefa(request):
             'workflow/createServico.html',
             context,
         )
+        
+        
+@login_required(login_url='workflow:login')
+def carregar_formulario_edicao(request, tarefa_id):
+    tarefa = get_object_or_404(Tarefa, id=tarefa_id)
+    form = CreateTarefaForm(instance=tarefa)  # Preenche o formulário com os dados da tarefa
+    return render(request, 'workflow/createServico.html', {'form': form, 'tarefa': tarefa})
 
+@login_required(login_url='workflow:login')
+def editar_tarefa(request, tarefa_id):
+    if request.method == 'POST':
+        tarefa = get_object_or_404(Tarefa, id=tarefa_id)
+        form = CreateTarefaForm(request.POST, instance=tarefa)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': form.errors})
+    return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
 
 
 @login_required(login_url='workflow:login')
@@ -131,7 +150,6 @@ def createTipoServico(request):
         })
 
     return render(request, 'workflow/tipoServicoForm.html', {'form': form, 'form_action': form_action})
-
 
 @login_required(login_url='workflow:login')
 def updateTipoServico(request, servico_id):

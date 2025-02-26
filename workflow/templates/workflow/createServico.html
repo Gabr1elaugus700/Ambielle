@@ -1,34 +1,25 @@
-{% extends 'global/base.html' %}
-
-{% block content %}
-
 <div class="containerForm">
-    <div class="tela-form">
+  <div class="tela-form">
       <div class="title-form">
-        <h1>Formulário de Cadastro de Serviço</h1>
+          <h1>Formulário de Cadastro de Serviço</h1>
       </div>
-      <form action=" {% url 'workflow:createTarefa' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-
+      <form id="form-tarefa" action="{% url 'workflow:createTarefa' %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
           <div class="form">
               {% for field in form %}
-                <div class="form-label">
-                  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {{ field.errors }}
-                    {% if field.help_text %}
-                      <p class="help">{{ field.help_text }}</p>
-                    {% endif %}
-                </div>
+                  <div class="form-label">
+                      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                      {{ field }}
+                      {{ field.errors }}
+                      {% if field.help_text %}
+                          <p class="help">{{ field.help_text }}</p>
+                      {% endif %}
+                  </div>
               {% endfor %}
           </div>
           <div class="btn">
-            <button class="btn-form" type="submit">SALVAR</button>
+              <button class="btn-form" type="submit">SALVAR</button>
           </div>
-        </div>
       </form>
-    </div>
-
-
+  </div>
 </div>
-{% endblock %}
