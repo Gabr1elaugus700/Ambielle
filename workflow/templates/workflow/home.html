@@ -1,202 +1,321 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-<main>
+  <main>
+    <section>
+      <div class="saudacao-container">
+        <div class="saudacao">
+          <h1>Olá, <strong>{{ user.first_name }}</strong></h1>
+          <span>Veja o que temos à fazer:</span>
+        </div>
+        <div class="alertas">
+          <div class="cardHome" id="alertCard">
+            <h2>Alerta<span class="dot orange"></span></h2>
+            <div class="progress-info">
+              <span class="numberof">{{ clientes }}</span>
+            </div>
+          </div>
 
-  <section >
-    <div class="saudacao-container">
-      <div class="saudacao">
-        <h1>Olá, <strong>{{ user.first_name }}</strong></h1>
-        <span>Veja o que temos à fazer:</span>
-      </div>
-      <div class="alertas">
-        <div class="cardHome" id="alertCard">
-          <h2>Alerta<span class="dot orange"></span></h2>
-          <div class="progress-info">
-            <span class="numberof">{{ clientes }}</span>
+          <div id="popupLicencas">
+            <div id="popupContent">
+              <span id="fecharPopup">&times;</span>
+              <h3>Licenças para Vencer</h3>
+              <table id="tabelaLicencas">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Data de Vencimento</th>
+                    <th>Tipo</th>
+                    <th>Iniciado?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for licenca in licencas %}
+                    <tr>
+                      <td>{{ licenca.cliente.nome }}</td>
+                      <td>{{ licenca.data_vencimento }}</td>
+                      <td>{{ licenca.tipo_licenca }}</td>
+                      <td>
+                        {% if licenca.renovacao_iniciada %}
+                          ✅ Sim
+                        {% else %}
+                          ❌ Não
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="5">Nenhuma licença para vencer nos próximos 30 dias.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
+          <div class="cardHome">
+            <h2>Clientes Atendidos<span class="dot yellow"></span></h2>
+            <div class="progress-info">
+              <span class="numberof">{{ clientes }}</span>
+            </div>
+          </div>
+
+          <div class="cardHome">
+            <h2>Em Atendimento<span class="dot blue"></span></h2>
+            <div class="progress-info">
+              <span class="numberof">{{ tarefas_em_aberto }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="demand-container">
+        <div class="prox-demanda">
+          <div class="principal">
+            <h2>Próximas do Vencimento</h2>
+            {% comment %} <p>Próximos 20 dias</p> {% endcomment %}
+          </div>
+
+          <a href=" {% url 'workflow:get_tarefas_filtradas' %}">Ver todas demandas</a>
         </div>
 
-        <div id="popupLicencas">
-          <div id="popupContent">
-            <span id="fecharPopup">&times;</span>
-            <h3>Licenças para Vencer</h3>
-            <table id="tabelaLicencas">
-              <thead>
-                <tr>
-                  <th>Cliente</th>
-                  <th>Data de Vencimento</th>
-                  <th>Tipo</th>
-                  <th>Iniciado?</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for licenca in licencas %}
-                <tr>
-                  <td>{{ licenca.cliente.nome }}</td>
-                  <td>{{ licenca.data_vencimento }}</td>
-                  <td>{{ licenca.tipo_licenca }}</td>
-                  <td>
-                    {% if licenca.renovacao_iniciada %}
-                    ✅ Sim
-                    {% else %}
-                    ❌ Não
-                    {% endif %}
-                  </td>
-                </tr>
-                {% empty %}
-                <tr>
-                  <td colspan="5">Nenhuma licença para vencer nos próximos 30 dias.</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+        <div class="demand-cards-wrapper">
+          <div class="demand-cards-status">
+            <div class="status">
+              <h3>
+                Execução<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="8.5" fill="#32CD32" stroke="black" />
+                </svg>
+              </h3>
+            </div>
+            <div class="demand-card">
+              {% for demanda in demandas_execucao %}
+                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                  <p>
+                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                  </p>
+                </div>
+              {% empty %}
+                <p>Nenhuma demanda em Execução.</p>
+              {% endfor %}
+            </div>
           </div>
-        </div>
-        <div class="cardHome">
-          <h2>Clientes Atendidos<span class="dot yellow"></span></h2>
-          <div class="progress-info">
-            <span class="numberof">{{ clientes }}</span>
+
+          <!-- Aprovação -->
+          <div class="demand-cards-status">
+            <div class="status">
+              <h3>
+                Aprovação<svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+                  <circle cx="9" cy="9.04138" r="8.5" fill="#FF8C00" stroke="black" />
+                </svg>
+              </h3>
+            </div>
+            <div class="demand-card">
+              {% for demanda in demandas_aprovacao %}
+                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                  <p>
+                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                  </p>
+                </div>
+              {% empty %}
+                <p>Nenhuma demanda em Aprovação.</p>
+              {% endfor %}
+            </div>
           </div>
-        </div>
-        
-        <div class="cardHome">
-          <h2>Em Atendimento<span class="dot blue"></span></h2>
-          <div class="progress-info">
-            <span class="numberof">{{ tarefas_em_aberto }}</span>
+
+          <!-- Coleta -->
+          <div class="demand-cards-status">
+            <div class="status">
+              <h3>
+                Coleta<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="8.5" fill="#00BFFF" stroke="black" />
+                </svg>
+              </h3>
+            </div>
+            <div class="demand-card">
+              {% for demanda in demandas_coleta %}
+                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                  <p>
+                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                  </p>
+                </div>
+              {% empty %}
+                <p>Nenhuma demanda em Coleta.</p>
+              {% endfor %}
+            </div>
           </div>
-          
-      </div>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="demand-container">
-      <div class="prox-demanda">
-        <div class="principal">
-          <h2>Próximas do Vencimento</h2>
-          {% comment %} <p>Próximos 20 dias</p> {% endcomment %}
-        </div>
-        
-        <a href=" {% url 'workflow:get_tarefas_filtradas' %}">Ver todas demandas</a>
-      </div>
-      
-      <div class="demand-cards-wrapper">
-        <div class="demand-cards-status">
-          <div class="status">
-            <h3>
-              Execução<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <circle cx="9" cy="9" r="8.5" fill="#32CD32" stroke="black" />
-              </svg>
-            </h3>
-          </div>
-          <div class="demand-card">
-            {% for demanda in demandas_execucao %}
-            <p>
-              <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
-              <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
-            </p>
-            {% empty %}
-            <p>Nenhuma demanda em Execução.</p>
-            {% endfor %}
-          </div>
-        </div>
-        
-        <!-- Aprovação -->
-        <div class="demand-cards-status">
-          <div class="status">
-            <h3>
-              Aprovação<svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
-                <circle cx="9" cy="9.04138" r="8.5" fill="#FF8C00" stroke="black" />
-              </svg>
-            </h3>
-          </div>
-          <div class="demand-card">
-            {% for demanda in demandas_aprovacao %}
-            <p>
-              <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
-              <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
-            </p>
-            {% empty %}
-            <p>Nenhuma demanda em Aprovação.</p>
-            {% endfor %}
-          </div>
-        </div>
-        
-        <!-- Coleta -->
-        <div class="demand-cards-status">
-          <div class="status">
-            <h3>
-              Coleta<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <circle cx="9" cy="9" r="8.5" fill="#00BFFF" stroke="black" />
-              </svg>
-            </h3>
-          </div>
-          <div class="demand-card">
-            {% for demanda in demandas_coleta %}
-            <p>
-              <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
-              <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
-            </p>
-            {% empty %}
-            <p>Nenhuma demanda em Coleta.</p>
-            {% endfor %}
-          </div>
-        </div>
-        
-        <!-- Iniciado -->
-        <div class="demand-cards-status">
-          <div class="status">
-            <h3>
-              Iniciado<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <circle cx="9" cy="9" r="8.5" fill="#FFD700" stroke="black" />
-              </svg>
-            </h3>
-          </div>
-          <div class="demand-card">
-            {% for demanda in demandas_iniciado %}
-            <p>
-              <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} - <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
-            </p>
-            {% empty %}
-            <p>Nenhuma demanda Iniciada.</p>
-            {% endfor %}
+
+          <!-- Iniciado -->
+          <div class="demand-cards-status">
+            <div class="status">
+              <h3>
+                Iniciado<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="8.5" fill="#FFD700" stroke="black" />
+                </svg>
+              </h3>
+            </div>
+            <div class="demand-card">
+              {% for demanda in demandas_iniciado %}
+                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                  <p>
+                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                  </p>
+                </div>
+              {% empty %}
+                <p>Nenhuma demanda Iniciada.</p>
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+    <div class="modal fade" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="modalEditarTarefaLabel">Editar Tarefa</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <form id="form-editar-tarefa">
+                      {% csrf_token %}
+                      <input type="hidden" name="tarefa_id" id="tarefa-id">
+                      <div class="mb-3">
+                          <label for="status" class="form-label">Status</label>
+                          <select name="status" id="status" class="form-select">
+                              {% for key, value in status_choices %}
+                                  <option value="{{ key }}">{{ value }}</option>
+                              {% endfor %}
+                          </select>
+                      </div>
+                      <div class="mb-3">
+                          <label for="data" class="form-label">Nova Data</label>
+                          <input type="date" name="data" id="data" class="form-control">
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <!-- Botão de Excluir -->
+                  <button type="button" id="btn-excluir-tarefa" class="btn btn-danger">Excluir Tarefa</button>
+                  <!-- Botão de Fechar -->
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                  <!-- Botão de Salvar -->
+                  <button type="submit" form="form-editar-tarefa" class="btn btn-primary">Salvar</button>
+              </div>
+          </div>
+        </div>
+  </div>
+  </main>
   <script>
-    document.getElementById('alertCard').onclick = function () {
-      document.getElementById('popupLicencas').style.display = 'block'
-      
-      // Simulação de busca de licenças para vencer
-      fetch('/api/licencas-para-vencer') // Altere para o seu endpoint real
-      .then((response) => response.json())
-        .then((data) => {
-          let lista = document.getElementById('listaLicencas')
-          lista.innerHTML = '' // Limpa a lista antes de adicionar os novos itens
-    
-          data.licencas.forEach((licenca) => {
-            let item = document.createElement('div')
-            item.textContent = `Licença: ${licenca.nome} - Vence em: ${licenca.dataVencimento}`
-            lista.appendChild(item)
+    document.addEventListener('DOMContentLoaded', function () {
+      // Variáveis globais
+      let tarefaId;
+  
+      // Abrir modal de edição ao clicar na tarefa
+      document.querySelectorAll('.tarefa-clicavel').forEach((tarefa) => {
+          tarefa.addEventListener('click', function () {
+              tarefaId = this.getAttribute('data-id');
+              const statusAtual = this.getAttribute('data-status');
+              const prazoAtual = this.getAttribute('data-prazo');
+  
+              // Preenche o modal de edição
+              document.getElementById('tarefa-id').value = tarefaId;
+              document.getElementById('status').value = statusAtual;
+              document.getElementById('data').value = prazoAtual;
+  
+              // Abre o modal usando Bootstrap
+              const modalEditar = new bootstrap.Modal(document.getElementById('modal-editar-tarefa'));
+              modalEditar.show();
+          });
+      });
+  
+      // Enviar formulário de atualização
+      document.getElementById('form-editar-tarefa').addEventListener('submit', function (event) {
+          event.preventDefault();
+  
+          const formData = new FormData(this);
+  
+          fetch(`/tarefa/${tarefaId}/atualizar/`, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-CSRFToken': formData.get('csrfmiddlewaretoken') // Adiciona o token CSRF
+              }
           })
-        })
-        .catch((error) => console.error('Erro ao buscar licenças:', error))
-    }
-    
-    // Fechar popup
-    document.getElementById('fecharPopup').onclick = function () {
-      document.getElementById('popupLicencas').style.display = 'none'
-    }
-    
-    // Fechar ao clicar fora do conteúdo
-    window.onclick = function (event) {
-      if (event.target === document.getElementById('popupLicencas')) {
-        document.getElementById('popupLicencas').style.display = 'none'
+              .then((response) => response.json())
+              .then((data) => {
+                  if (data.success) {
+                      alert('Tarefa atualizada com sucesso!');
+                      location.reload(); // Recarrega a página para refletir as alterações
+                  } else {
+                      alert('Erro: ' + data.error);
+                  }
+              })
+              .catch((error) => console.error('Erro:', error));
+      });
+  
+      // Excluir tarefa
+      document.getElementById('btn-excluir-tarefa').addEventListener('click', function () {
+          if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+              fetch(`/tarefa/${tarefaId}/excluir/`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRFToken': '{{ csrf_token }}' // Adiciona o token CSRF
+                  }
+              })
+                  .then((response) => response.json())
+                  .then((data) => {
+                      if (data.success) {
+                          alert('Tarefa excluída com sucesso!');
+                          location.reload(); // Recarrega a página para refletir as alterações
+                      } else {
+                          alert('Erro: ' + data.error);
+                      }
+                  })
+                  .catch((error) => console.error('Erro:', error));
+          }
+      });
+  
+      // Popup de licenças
+      const popupLicencas = document.getElementById('popupLicencas');
+      const fecharPopup = document.getElementById('fecharPopup');
+  
+      if (popupLicencas && fecharPopup) {
+          document.getElementById('alertCard').onclick = function () {
+              popupLicencas.style.display = 'block';
+  
+              // Simulação de busca de licenças para vencer
+              fetch('/api/licencas-para-vencer') // Altere para o seu endpoint real
+                  .then((response) => response.json())
+                  .then((data) => {
+                      const lista = document.getElementById('listaLicencas');
+                      lista.innerHTML = ''; // Limpa a lista antes de adicionar os novos itens
+  
+                      data.licencas.forEach((licenca) => {
+                          const item = document.createElement('div');
+                          item.textContent = `Licença: ${licenca.nome} - Vence em: ${licenca.dataVencimento}`;
+                          lista.appendChild(item);
+                      });
+                  })
+                  .catch((error) => console.error('Erro ao buscar licenças:', error));
+          };
+  
+          // Fechar popup de licenças
+          fecharPopup.onclick = function () {
+              popupLicencas.style.display = 'none';
+          };
+  
+          // Fechar popup de licenças ao clicar fora dele
+          window.addEventListener('click', function (event) {
+              if (event.target === popupLicencas) {
+                  popupLicencas.style.display = 'none';
+              }
+          });
       }
-    }
+  });
   </script>
 {% endblock %}

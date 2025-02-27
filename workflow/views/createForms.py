@@ -132,6 +132,13 @@ def editar_tarefa(request, tarefa_id):
             return JsonResponse({'success': False, 'error': form.errors})
     return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
 
+@login_required(login_url='workflow:login')
+def excluir_tarefa(request, tarefa_id):
+    if request.method == 'POST':
+        tarefa = get_object_or_404(Tarefa, id=tarefa_id);
+        tarefa.delete();
+        return JsonResponse({'success': True});
+    return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405);
 
 @login_required(login_url='workflow:login')
 def createTipoServico(request):

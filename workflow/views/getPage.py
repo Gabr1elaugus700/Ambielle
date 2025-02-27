@@ -30,6 +30,7 @@ def index(request):
     clientes = Cliente.objects.count()
     # tarefas_em_aberto = Tarefa.objects.filter()
 
+    status_choices = Tarefa.STATUS_CHOICES
     hoje = timezone.now().date()
     data_limite = hoje + timedelta(days=450)
     
@@ -54,7 +55,8 @@ def index(request):
         'demandas_iniciado': demandas_iniciado,
         'clientes': clientes, 
         'tarefas_em_aberto': tarefas_em_aberto,
-        'licencas': licencas_proximas
+        'licencas': licencas_proximas,
+        'status_choices': status_choices
     }
 
     return render(

@@ -24,6 +24,7 @@ urlpatterns  = [
     path('tarefa/<int:tarefa_id>/editar/', views.editar_tarefa, name='editar_tarefa'),
     #Delete
     path('ambielle/<int:cliente_id>/delete/', views.deleteClientes, name='deleteCliente'),
+    path('ambielle/<int:tarefa_id>/delete/', views.excluir_tarefa, name='excluir_tarefa'),
     path('ambielle/tipoServico/<int:servico_id>/delete/', views.deleteTipoServico, name='deleteTipoServico'),
     
     #Relatórios
