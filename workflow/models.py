@@ -66,7 +66,18 @@ class Tarefa(models.Model):
     def __str__(self):
         return f"Tarefa {self.id} para {self.cliente.nome}"
 
+#Registro das alterações de datas.  
+class HistoricoStatusTarefa(models.Model):
+    tarefa = models.ForeignKey(Tarefa, on_delete=models.CASCADE, related_name="historico_status")
+    status = models.CharField(max_length=50, choices=Tarefa.STATUS_CHOICES)
+    data_mudanca = models.DateTimeField(default=timezone.now)
 
+    def __str__(self):
+        return f"Tarefa {self.tarefa.id} mudou para {self.status} em {self.data_mudanca}"
+
+    class Meta:
+        ordering = ['-data_mudanca']
+        
 # Modelo para Etapas das Tarefas
 class Etapa(models.Model):
     tarefa = models.ForeignKey(Tarefa, on_delete=models.CASCADE)

@@ -228,6 +228,10 @@ class CreateTarefaForm(forms.ModelForm):
     class Meta:
         model = Tarefa
         fields = ['cliente', 'tipo_servico', 'status', 'data_inicio', 'prazo_final', 'valor_total_servico', 'observacoes' ]
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Torna o campo "cliente" read-only
                 
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(

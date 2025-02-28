@@ -178,35 +178,57 @@
       <div class="modal-dialog">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title" id="modalEditarTarefaLabel">Editar Tarefa</h5>
+                  <h5 class="modal-title" id="modal-editar-tarefa">Editar Tarefa</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                    <form id="form-editar-tarefa">
+                  <form id="form-editar-tarefa" method="post">
                       {% csrf_token %}
                       <input type="hidden" name="tarefa_id" id="tarefa-id">
+                      <!-- Campo oculto para o cliente e tipo servico-->
+                      <input type="hidden" name="cliente" id="id_cliente">
+                      <input type="hidden" name="tipo_servico" id="id_tipo_servico">
+                      <!-- Exibe o nome do cliente como texto -->
                       <div class="mb-3">
-                          <label for="status" class="form-label">Status</label>
-                          <select name="status" id="status" class="form-select">
-                              {% for key, value in status_choices %}
+                          <label class="form-label">Cliente</label>
+                          <p id="cliente-nome"></p>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Serviço</label>
+                        <p id="tipo_servico_nome"></p>
+                      </div>
+                      <!-- Renderiza os outros campos do formulário -->
+                      <div class="mb-3">
+                          <label for="id_status" class="form-label">Status</label>
+                          <select name="status" id="id_status" class="form-select">
+                              {% for key, value in form.status.field.choices %}
                                   <option value="{{ key }}">{{ value }}</option>
                               {% endfor %}
                           </select>
                       </div>
                       <div class="mb-3">
-                          <label for="data" class="form-label">Nova Data {{ tarefa.id }}</label>
-                          <input type="date" name="data" id="data" class="form-control">
+                          <label for="id_data_inicio" class="form-label">Data de Início</label>
+                          <input type="date" name="data_inicio" id="id_data_inicio" class="form-control">
                       </div>
-                    </form>
+                      <div class="mb-3">
+                          <label for="id_prazo_final" class="form-label">Prazo Final</label>
+                          <input type="date" name="prazo_final" id="id_prazo_final" class="form-control">
+                      </div>
+                      <div class="mb-3">
+                          <label for="id_observacoes" class="form-label">Observações</label>
+                          <textarea name="observacoes" id="id_observacoes" class="form-control"></textarea>
+                      </div>
+                      <div class="mb-3">
+                          <label for="id_valor_total_servico" class="form-label">Valor Total</label>
+                          <input type="number" name="valor_total_servico" id="id_valor_total_servico" class="form-control">
+                      </div>
+                  </form>
               </div>
               <div class="modal-footer">
-                  <!-- Botão de Excluir (Ação via AJAX) -->
-                  <button type="button" id="btn-excluir-tarefa" class="btn btn-danger" data-tarefa-id="{{ tarefa.id }}">
+                  <button type="button" id="btn-excluir-tarefa" class="btn btn-danger" data-tarefa-id="">
                       Excluir Tarefa
                   </button>
-                  <!-- Botão de Fechar -->
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                  <!-- Botão de Salvar -->
                   <button type="submit" form="form-editar-tarefa" class="btn btn-primary">Salvar</button>
               </div>
           </div>
@@ -219,27 +241,88 @@
       document.addEventListener("click", function (event) {
         let tarefa = event.target.closest(".tarefa-clicavel"); // Captura a tarefa clicada
         if (!tarefa) return;
-    
+
         let tarefaId = tarefa.getAttribute("data-id"); // Pega o ID da tarefa
         let tarefaStatus = tarefa.getAttribute("data-status"); // Opcional: pega o status também
-    
+
         // Adiciona o ID no campo hidden e no botão de excluir
         document.getElementById("tarefa-id").value = tarefaId;
         document.getElementById("btn-excluir-tarefa").setAttribute("data-tarefa-id", tarefaId);
-    
+
+        // Faz uma requisição AJAX para buscar os dados da tarefa
+        fetch(`/api/tarefas/${tarefaId}/`)
+            .then(response => response.json())
+            .then(data => {
+                // Preenche o formulário com os dados da tarefa
+                document.getElementById('tarefa-id').value = data.id;
+                document.getElementById('id_cliente').value = data.cliente_id;
+                document.getElementById('id_tipo_servico').value = data.tipo_servico_id;
+                document.querySelector('#cliente-nome').textContent = data.cliente_nome;
+                document.querySelector('#tipo-servico-nome').textContent = data.tipo_servico_nome;
+
+                // Preenche os outros campos do formulário
+                document.getElementById('id_status').value = data.status;
+                document.getElementById('id_data_inicio').value = data.data_inicio;
+                document.getElementById('id_prazo_final').value = data.prazo_final;
+                document.getElementById('id_observacoes').value = data.observacoes;
+                document.getElementById('id_valor_total_servico').value = data.valor_total_servico;
+            })
+            .catch(error => console.error('Erro ao buscar dados da tarefa:', error));
+
         // Abre o modal (caso esteja usando Bootstrap)
         let modal = new bootstrap.Modal(document.getElementById("modal-editar-tarefa"));
         modal.show();
+    });
+
+    // Enviar formulário de edição
+    document.getElementById('form-editar-tarefa').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita o envio tradicional do formulário
+        const tarefaId = document.getElementById('tarefa-id').value;
+        var formData = new FormData(this); // Captura os dados do formulário
+        document.getElementById("tarefa-id").value = tarefaId;
+
+        fetch(`tarefa/${tarefaId}/editar/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+              alert('Tarefa atualizada com sucesso!');
+              $('#modal-editar-tarefa').modal('hide'); // Fecha o modal
+              location.reload(); // Recarrega a página (ou atualiza a tabela dinamicamente)
+          } else {
+              // Trata o erro de forma mais detalhada
+              if (typeof data.error === 'object') {
+                  // Se o erro for um objeto, converte para uma string legível
+                  let errorMessage = '';
+                  for (let key in data.error) {
+                      errorMessage += `${key}: ${data.error[key].join(', ')}\n`;
+                  }
+                  alert('Erro ao atualizar a tarefa:\n' + errorMessage);
+              } else {
+                  // Se o erro for uma string, exibe diretamente
+                  alert('Erro ao atualizar a tarefa: ' + data.error);
+              }
+          }
+      })
+      .catch(error => {
+          console.error('Erro na requisição:', error);
+          alert('Erro na requisição. Verifique o console para mais detalhes.');
       });
-    
-      // Excluir tarefa
-      document.addEventListener("click", function (event) {
+    });
+
+    // Excluir tarefa
+    document.addEventListener("click", function (event) {
         let botaoExcluir = event.target.closest("#btn-excluir-tarefa");
         if (!botaoExcluir) return;
 
         const tarefaId = document.getElementById('tarefa-id').value;
         let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-        let deleteUrl = `/ambielle/tarefa/${tarefaId}/delete/`
+        let deleteUrl = `/ambielle/tarefa/${tarefaId}/delete/`;
 
         if (!tarefaId) {
             console.error("Erro: tarefaId não encontrado!");
@@ -247,12 +330,12 @@
         }
 
         if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
-          fetch(deleteUrl, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken
-            }
-        })
+            fetch(deleteUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Erro na requisição: ' + response.statusText);

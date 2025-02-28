@@ -6,11 +6,9 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
-from workflow.forms import CreateCliente, SuporteForm
+from workflow.forms import CreateTarefaForm, SuporteForm
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.urls import reverse
-from django.contrib import messages
 
 @login_required(login_url='workflow:login')
 def index(request):
@@ -28,6 +26,7 @@ def index(request):
     limite = datetime.today().date() + timedelta(days=30)  # Licenças vencendo nos próximos 30 dias
     licencas_proximas = Licenca.objects.filter(data_vencimento__lte=limite)
     clientes = Cliente.objects.count()
+    form = CreateTarefaForm()
     # tarefas_em_aberto = Tarefa.objects.filter()
 
     status_choices = Tarefa.STATUS_CHOICES
@@ -64,6 +63,22 @@ def index(request):
         'workflow/home.html',
         context,
     )
+
+def detalhes_tarefa_api(request, tarefaId):
+    tarefa = get_object_or_404(Tarefa, id=tarefaId)
+    data = {
+        'id': tarefa.id,
+        'cliente_id': tarefa.cliente.id,
+        'cliente_nome': tarefa.cliente.nome,
+        'tipo_servico_id': tarefa.tipo_servico.id,
+        'tipo_servico_nome': tarefa.tipo_servico.nome,
+        'status': tarefa.status,
+        'data_inicio': tarefa.data_inicio.strftime('%Y-%m-%d'),
+        'prazo_final': tarefa.prazo_final.strftime('%Y-%m-%d') if tarefa.prazo_final else None,
+        'observacoes': tarefa.observacoes,
+        'valor_total_servico': tarefa.valor_total_servico,
+    }
+    return JsonResponse(data)
 
 @login_required(login_url='workflow:login')
 def getCliente(request):

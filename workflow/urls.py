@@ -11,17 +11,19 @@ urlpatterns  = [
     path('ambielle/relatorios/', views.getRelatorios, name='relatorios'),
     path('ambielle/listaTipoServico/', views.listaTipoServico, name='listaTipoServico'),
     path('tarefa/<int:tarefa_id>/carregar-formulario/', views.carregar_formulario_edicao, name='carregar_formulario_edicao'),
+    
     # path('ambielle/tarefas/', views.getTarefas, name='getTarefas'),
     #Create
     path('ambielle/cadastroCliente/', views.createCliente, name='createCliente'),
     path('ambielle/cadastroTipoServico/', views.createTipoServico, name='tipoServico'),
     path('ambielle/cadastroSuporte/', views.definir_suporte, name='suporte'),
     path('ambielle/cadastroServico/', views.createTarefa, name='createTarefa'),
+    path('api/tarefas/<int:tarefaId>/', views.detalhes_tarefa_api, name='detalhes_tarefa_api'),
 
     #Update
     path('ambielle/<int:cliente_id>/update/', views.updateCliente, name='updateCliente'),
     path('ambielle/tipoServico/<int:servico_id>/update/', views.updateTipoServico, name='updateTipoServico'),
-    path('ambielle/tarefa/<int:tarefa_id>/editar/', views.editar_tarefa, name='editar_tarefa'),
+    path('ambielle/tarefa/<int:tarefaId>/editar/', views.editar_tarefa, name='editar_tarefa'),
     #Delete
     path('ambielle/<int:cliente_id>/delete/', views.deleteClientes, name='deleteCliente'),
     path('ambielle/tarefa/<int:tarefaId>/delete/', views.excluir_tarefa, name='excluir_tarefa'),

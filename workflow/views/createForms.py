@@ -124,12 +124,21 @@ def carregar_formulario_edicao(request, tarefa_id):
     return render(request, 'workflow/createServico.html', {'form': form, 'tarefa': tarefa})
 
 @login_required(login_url='workflow:login')
-def editar_tarefa(request, tarefa_id):
+def editar_tarefa(request, tarefaId):
+    tarefa = get_object_or_404(Tarefa, id=tarefaId)  # Busca a tarefa pelo ID
     if request.method == 'POST':
-        tarefa = get_object_or_404(Tarefa, id=tarefa_id)
         form = CreateTarefaForm(request.POST, instance=tarefa)
         if form.is_valid():
-            form.save()
+            status_original = tarefa.status
+            nova_tarefa = form.save(commit=False)
+            novo_status = nova_tarefa.status
+
+            if status_original != novo_status:
+                nova_tarefa.save()
+                HistoricoStatusTarefa.objects.create(tarefa=nova_tarefa, status=novo_status)
+            else:
+                nova_tarefa.save()
+
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'error': form.errors})
