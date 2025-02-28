@@ -7,8 +7,11 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from workflow.models import *
+from django.views.decorators.csrf import csrf_exempt
+
 
 @login_required(login_url='workflow:login')
 def createCliente(request):
@@ -132,13 +135,17 @@ def editar_tarefa(request, tarefa_id):
             return JsonResponse({'success': False, 'error': form.errors})
     return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
 
-@login_required(login_url='workflow:login')
-def excluir_tarefa(request, tarefa_id):
+@csrf_exempt
+def excluir_tarefa(request, tarefaId):
     if request.method == 'POST':
-        tarefa = get_object_or_404(Tarefa, id=tarefa_id);
-        tarefa.delete();
-        return JsonResponse({'success': True});
-    return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405);
+        try:
+            tarefa = Tarefa.objects.get(id=tarefaId)
+            tarefa.delete()
+            return JsonResponse({'success': True})
+        except Tarefa.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Tarefa não encontrada'}, status=404)
+    else:
+        return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
 
 @login_required(login_url='workflow:login')
 def createTipoServico(request):

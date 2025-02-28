@@ -1,5 +1,5 @@
 from django.urls import path
-from workflow import views
+from . import views
 
 app_name = 'workflow'
 
@@ -21,10 +21,10 @@ urlpatterns  = [
     #Update
     path('ambielle/<int:cliente_id>/update/', views.updateCliente, name='updateCliente'),
     path('ambielle/tipoServico/<int:servico_id>/update/', views.updateTipoServico, name='updateTipoServico'),
-    path('tarefa/<int:tarefa_id>/editar/', views.editar_tarefa, name='editar_tarefa'),
+    path('ambielle/tarefa/<int:tarefa_id>/editar/', views.editar_tarefa, name='editar_tarefa'),
     #Delete
     path('ambielle/<int:cliente_id>/delete/', views.deleteClientes, name='deleteCliente'),
-    path('ambielle/<int:tarefa_id>/delete/', views.excluir_tarefa, name='excluir_tarefa'),
+    path('ambielle/tarefa/<int:tarefaId>/delete/', views.excluir_tarefa, name='excluir_tarefa'),
     path('ambielle/tipoServico/<int:servico_id>/delete/', views.deleteTipoServico, name='deleteTipoServico'),
     
     #Relatórios

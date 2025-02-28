@@ -138,8 +138,9 @@
               {% for demanda in demandas_coleta %}
                 <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
-                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                    {% comment %} <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -   {% endcomment %}
+                    {% comment %} <strong>{{ demanda.prazo_final|date:'d/m' }}</strong> {% endcomment %}
+                    {{ demanda.id }}
                   </p>
                 </div>
               {% empty %}
@@ -161,7 +162,7 @@
               {% for demanda in demandas_iniciado %}
                 <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} - 
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
@@ -181,7 +182,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                  <form id="form-editar-tarefa">
+                    <form id="form-editar-tarefa">
                       {% csrf_token %}
                       <input type="hidden" name="tarefa_id" id="tarefa-id">
                       <div class="mb-3">
@@ -193,93 +194,82 @@
                           </select>
                       </div>
                       <div class="mb-3">
-                          <label for="data" class="form-label">Nova Data</label>
+                          <label for="data" class="form-label">Nova Data {{ tarefa.id }}</label>
                           <input type="date" name="data" id="data" class="form-control">
                       </div>
-                  </form>
+                    </form>
               </div>
               <div class="modal-footer">
-                  <!-- Botão de Excluir -->
-                  <button type="button" id="btn-excluir-tarefa" class="btn btn-danger">Excluir Tarefa</button>
+                  <!-- Botão de Excluir (Ação via AJAX) -->
+                  <button type="button" id="btn-excluir-tarefa" class="btn btn-danger" data-tarefa-id="{{ tarefa.id }}">
+                      Excluir Tarefa
+                  </button>
                   <!-- Botão de Fechar -->
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                   <!-- Botão de Salvar -->
                   <button type="submit" form="form-editar-tarefa" class="btn btn-primary">Salvar</button>
               </div>
           </div>
-        </div>
+      </div>
   </div>
+  
   </main>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Variáveis globais
-      let tarefaId;
-  
-      // Abrir modal de edição ao clicar na tarefa
-      document.querySelectorAll('.tarefa-clicavel').forEach((tarefa) => {
-          tarefa.addEventListener('click', function () {
-              tarefaId = this.getAttribute('data-id');
-              const statusAtual = this.getAttribute('data-status');
-              const prazoAtual = this.getAttribute('data-prazo');
-  
-              // Preenche o modal de edição
-              document.getElementById('tarefa-id').value = tarefaId;
-              document.getElementById('status').value = statusAtual;
-              document.getElementById('data').value = prazoAtual;
-  
-              // Abre o modal usando Bootstrap
-              const modalEditar = new bootstrap.Modal(document.getElementById('modal-editar-tarefa'));
-              modalEditar.show();
-          });
+      document.addEventListener("click", function (event) {
+        let tarefa = event.target.closest(".tarefa-clicavel"); // Captura a tarefa clicada
+        if (!tarefa) return;
+    
+        let tarefaId = tarefa.getAttribute("data-id"); // Pega o ID da tarefa
+        let tarefaStatus = tarefa.getAttribute("data-status"); // Opcional: pega o status também
+    
+        // Adiciona o ID no campo hidden e no botão de excluir
+        document.getElementById("tarefa-id").value = tarefaId;
+        document.getElementById("btn-excluir-tarefa").setAttribute("data-tarefa-id", tarefaId);
+    
+        // Abre o modal (caso esteja usando Bootstrap)
+        let modal = new bootstrap.Modal(document.getElementById("modal-editar-tarefa"));
+        modal.show();
       });
-  
-      // Enviar formulário de atualização
-      document.getElementById('form-editar-tarefa').addEventListener('submit', function (event) {
-          event.preventDefault();
-  
-          const formData = new FormData(this);
-  
-          fetch(`/tarefa/${tarefaId}/atualizar/`, {
-              method: 'POST',
-              body: formData,
-              headers: {
-                  'X-CSRFToken': formData.get('csrfmiddlewaretoken') // Adiciona o token CSRF
-              }
-          })
-              .then((response) => response.json())
-              .then((data) => {
-                  if (data.success) {
-                      alert('Tarefa atualizada com sucesso!');
-                      location.reload(); // Recarrega a página para refletir as alterações
-                  } else {
-                      alert('Erro: ' + data.error);
-                  }
-              })
-              .catch((error) => console.error('Erro:', error));
-      });
-  
+    
       // Excluir tarefa
-      document.getElementById('btn-excluir-tarefa').addEventListener('click', function () {
-          if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-              fetch(`/tarefa/${tarefaId}/excluir/`, {
-                  method: 'POST',
-                  headers: {
-                      'X-CSRFToken': '{{ csrf_token }}' // Adiciona o token CSRF
-                  }
-              })
-                  .then((response) => response.json())
-                  .then((data) => {
-                      if (data.success) {
-                          alert('Tarefa excluída com sucesso!');
-                          location.reload(); // Recarrega a página para refletir as alterações
-                      } else {
-                          alert('Erro: ' + data.error);
-                      }
-                  })
-                  .catch((error) => console.error('Erro:', error));
-          }
+      document.addEventListener("click", function (event) {
+        let botaoExcluir = event.target.closest("#btn-excluir-tarefa");
+        if (!botaoExcluir) return;
+
+        const tarefaId = document.getElementById('tarefa-id').value;
+        let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+        let deleteUrl = `/ambielle/tarefa/${tarefaId}/delete/`
+
+        if (!tarefaId) {
+            console.error("Erro: tarefaId não encontrado!");
+            return;
+        }
+
+        if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
+          fetch(deleteUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na requisição: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Tarefa excluída com sucesso!');
+                    location.reload();
+                } else {
+                    alert('Erro: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        }
       });
-  
       // Popup de licenças
       const popupLicencas = document.getElementById('popupLicencas');
       const fecharPopup = document.getElementById('fecharPopup');

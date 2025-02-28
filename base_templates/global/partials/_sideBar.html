@@ -37,7 +37,7 @@
                     </li>
 
                     <!-- Dropdown Serviços -->
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <img src="{% static 'global/svg/task.svg' %}" alt="Ícone" class="me-2"> Serviços
@@ -49,8 +49,17 @@
                             <li><a class="dropdown-item" href="{% url 'workflow:listaTipoServico' %}">Cad. Tipo Serviços</a>
                             </li>
                         </ul>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'workflow:get_tarefas_filtradas' %}">
+                            <img src="{% static 'global/svg/task.svg' %}" alt="Ícone" class="me-2"> Tarefas
+                        </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'workflow:listaTipoServico' %}">
+                            <img src="{% static 'global/svg/tools.svg' %}" alt="Ícone" class="me-2"> Serviços
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'workflow:suporte' %}">
                             <img src="{% static 'global/svg/watch.svg' %}" alt="Ícone" class="me-2"> Suporte
