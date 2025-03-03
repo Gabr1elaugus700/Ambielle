@@ -291,8 +291,7 @@
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-              alert('Tarefa atualizada com sucesso!');
-              $('#modal-editar-tarefa').modal('hide'); // Fecha o modal
+              alert('Tarefa atualizada com sucesso!');// Fecha o modal
               location.reload(); // Recarrega a página (ou atualiza a tabela dinamicamente)
           } else {
               // Trata o erro de forma mais detalhada
@@ -309,10 +308,6 @@
               }
           }
       })
-      .catch(error => {
-          console.error('Erro na requisição:', error);
-          alert('Erro na requisição. Verifique o console para mais detalhes.');
-      });
     });
 
     // Excluir tarefa
