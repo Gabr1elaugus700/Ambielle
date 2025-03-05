@@ -92,7 +92,7 @@
               {% for demanda in demandas_execucao %}
                 <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
@@ -115,7 +115,7 @@
               {% for demanda in demandas_aprovacao %}
                 <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
@@ -138,9 +138,8 @@
               {% for demanda in demandas_coleta %}
                 <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
                   <p>
-                    {% comment %} <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} -   {% endcomment %}
-                    {% comment %} <strong>{{ demanda.prazo_final|date:'d/m' }}</strong> {% endcomment %}
-                    {{ demanda.id }}
+                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
               {% empty %}
@@ -162,7 +161,7 @@
               {% for demanda in demandas_iniciado %}
                 <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} -</strong>{{ demanda.tipo_servico }} - 
+                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
