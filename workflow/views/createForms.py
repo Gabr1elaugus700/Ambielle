@@ -155,6 +155,8 @@ def excluir_tarefa(request, tarefaId):
             return JsonResponse({'success': False, 'error': 'Tarefa não encontrada'}, status=404)
     else:
         return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
+    
+
 
 @login_required(login_url='workflow:login')
 def createTipoServico(request):
@@ -201,27 +203,17 @@ def updateTipoServico(request, servico_id):
         {'form': form, 'form_action': form_action}
     )
 
-# def deleteTipoServico(request, servico_id):
-#     servico = get_object_or_404(TipoServico, pk=servico_id)
-
-#     if request.method == "POST":
-#         servico.delete()
-#         messages.success(request, 'Serviço excluído com sucesso!')
-#         return redirect('workflow:tipoServico')  # Redirecione para a página de listagem
-    
-#     messages.error(request, 'A exclusão falhou. Tente novamente.')
-#     return redirect('workflow:tipoServico')
-
-def deleteTipoServico(request, servico_id):
-    servico_id = get_object_or_404(TipoServico, id=servico_id)
-    servico_id.delete()
+@login_required(login_url='workflow:login')      
+def deleteTipoServico(request, id):
+    id = get_object_or_404(TipoServico, id=id)
+    id.delete()
     
     
-    messages.warning(request, 'Serviço Excluido!')
+    messages.warning(request, 'Tarefa Deletada!')
     
-    return redirect('workflow:tipoServico')
+    return redirect('workflow:listaTipoServico')
 
-
+@login_required(login_url='workflow:login')
 def definir_suporte(request):
     
     title = 'Cadastro de Suporte'

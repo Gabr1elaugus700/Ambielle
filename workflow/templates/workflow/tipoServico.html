@@ -34,9 +34,10 @@
                 <!-- Ajustar valor real depois -->
                 <td>{{ servico.orgao }}</td>
                 <td style="text-align: center; vertical-align: middle;">
-                  <a href="{% url 'workflow:deleteTipoServico' servico.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a>
+                  <a href="{% url 'workflow:deleteTipoServico' servico.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can text-danger"></i></a>
+                  {% comment %} <a data-id="{{ servico.id }}"><i class="fa-regular fa-trash-can text-danger delete-btn" style="width: 20px; height: 20px; text-decoration: none; color: var(--secondary-color);"></i></a> {% endcomment %}
                   <a href="#" class="edit-servico" data-url="{% url 'workflow:updateTipoServico' servico.id %}">
-                    <i class="fa-regular fa-pen-to-square" style="width: 20px; height: 20px; color: var(--secondary-color);"></i>
+                    <i class="fa-regular fa-pen-to-square text-primary" style="width: 20px; height: 20px; color: var(--secondary-color);"></i>
                   </a>
                 </td>
               </tr>
@@ -124,5 +125,6 @@
         }
       })
     })
+    
   </script>
 {% endblock %}

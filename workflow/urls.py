@@ -27,7 +27,7 @@ urlpatterns  = [
     #Delete
     path('ambielle/<int:cliente_id>/delete/', views.deleteClientes, name='deleteCliente'),
     path('ambielle/tarefa/<int:tarefaId>/delete/', views.excluir_tarefa, name='excluir_tarefa'),
-    path('ambielle/tipoServico/<int:servico_id>/delete/', views.deleteTipoServico, name='deleteTipoServico'),
+    path('ambielle/tipoServico/<int:id>/delete/', views.deleteTipoServico, name='deleteTipoServico'),
     
     #Relatórios
         #CSV
