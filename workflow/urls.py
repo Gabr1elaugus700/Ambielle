@@ -40,4 +40,6 @@ urlpatterns  = [
     path('user/update/', views.user_update, name='user_update'),
     path('user/login/', views.login_view, name='login'),
     path('user/logout/', views.logout_view, name='logout'),
+    
+    path('atualizar-valor-total/', views.atualizar_valor_total, name='atualizar_valor_total'),
 ]

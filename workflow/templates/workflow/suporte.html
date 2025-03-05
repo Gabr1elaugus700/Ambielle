@@ -44,273 +44,72 @@
         <table class="table table-striped table-hover table-bordered">
           <thead class="table-dark">
             <tr>
+              <!-- Coluna Cliente -->
               <th scope="col">
                 Cliente
-                <a href="?sort=cliente&order={% if order == 'asc' %}
-                    
-                    
-                    desc
-
-
-                  {% else %}
-                    
-                    
-                    asc
-
-
-                  {% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}
-                      
-                      
-                      fa-arrow-up
-
-
-                    {% else %}
-                      
-                      
-                      fa-arrow-down
-
-
-                    {% endif %}"
-                    style="margin-left: 5px;">
-
-                  </i>
+                <a href="?sort=cliente&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
                 </a>
               </th>
+    
+              <!-- Coluna Descrição -->
               <th scope="col">
                 Descrição
-                <a href="?sort=descricao&order={% if order == 'asc' %}
-                    
-                    
-                    desc
-
-
-                  {% else %}
-                    
-                    
-                    asc
-
-
-                  {% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}
-                      
-                      
-                      fa-arrow-up
-
-
-                    {% else %}
-                      
-                      
-                      fa-arrow-down
-
-
-                    {% endif %}"
-                    style="margin-left: 5px;">
-
-                  </i>
+                <a href="?sort=descricao&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
                 </a>
               </th>
+    
+              <!-- Coluna Valor/Hora -->
               <th scope="col">
                 V/H
-                <a href="?sort=valor_hora&order={% if order == 'asc' %}
-                    
-                    
-                    desc
-
-
-                  {% else %}
-                    
-                    
-                    asc
-
-
-                  {% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}
-                      
-                      
-                      fa-arrow-up
-
-
-                    {% else %}
-                      
-                      
-                      fa-arrow-down
-
-
-                    {% endif %}"
-                    style="margin-left: 5px;">
-
-                  </i>
+                <a href="?sort=valor_hora&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
                 </a>
               </th>
+    
+              <!-- Coluna Data -->
               <th scope="col">
                 Data
-                <a href="?sort=data_suporte&order={% if order == 'asc' %}
-                    
-                    
-                    desc
-
-
-                  {% else %}
-                    
-                    
-                    asc
-
-
-                  {% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}
-                      
-                      
-                      fa-arrow-up
-
-
-                    {% else %}
-                      
-                      
-                      fa-arrow-down
-
-
-                    {% endif %}"
-                    style="margin-left: 5px;">
-
-                  </i>
+                <a href="?sort=data_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
                 </a>
               </th>
+    
+              <!-- Coluna Hora Início -->
               <th scope="col">
                 H. Ini
-                <a href="?sort=hora_inicio&order={% if order == 'asc' %}
-                    
-                    
-                    desc
-
-
-                  {% else %}
-                    
-                    
-                    asc
-
-
-                  {% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}
-                      
-                      
-                      fa-arrow-up
-
-
-                    {% else %}
-                      
-                      
-                      fa-arrow-down
-
-
-                    {% endif %}"
-                    style="margin-left: 5px;">
-
-                  </i>
+                <a href="?sort=hora_inicio&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
                 </a>
               </th>
+    
+              <!-- Coluna Hora Fim -->
               <th scope="col">
                 H. Fim
-                <a href="?sort=hora_fim&order={% if order == 'asc' %}
-                    
-                    
-                    desc
-
-
-                  {% else %}
-                    
-                    
-                    asc
-
-
-                  {% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}
-                      
-                      
-                      fa-arrow-up
-
-
-                    {% else %}
-                      
-                      
-                      fa-arrow-down
-
-
-                    {% endif %}"
-                    style="margin-left: 5px;">
-
-                  </i>
+                <a href="?sort=hora_fim&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
                 </a>
               </th>
+    
+              <!-- Coluna Tempo Total -->
               <th scope="col">
                 Tempo Total
-                <a href="?sort=tempo_suporte&order={% if order == 'asc' %}
-                    
-                    
-                    desc
-
-
-                  {% else %}
-                    
-                    
-                    asc
-
-
-                  {% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}
-                      
-                      
-                      fa-arrow-up
-
-
-                    {% else %}
-                      
-                      
-                      fa-arrow-down
-
-
-                    {% endif %}"
-                    style="margin-left: 5px;">
-
-                  </i>
+                <a href="?sort=tempo_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
                 </a>
               </th>
+    
+              <!-- Coluna Valor Total -->
               <th scope="col">
                 R$
-                <a href="?sort=valor_total&order={% if order == 'asc' %}
-                    
-                    
-                    desc
-
-
-                  {% else %}
-                    
-                    
-                    asc
-
-
-                  {% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}
-                      
-                      
-                      fa-arrow-up
-
-
-                    {% else %}
-                      
-                      
-                      fa-arrow-down
-
-
-                    {% endif %}"
-                    style="margin-left: 5px;">
-
-                  </i>
+                <a href="?sort=valor_total&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
+                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
                 </a>
               </th>
             </tr>
           </thead>
-
+    
           <tbody>
             {% for suporte in page_obj %}
               <tr>
@@ -325,7 +124,7 @@
               </tr>
             {% endfor %}
           </tbody>
-
+    
           <tfoot>
             <tr>
               <td colspan="8" class="tfoot-cell">
@@ -335,9 +134,9 @@
                       <a href="?page=1"><i class="fa-solid fa-angles-left"></i></a>
                       <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-angle-left"></i></a>
                     {% endif %}
-
+    
                     <span class="current">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-
+    
                     {% if page_obj.has_next %}
                       <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-angle-right"></i></a>
                       <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-angles-right"></i></a>

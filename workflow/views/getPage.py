@@ -9,6 +9,7 @@ from django.db.models import Prefetch
 from workflow.forms import CreateTarefaForm, SuporteForm
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 
 @login_required(login_url='workflow:login')
 def index(request):
@@ -302,3 +303,8 @@ def listaTipoServico(request):
     }
 
     return render(request, 'workflow/tipoServico.html', context)
+
+def atualizar_valor_total(request):
+    for suporte in Suporte.objects.all():
+        suporte.save()
+    return HttpResponse("Valor total recalculado e salvo para todos os suportes.")

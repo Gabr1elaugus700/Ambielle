@@ -11,7 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from workflow.models import *
 from django.views.decorators.csrf import csrf_exempt
-
+from django.db.models import F, ExpressionWrapper, DecimalField, DurationField
+from django.db.models.functions import Cast
 
 @login_required(login_url='workflow:login')
 def createCliente(request):
@@ -215,7 +216,6 @@ def deleteTipoServico(request, id):
 
 @login_required(login_url='workflow:login')
 def definir_suporte(request):
-    
     title = 'Cadastro de Suporte'
     
     # Obtém o parâmetro 'sort' da URL (caso não exista, usa 'id' como padrão)
@@ -237,7 +237,18 @@ def definir_suporte(request):
     if request.method == 'POST':
         form = SuporteForm(request.POST)
         if form.is_valid():
-            form.save()
+            suporte = form.save(commit=False)  # Não salva o objeto ainda
+            # Calcula o tempo_suporte
+            if suporte.hora_inicio and suporte.hora_fim:
+                inicio = datetime.combine(suporte.data_suporte, suporte.hora_inicio)
+                fim = datetime.combine(suporte.data_suporte, suporte.hora_fim)
+                delta = fim - inicio
+                suporte.tempo_suporte = Decimal(delta.total_seconds() / 3600)  # Converte para horas
+            else:
+                suporte.tempo_suporte = Decimal(0)
+            # Calcula o valor_total
+            suporte.valor_total = suporte.valor_hora * suporte.tempo_suporte
+            suporte.save()  # Agora salva o objeto com os valores calculados
             return redirect('workflow:suporte')
     else:
         form = SuporteForm()

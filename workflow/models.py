@@ -98,25 +98,23 @@ class Suporte(models.Model):
     data_suporte = models.DateField(default=timezone.now)
     hora_inicio = models.TimeField()
     hora_fim = models.TimeField(blank=True, null=True)
+    tempo_suporte = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
-    @property
-    def tempo_suporte(self):
-        """
-        Calcula o tempo total de suporte em horas, somente se 'hora_fim' estiver preenchida.
-        """
+    def save(self, *args, **kwargs):
+        # Calcula o tempo_suporte antes de salvar
         if self.hora_inicio and self.hora_fim:
-            inicio = make_aware(datetime.combine(self.data_suporte, self.hora_inicio))
-            fim = make_aware(datetime.combine(self.data_suporte, self.hora_fim))
+            inicio = datetime.combine(self.data_suporte, self.hora_inicio)
+            fim = datetime.combine(self.data_suporte, self.hora_fim)
             delta = fim - inicio
-            return delta.total_seconds() / 3600  # Retorna em horas
-        return 0  # Se 'hora_fim' não estiver preenchida, retorna 0
+            self.tempo_suporte = Decimal(delta.total_seconds() / 3600)  # Converte para horas
+        else:
+            self.tempo_suporte = Decimal(0)
 
-    @property
-    def valor_total(self):
-        """
-        Calcula o valor total do suporte baseado no tempo e no valor por hora.
-        """
-        return Decimal(self.tempo_suporte) * self.valor_hora  # Converte o tempo para Decimal
+        # Calcula o valor_total antes de salvar
+        self.valor_total = self.valor_hora * self.tempo_suporte
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Suporte para {self.cliente.nome} em {self.data_suporte}"
