@@ -243,15 +243,17 @@ def get_tarefas_filtradas(request):
         ('Aprovação Cliente', 'Aprovação Cliente'),
         ('Concluído', 'Concluído'),
         ('Encerrado', 'Encerrado'),
+        ('Protocolado', 'Protocolado'),
     ]
 
     status_colors = {
-        'Iniciado': '#32CD32',
-        'Coleta De Informações': '#FF8C00',
-        'Execucao': '#00BFFF',
-        'Aprovação Cliente': '#FFD700',
-        'Concluído': '#32CD32',
-        'Encerrado': '#B22222',
+        'Iniciado': '#32CD32',  # Verde
+        'Coleta De Informações': '#FF8C00',  # Laranja
+        'Execucao': '#00BFFF',  # Azul
+        'Aprovação Cliente': '#FFD700',  # Amarelo
+        'Concluído': '#32CD32',  # Verde
+        'Encerrado': '#B22222',  # Vermelho
+        'Protocolado': '#FF4500'  # Laranja Vermelho
     }
 
     for tarefa in tarefas:
