@@ -53,6 +53,7 @@ class Tarefa(models.Model):
         ('Aprovação Cliente', 'Aprovação Cliente'),
         ('Concluído', 'Concluído'),
         ('Encerrado', 'Encerrado'),
+        ('Protocolado', 'Protocolado'),  # Nova opção adicionada
     ]
 
     tipo_servico = models.ForeignKey(TipoServico, on_delete=models.CASCADE, related_name="tarefas")

@@ -38,12 +38,14 @@ def index(request):
     demandas_aprovacao = Tarefa.objects.filter(status='Aprovação Cliente', prazo_final__lte=data_limite).order_by('prazo_final')
     demandas_coleta = Tarefa.objects.filter(status='Coleta De Informações', prazo_final__lte=data_limite).order_by('prazo_final')
     demandas_iniciado = Tarefa.objects.filter(status='Iniciado', prazo_final__lte=data_limite).order_by('prazo_final')
-
+    demandas_protocolado = Tarefa.objects.filter(status='Protocolado', prazo_final__lte=data_limite).order_by('prazo_final')
+    
     tarefas_em_aberto = (
         demandas_aprovacao.count() + 
         demandas_coleta.count() + 
         demandas_execucao.count() + 
-        demandas_iniciado.count()   
+        demandas_iniciado.count() +
+        demandas_protocolado.count()
     )
 
     context ={
@@ -53,6 +55,7 @@ def index(request):
         'demandas_aprovacao': demandas_aprovacao,
         'demandas_coleta': demandas_coleta,
         'demandas_iniciado': demandas_iniciado,
+        'demandas_protocolado': demandas_protocolado,
         'clientes': clientes, 
         'tarefas_em_aberto': tarefas_em_aberto,
         'licencas': licencas_proximas,
