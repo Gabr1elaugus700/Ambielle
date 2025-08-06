@@ -52,10 +52,17 @@
               </table>
             </div>
           </div>
-          <div class="cardHome">
+          <div class="cardHome" id="clientesCard">
             <h2>Clientes Atendidos<span class="dot yellow"></span></h2>
             <div class="progress-info">
               <span class="numberof">{{ clientes }}</span>
+            </div>
+          </div>
+
+          <div class="cardHome" id="relatoriosCard">
+            <h2>Relatórios<span class="dot blue"></span></h2>
+            <div class="progress-info">
+              <span class="numberof"><i class="fa-solid fa-file-lines"></i></span>
             </div>
           </div>
 
@@ -80,6 +87,53 @@
         </div>
 
         <div class="demand-cards-wrapper">
+          <!-- Iniciado -->
+          <div class="demand-cards-status">
+            <div class="status">
+              <h3>
+                Iniciado<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="8.5" fill="#FFD700" stroke="black" />
+                </svg>
+              </h3>
+            </div>
+            <div class="demand-card">
+              {% for demanda in demandas_iniciado %}
+                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                  <p>
+                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                  </p>
+                </div>
+              {% empty %}
+                <p>Nenhuma demanda Iniciada.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Coleta -->
+          <div class="demand-cards-status">
+            <div class="status">
+              <h3>
+                Coleta<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="8.5" fill="#00BFFF" stroke="black" />
+                </svg>
+              </h3>
+            </div>
+            <div class="demand-card">
+              {% for demanda in demandas_coleta %}
+                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                  <p>
+                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                  </p>
+                </div>
+              {% empty %}
+                <p>Nenhuma demanda em Coleta.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Execução -->
           <div class="demand-cards-status">
             <div class="status">
               <h3>
@@ -124,52 +178,6 @@
               {% endfor %}
             </div>
           </div>
-
-          <!-- Coleta -->
-          <div class="demand-cards-status">
-            <div class="status">
-              <h3>
-                Coleta<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <circle cx="9" cy="9" r="8.5" fill="#00BFFF" stroke="black" />
-                </svg>
-              </h3>
-            </div>
-            <div class="demand-card">
-              {% for demanda in demandas_coleta %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
-                  <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
-                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
-                  </p>
-                </div>
-              {% empty %}
-                <p>Nenhuma demanda em Coleta.</p>
-              {% endfor %}
-            </div>
-          </div>
-
-          <!-- Iniciado -->
-          <div class="demand-cards-status">
-            <div class="status">
-              <h3>
-                Iniciado<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <circle cx="9" cy="9" r="8.5" fill="#FFD700" stroke="black" />
-                </svg>
-              </h3>
-            </div>
-            <div class="demand-card">
-              {% for demanda in demandas_iniciado %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
-                  <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
-                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
-                  </p>
-                </div>
-              {% empty %}
-                <p>Nenhuma demanda Iniciada.</p>
-              {% endfor %}
-            </div>
-          </div>
           <div class="demand-cards-status">
             <div class="status">
               <h3>
@@ -194,7 +202,7 @@
         </div>
       </div>
     </section>
-    <div class="modal fade" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
+  <div class="modal fade" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
       <div class="modal-dialog">
           <div class="modal-content">
               <div class="modal-header">
@@ -254,6 +262,80 @@
           </div>
       </div>
   </div>
+
+  <!-- Modal lista de clientes -->
+  <div class="modal fade" id="clientesModal" tabindex="-1" aria-labelledby="clientesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="clientesModalLabel">Clientes Cadastrados</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul id="listaClientes" class="list-unstyled mb-0"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal relatórios -->
+  <div class="modal fade" id="relatoriosModal" tabindex="-1" aria-labelledby="relatoriosModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="relatoriosModalLabel">Relatórios</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formRelatorios">
+            <div class="mb-3">
+              <label for="tipoRelatorio" class="form-label">Tipo de Relatório</label>
+              <select id="tipoRelatorio" class="form-select">
+                <option value="clientes">Clientes</option>
+                <option value="clientes_servicos">Clientes x Serviços</option>
+                <option value="clientes_servicos_valores">Clientes x Serviços x Valores</option>
+                <option value="clientes_suporte">Clientes x Suporte</option>
+                <option value="demandas_por_cliente">Demandas por Cliente</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="filtroCliente" class="form-label">Cliente</label>
+              <input type="text" id="filtroCliente" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label for="filtroStatus" class="form-label">Status</label>
+              <select id="filtroStatus" class="form-select">
+                <option value="">Todos</option>
+                <option value="Iniciado">Iniciado</option>
+                <option value="Coleta De Informações">Coleta de Informações</option>
+                <option value="Execucao">Execução</option>
+                <option value="Aprovação Cliente">Aprovação Cliente</option>
+                <option value="Concluído">Concluído</option>
+                <option value="Encerrado">Encerrado</option>
+                <option value="Protocolado">Protocolado</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="filtroServico" class="form-label">Tipo de Serviço</label>
+              <input type="text" id="filtroServico" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label for="filtroDataInicial" class="form-label">Data Inicial</label>
+              <input type="date" id="filtroDataInicial" class="form-control" />
+            </div>
+            <div class="mb-3">
+              <label for="filtroDataFinal" class="form-label">Data Final</label>
+              <input type="date" id="filtroDataFinal" class="form-control" />
+            </div>
+          </form>
+          <div class="d-flex justify-content-end gap-2">
+            <button id="exportarPdf" class="btn btn-danger" type="button">Exportar PDF</button>
+            <button id="exportarXlsx" class="btn btn-success" type="button">Exportar XLSX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   
   </main>
   <script>
@@ -278,7 +360,7 @@
                 document.getElementById('id_cliente').value = data.cliente_id;
                 document.getElementById('id_tipo_servico').value = data.tipo_servico_id;
                 document.querySelector('#cliente-nome').textContent = data.cliente_nome;
-                document.querySelector('#tipo-servico-nome').textContent = data.tipo_servico_nome;
+                document.querySelector('#tipo_servico_nome').textContent = data.tipo_servico_nome;
 
                 // Preenche os outros campos do formulário
                 document.getElementById('id_status').value = data.status;
@@ -371,6 +453,64 @@
       // Popup de licenças
       const popupLicencas = document.getElementById('popupLicencas');
       const fecharPopup = document.getElementById('fecharPopup');
+
+      const clientesCard = document.getElementById('clientesCard');
+      const relatoriosCard = document.getElementById('relatoriosCard');
+
+      if (clientesCard) {
+          clientesCard.addEventListener('click', function () {
+              fetch('/api/clientes/')
+                  .then(response => response.json())
+                  .then(data => {
+                      const lista = document.getElementById('listaClientes');
+                      lista.innerHTML = '';
+                      data.clientes.forEach(c => {
+                          const li = document.createElement('li');
+                          li.textContent = `${c.nome} - ${c.cnpj}`;
+                          lista.appendChild(li);
+                      });
+                      const modal = new bootstrap.Modal(document.getElementById('clientesModal'));
+                      modal.show();
+                  });
+          });
+      }
+
+      if (relatoriosCard) {
+          relatoriosCard.addEventListener('click', function () {
+              const modal = new bootstrap.Modal(document.getElementById('relatoriosModal'));
+              modal.show();
+          });
+      }
+
+      const exportar = (formato) => {
+          const tipo = document.getElementById('tipoRelatorio').value;
+          const params = new URLSearchParams();
+          const cliente = document.getElementById('filtroCliente').value;
+          if (cliente) params.append('cliente', cliente);
+          const status = document.getElementById('filtroStatus').value;
+          if (status) params.append('status', status);
+          const servico = document.getElementById('filtroServico').value;
+          if (servico) params.append('tipo_servico', servico);
+          const dataInicial = document.getElementById('filtroDataInicial').value;
+          if (dataInicial) params.append('data_inicial', dataInicial);
+          const dataFinal = document.getElementById('filtroDataFinal').value;
+          if (dataFinal) params.append('data_final', dataFinal);
+          window.location.href = `/exportar-${formato}/${tipo}/?` + params.toString();
+      };
+
+      const btnPdf = document.getElementById('exportarPdf');
+      if (btnPdf) {
+          btnPdf.addEventListener('click', function () {
+              exportar('pdf');
+          });
+      }
+
+      const btnXlsx = document.getElementById('exportarXlsx');
+      if (btnXlsx) {
+          btnXlsx.addEventListener('click', function () {
+              exportar('xlsx');
+          });
+      }
   
       if (popupLicencas && fecharPopup) {
           document.getElementById('alertCard').onclick = function () {
