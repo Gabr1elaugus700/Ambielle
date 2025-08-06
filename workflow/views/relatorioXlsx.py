@@ -10,6 +10,8 @@ def export_relatorio_xlsx(request, relatorio_tipo):
     data_inicial = request.GET.get("data_inicial")
     data_final = request.GET.get("data_final")
     cliente_nome = request.GET.get("cliente")
+    status = request.GET.get("status")
+    tipo_servico = request.GET.get("tipo_servico")
     formato = request.GET.get("formato", "excel")
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -21,13 +23,23 @@ def export_relatorio_xlsx(request, relatorio_tipo):
 
     bold_font = Font(bold=True)
 
-    def aplicar_filtros(queryset):
+    def aplicar_filtros(queryset, modelo="tarefa"):
         if cliente_nome:
-            queryset = queryset.filter(cliente__nome__icontains=cliente_nome)
-        if data_inicial:
-            queryset = queryset.filter(data_inicio__gte=data_inicial)
-        if data_final:
-            queryset = queryset.filter(data_inicio__lte=data_final)
+            if modelo == "cliente":
+                queryset = queryset.filter(nome__icontains=cliente_nome)
+            else:
+                queryset = queryset.filter(cliente__nome__icontains=cliente_nome)
+        if modelo in ("tarefa", "suporte"):
+            data_field = "data_inicio" if modelo == "tarefa" else "data_suporte"
+            if data_inicial:
+                queryset = queryset.filter(**{f"{data_field}__gte": data_inicial})
+            if data_final:
+                queryset = queryset.filter(**{f"{data_field}__lte": data_final})
+        if modelo == "tarefa":
+            if status:
+                queryset = queryset.filter(status=status)
+            if tipo_servico:
+                queryset = queryset.filter(tipo_servico__nome__icontains=tipo_servico)
         return queryset
 
     if relatorio_tipo == "clientes":
@@ -35,7 +47,7 @@ def export_relatorio_xlsx(request, relatorio_tipo):
         ws.append(headers)
         for cell in ws[1]: cell.font = bold_font
 
-        clientes = aplicar_filtros(Cliente.objects.all())
+        clientes = aplicar_filtros(Cliente.objects.all(), "cliente")
         for cliente in clientes:
             ws.append([cliente.id, cliente.nome, cliente.cnpj, cliente.endereco, cliente.bairro or "N/A", cliente.telefone, cliente.contato_principal])
 
@@ -62,7 +74,7 @@ def export_relatorio_xlsx(request, relatorio_tipo):
         ws.append(headers)
         for cell in ws[1]: cell.font = bold_font
 
-        suportes = aplicar_filtros(Suporte.objects.all())
+        suportes = aplicar_filtros(Suporte.objects.all(), "suporte")
         for suporte in suportes:
             ws.append([suporte.id, suporte.cliente.nome, suporte.cliente.cnpj, suporte.descricao, suporte.valor_total or "N/A"])
 
