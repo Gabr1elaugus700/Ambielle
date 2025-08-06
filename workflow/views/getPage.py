@@ -84,6 +84,12 @@ def detalhes_tarefa_api(request, tarefaId):
     }
     return JsonResponse(data)
 
+
+@login_required(login_url='workflow:login')
+def clientes_api(request):
+    clientes = Cliente.objects.all().values('id', 'nome', 'cnpj')
+    return JsonResponse({'clientes': list(clientes)})
+
 @login_required(login_url='workflow:login')
 def getCliente(request):
     title = 'Lista de Clientes'
@@ -271,20 +277,6 @@ def get_tarefas_filtradas(request):
         'data_final': data_final,
     })
     
-@login_required(login_url='workflow:login')
-def getRelatorios(request):
-    title = 'Relatórios PDF & XLSX'
-
-    context ={
-        'title': title,
-    }
-
-    return render(
-        request,
-        'workflow/relatorios.html',
-        context,
-    )
-
 @login_required(login_url='workflow:login')
 def listaTipoServico(request):
     title = 'Lista de Tipos de Serviço'

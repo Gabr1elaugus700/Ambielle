@@ -8,7 +8,6 @@ urlpatterns  = [
     path('ambielle/', views.index, name='index'),
     path('ambielle/listaClientes/', views.getCliente, name='getCliente'),
     path('ambielle/tarefas/', views.get_tarefas_filtradas, name='get_tarefas_filtradas'),
-    path('ambielle/relatorios/', views.getRelatorios, name='relatorios'),
     path('ambielle/listaTipoServico/', views.listaTipoServico, name='listaTipoServico'),
     path('tarefa/<int:tarefa_id>/carregar-formulario/', views.carregar_formulario_edicao, name='carregar_formulario_edicao'),
     
@@ -19,6 +18,7 @@ urlpatterns  = [
     path('ambielle/cadastroSuporte/', views.definir_suporte, name='suporte'),
     path('ambielle/cadastroServico/', views.createTarefa, name='createTarefa'),
     path('api/tarefas/<int:tarefaId>/', views.detalhes_tarefa_api, name='detalhes_tarefa_api'),
+    path('api/clientes/', views.clientes_api, name='clientes_api'),
 
     #Update
     path('ambielle/<int:cliente_id>/update/', views.updateCliente, name='updateCliente'),
