@@ -6,7 +6,7 @@ h1{
     display: flex;
     justify-content: center;
     align-content: center;
-
+    width: 100%;
 }
 .tela-form{
     width: 700px;
@@ -19,6 +19,7 @@ h1{
     border: var(--secondary-color) solid 3px ;
     border-radius: 10px;
     box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.3);
+    margin: auto 0;
 }
 
 
@@ -102,4 +103,16 @@ select.form-control {
     transform: scale(1.1);
     color: aliceblue;
     background-color: var(--secondary-color);
+}
+
+/* Estilos específicos para a página de login */
+.containerForm.login-page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    width: 400px;
 }
