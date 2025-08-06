@@ -52,10 +52,17 @@
               </table>
             </div>
           </div>
-          <div class="cardHome">
+          <div class="cardHome" id="clientesCard">
             <h2>Clientes Atendidos<span class="dot yellow"></span></h2>
             <div class="progress-info">
               <span class="numberof">{{ clientes }}</span>
+            </div>
+          </div>
+
+          <div class="cardHome" id="relatoriosCard">
+            <h2>Relatórios<span class="dot blue"></span></h2>
+            <div class="progress-info">
+              <span class="numberof"><i class="fa-solid fa-file-lines"></i></span>
             </div>
           </div>
 
@@ -80,6 +87,53 @@
         </div>
 
         <div class="demand-cards-wrapper">
+          <!-- Iniciado -->
+          <div class="demand-cards-status">
+            <div class="status">
+              <h3>
+                Iniciado<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="8.5" fill="#FFD700" stroke="black" />
+                </svg>
+              </h3>
+            </div>
+            <div class="demand-card">
+              {% for demanda in demandas_iniciado %}
+                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                  <p>
+                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                  </p>
+                </div>
+              {% empty %}
+                <p>Nenhuma demanda Iniciada.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Coleta -->
+          <div class="demand-cards-status">
+            <div class="status">
+              <h3>
+                Coleta<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <circle cx="9" cy="9" r="8.5" fill="#00BFFF" stroke="black" />
+                </svg>
+              </h3>
+            </div>
+            <div class="demand-card">
+              {% for demanda in demandas_coleta %}
+                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                  <p>
+                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
+                  </p>
+                </div>
+              {% empty %}
+                <p>Nenhuma demanda em Coleta.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Execução -->
           <div class="demand-cards-status">
             <div class="status">
               <h3>
@@ -124,52 +178,6 @@
               {% endfor %}
             </div>
           </div>
-
-          <!-- Coleta -->
-          <div class="demand-cards-status">
-            <div class="status">
-              <h3>
-                Coleta<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <circle cx="9" cy="9" r="8.5" fill="#00BFFF" stroke="black" />
-                </svg>
-              </h3>
-            </div>
-            <div class="demand-card">
-              {% for demanda in demandas_coleta %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
-                  <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
-                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
-                  </p>
-                </div>
-              {% empty %}
-                <p>Nenhuma demanda em Coleta.</p>
-              {% endfor %}
-            </div>
-          </div>
-
-          <!-- Iniciado -->
-          <div class="demand-cards-status">
-            <div class="status">
-              <h3>
-                Iniciado<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <circle cx="9" cy="9" r="8.5" fill="#FFD700" stroke="black" />
-                </svg>
-              </h3>
-            </div>
-            <div class="demand-card">
-              {% for demanda in demandas_iniciado %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
-                  <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
-                    <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
-                  </p>
-                </div>
-              {% empty %}
-                <p>Nenhuma demanda Iniciada.</p>
-              {% endfor %}
-            </div>
-          </div>
           <div class="demand-cards-status">
             <div class="status">
               <h3>
@@ -194,7 +202,7 @@
         </div>
       </div>
     </section>
-    <div class="modal fade" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
+  <div class="modal fade" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
       <div class="modal-dialog">
           <div class="modal-content">
               <div class="modal-header">
@@ -253,6 +261,42 @@
               </div>
           </div>
       </div>
+  </div>
+
+  <!-- Modal lista de clientes -->
+  <div class="modal fade" id="clientesModal" tabindex="-1" aria-labelledby="clientesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="clientesModalLabel">Clientes Cadastrados</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul id="listaClientes" class="list-unstyled mb-0"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal relatórios -->
+  <div class="modal fade" id="relatoriosModal" tabindex="-1" aria-labelledby="relatoriosModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="relatoriosModalLabel">Relatórios</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-unstyled">
+            <li><a href="{% url 'workflow:exportar_xlsx' 'clientes' %}">Clientes (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'clientes' %}">Clientes (PDF)</a></li>
+            <li><a href="{% url 'workflow:exportar_xlsx' 'clientes_servicos' %}">Clientes x Serviços (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'clientes_servicos' %}">Clientes x Serviços (PDF)</a></li>
+            <li><a href="{% url 'workflow:exportar_xlsx' 'clientes_servicos_valores' %}">Clientes x Serviços x Valores (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'clientes_servicos_valores' %}">Clientes x Serviços x Valores (PDF)</a></li>
+            <li><a href="{% url 'workflow:exportar_xlsx' 'clientes_suporte' %}">Clientes x Suporte (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'clientes_suporte' %}">Clientes x Suporte (PDF)</a></li>
+            <li><a href="{% url 'workflow:exportar_xlsx' 'demandas_por_cliente' %}">Demandas por Cliente (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'demandas_por_cliente' %}">Demandas por Cliente (PDF)</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
   
   </main>
@@ -371,6 +415,34 @@
       // Popup de licenças
       const popupLicencas = document.getElementById('popupLicencas');
       const fecharPopup = document.getElementById('fecharPopup');
+
+      const clientesCard = document.getElementById('clientesCard');
+      const relatoriosCard = document.getElementById('relatoriosCard');
+
+      if (clientesCard) {
+          clientesCard.addEventListener('click', function () {
+              fetch('/api/clientes/')
+                  .then(response => response.json())
+                  .then(data => {
+                      const lista = document.getElementById('listaClientes');
+                      lista.innerHTML = '';
+                      data.clientes.forEach(c => {
+                          const li = document.createElement('li');
+                          li.textContent = `${c.nome} - ${c.cnpj}`;
+                          lista.appendChild(li);
+                      });
+                      const modal = new bootstrap.Modal(document.getElementById('clientesModal'));
+                      modal.show();
+                  });
+          });
+      }
+
+      if (relatoriosCard) {
+          relatoriosCard.addEventListener('click', function () {
+              const modal = new bootstrap.Modal(document.getElementById('relatoriosModal'));
+              modal.show();
+          });
+      }
   
       if (popupLicencas && fecharPopup) {
           document.getElementById('alertCard').onclick = function () {
