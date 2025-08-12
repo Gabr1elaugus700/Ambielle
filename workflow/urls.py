@@ -17,6 +17,8 @@ urlpatterns  = [
     path('ambielle/cadastroTipoServico/', views.createTipoServico, name='tipoServico'),
     path('ambielle/cadastroSuporte/', views.definir_suporte, name='suporte'),
     path('ambielle/cadastroServico/', views.createTarefa, name='createTarefa'),
+    path('ambielle/createSuporteForm/', views.createSuporteForm, name='createSuporteForm'),
+    path('ambielle/editSuporteForm/<int:suporte_id>/', views.editSuporteForm, name='editSuporteForm'),
     path('api/tarefas/<int:tarefaId>/', views.detalhes_tarefa_api, name='detalhes_tarefa_api'),
     path('api/clientes/', views.clientes_api, name='clientes_api'),
 

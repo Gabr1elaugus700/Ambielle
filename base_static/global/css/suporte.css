@@ -1,6 +1,296 @@
-.suporte-tela{
-    display: flex;
-    max-width: 200vh;
-    flex: 1 1 0;
-    background-color: red;
+/* Modal de Suporte - Design Otimizado */
+#suporteModal {
+    --bs-modal-transition: none !important;
+}
+
+/* Desabilitar TODAS as animações e transições do modal */
+#suporteModal,
+#suporteModal *,
+#suporteModal .fade,
+#suporteModal.fade,
+#suporteModal .modal-backdrop {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+#suporteModal .modal-dialog {
+    max-width: 700px;
+    transform: none !important;
+    transition: none !important;
+}
+
+#suporteModal .modal-content {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: none !important;
+    transition: none !important;
+}
+
+#suporteModal .modal-header {
+    background: linear-gradient(135deg, #17a2b8, #138496);
+    color: white;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    padding: 20px 25px;
+}
+
+#suporteModal .modal-title {
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+#suporteModal .btn-close {
+    background: none;
+    border: none;
+    color: white;
+    opacity: 0.8;
+    font-size: 1.2rem;
+}
+
+#suporteModal .btn-close:hover {
+    opacity: 1;
+    color: white;
+}
+
+#suporteModal .modal-body {
+    padding: 25px 25px 0 25px !important;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: white !important;
+}
+
+#suporteModal .modal-body:last-child {
+    padding-bottom: 0 !important;
+}
+
+/* Override preciso do forms.css - APENAS nos elementos do modal */
+#suporteModal .modal-body .containerForm,
+#suporteModal .modal-body .tela-form {
+    background: white !important;
+    background-image: none !important;
+}
+
+/* Garantir que inputs e textareas tenham fundo branco */
+#suporteModal .modal-body input,
+#suporteModal .modal-body select, 
+#suporteModal .modal-body textarea {
+    background: white !important;
+    background-image: none !important;
+}
+
+/* Override específico e cirúrgico do forms.css apenas no modal */
+#suporteModal .containerForm {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    transform: none !important;
+    transition: none !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+#suporteModal .tela-form {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    transform: none !important;
+    transition: none !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+#suporteModal .form {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+#suporteModal .content-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Layout responsivo para o formulário */
+@media (min-width: 768px) {
+    #suporteModal .content-form {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    #suporteModal .form-label:nth-child(2) {
+        grid-column: 1 / -1;
+    }
+}
+
+#suporteModal .form-label {
+    margin-bottom: 0 !important;
+    background: white !important;
+}
+
+#suporteModal .form-label label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    background: transparent !important;
+}
+
+#suporteModal .form-label input,
+#suporteModal .form-label select,
+#suporteModal .form-label textarea {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border: 2px solid #e1e5e9 !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    background-color: #fff !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+    box-sizing: border-box !important;
+}
+
+#suporteModal .form-label input:focus,
+#suporteModal .form-label select:focus,
+#suporteModal .form-label textarea:focus {
+    outline: none !important;
+    border-color: #17a2b8 !important;
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1) !important;
+    background-color: #fff !important;
+}
+
+#suporteModal .form-label textarea {
+    min-height: 100px !important;
+    resize: vertical !important;
+}
+
+#suporteModal .title-form {
+    display: none !important;
+}
+
+/* Erros */
+#suporteModal .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    color: #e74c3c;
+    font-size: 12px;
+}
+
+/* Botões */
+#suporteModal .btn {
+    border-top: 1px solid #e1e5e9 !important;
+    background-color: #f8f9fa !important;
+    padding: 15px 25px !important;
+    margin: 0 !important;
+    margin-top: 20px !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+}
+
+#suporteModal .btn-form {
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.2s ease !important;
+}
+
+#suporteModal .btn-form:hover {
+    background: linear-gradient(135deg, #138496, #117a8b) !important;
+    transform: translateY(-1px) !important;
+}
+
+#suporteModal .btn-form:disabled {
+    background: #6c757d !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+.btn-cancelar {
+    background: #6c757d !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-cancelar:hover {
+    background: #545b62 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Estilos da página - APENAS para a página, não afeta outros elementos */
+.container-fluid .card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.container-fluid .table th {
+    background-color: #343a40 !important;
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 15px 10px;
+    font-size: 14px;
+}
+
+.container-fluid .table td {
+    padding: 15px 10px;
+    vertical-align: middle;
+    border-color: #f1f3f4;
+    font-size: 14px;
+}
+
+.container-fluid .table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.container-fluid .btn-outline-primary {
+    border-color: #17a2b8;
+    color: #17a2b8;
+}
+
+.container-fluid .btn-outline-primary:hover {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
 }

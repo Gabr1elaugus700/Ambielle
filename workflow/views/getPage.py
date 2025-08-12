@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from workflow.models import *
 from datetime import timedelta
 from django.utils.dateparse import parse_date
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
@@ -94,14 +94,10 @@ def clientes_api(request):
 def getCliente(request):
     title = 'Lista de Clientes'
 
-    # Busca todos os clientes e otimiza a consulta para incluir as tarefas em aberto
-    clientes = Cliente.objects.prefetch_related(
-        Prefetch(
-            'tarefa_set',  # Substitua 'tarefa_set' pelo related_name definido no modelo, se houver.
-            queryset=Tarefa.objects.all(),  # Filtra apenas as tarefas em aberto.
-            to_attr='tarefas_em_aberto'  # Armazena as tarefas como um atributo no objeto Cliente.
-        )
-    )
+    # Busca todos os clientes e adiciona a contagem de tarefas
+    clientes = Cliente.objects.annotate(
+        total_tarefas=Count('tarefa')
+    ).order_by('id')
 
     # Paginação
     paginator = Paginator(clientes, 15)

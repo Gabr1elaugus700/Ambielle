@@ -1,0 +1,30 @@
+<div class="containerForm">
+  <div class="tela-form">
+    <div class="form">
+      <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="content-form">
+          {% for field in form %}
+            <div class="form-label">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <ul class="errorlist">
+                  {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              {% if field.help_text %}
+                <p class="form-text">{{ field.help_text }}</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="btn">
+          <button type="submit" class="btn-form">SALVAR</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

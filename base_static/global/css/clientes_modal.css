@@ -1,0 +1,356 @@
+/* Modal de Clientes - Design Limpo */
+#clienteModal {
+    --bs-modal-transition: none !important;
+}
+
+/* Desabilitar TODAS as animações e transições do modal */
+#clienteModal,
+#clienteModal *,
+#clienteModal .fade,
+#clienteModal.fade,
+#clienteModal .modal-backdrop {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+#clienteModal .modal-dialog {
+    max-width: 600px;
+    transform: none !important;
+    transition: none !important;
+}
+
+#clienteModal .modal-content {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: none !important;
+    transition: none !important;
+}
+
+#clienteModal .modal-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    padding: 20px 25px;
+}
+
+#clienteModal .modal-title {
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+#clienteModal .btn-close {
+    background: none;
+    border: none;
+    color: white;
+    opacity: 0.8;
+    font-size: 1.2rem;
+}
+
+#clienteModal .btn-close:hover {
+    opacity: 1;
+    color: white;
+}
+
+#clienteModal .modal-body {
+    padding: 25px;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: white !important;
+    will-change: auto;
+}
+
+/* Otimizações de Performance */
+#clienteModal * {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+}
+
+#clienteModal .modal-backdrop {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* SOBRESCREVER COMPLETAMENTE O CSS DO FORMS.CSS */
+#clienteModal .containerForm {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: auto !important;
+    display: block !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+#clienteModal .containerForm:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#clienteModal .tela-form {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    flex-direction: initial !important;
+    justify-content: initial !important;
+    align-items: initial !important;
+    overflow: visible !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+#clienteModal .tela-form:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Estilos do formulário */
+#clienteModal .containerForm,
+#clienteModal .tela-form {
+    background: white !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+#clienteModal .title-form {
+    display: none !important;
+}
+
+#clienteModal .form {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#clienteModal .content-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: white !important;
+    padding: 0 !important;
+}
+
+#clienteModal .form-label {
+    margin: 0 !important;
+    background: white !important;
+}
+
+#clienteModal .form-label label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+#clienteModal .form-label input,
+#clienteModal .form-label select,
+#clienteModal .form-label textarea {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border: 2px solid #e1e5e9 !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    background-color: #fff !important;
+    transition: none !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+}
+
+#clienteModal .form-label input:focus,
+#clienteModal .form-label select:focus,
+#clienteModal .form-label textarea:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    box-shadow: none !important;
+    background-color: #fff !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Garantir que nenhum background colorido apareça */
+#clienteModal * {
+    background-image: none !important;
+}
+
+#clienteModal .containerForm *,
+#clienteModal .tela-form *,
+#clienteModal .form *,
+#clienteModal .content-form * {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+}
+
+/* Erros */
+#clienteModal .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    color: #e74c3c;
+    font-size: 12px;
+}
+
+/* Botões */
+#clienteModal .btn {
+    border-top: 1px solid #e1e5e9 !important;
+    background-color: #f8f9fa !important;
+    padding: 20px 25px !important;
+    margin: 0 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+}
+
+#clienteModal .btn-form {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: none !important;
+    transform: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+#clienteModal .btn-form:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#clienteModal .btn-form:disabled {
+    background: #6c757d !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-cancelar {
+    background: #6c757d !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: none !important;
+    transform: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.btn-cancelar:hover {
+    background: #545b62 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Forçar fundo branco em TODOS os elementos do formulário */
+#clienteModal .modal-body,
+#clienteModal .modal-body *:not(.btn):not(.btn-form):not(.btn-cancelar):not(.modal-header):not(.modal-title):not(.btn-close) {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+    background-attachment: initial !important;
+    background-blend-mode: initial !important;
+    background-clip: initial !important;
+    background-origin: initial !important;
+    background-position: initial !important;
+    background-repeat: initial !important;
+    background-size: initial !important;
+}
+
+/* Estilos da página */
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table th {
+    background-color: #343a40 !important;
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 15px 10px;
+    font-size: 14px;
+}
+
+.table td {
+    padding: 15px 10px;
+    vertical-align: middle;
+    border-color: #f1f3f4;
+    font-size: 14px;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.badge {
+    font-size: 12px;
+    padding: 6px 10px;
+}
+
+.btn-group .btn {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #clienteModal .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    #clienteModal .modal-body {
+        padding: 20px;
+        max-height: 60vh;
+    }
+    
+    #clienteModal .modal-header,
+    #clienteModal .btn {
+        padding: 15px 20px !important;
+    }
+    
+    .table-responsive {
+        font-size: 13px;
+    }
+    
+    .table th,
+    .table td {
+        padding: 10px 8px;
+    }
+}

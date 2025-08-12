@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from workflow.models import *
@@ -278,3 +278,73 @@ def definir_suporte(request):
     }
 
     return render(request, 'workflow/suporte.html', context)
+
+@login_required(login_url='workflow:login')
+def createSuporteForm(request):
+    if request.method == 'POST':
+        form = SuporteForm(request.POST)
+        if form.is_valid():
+            suporte = form.save(commit=False)
+            # Calcula o tempo_suporte
+            if suporte.hora_inicio and suporte.hora_fim:
+                inicio = datetime.combine(suporte.data_suporte, suporte.hora_inicio)
+                fim = datetime.combine(suporte.data_suporte, suporte.hora_fim)
+                delta = fim - inicio
+                suporte.tempo_suporte = Decimal(delta.total_seconds() / 3600)
+            else:
+                suporte.tempo_suporte = Decimal(0)
+            # Calcula o valor_total
+            suporte.valor_total = suporte.valor_hora * suporte.tempo_suporte
+            suporte.save()
+            return JsonResponse({'message': 'success'})
+        else:
+            form_html = render_to_string('workflow/createSuporteForm.html', {
+                'form': form,
+                'form_action': reverse('workflow:createSuporteForm')
+            }, request=request)
+            return JsonResponse({'html': form_html})
+    else:
+        form = SuporteForm()
+        
+    form_html = render_to_string('workflow/createSuporteForm.html', {
+        'form': form,
+        'form_action': reverse('workflow:createSuporteForm')
+    }, request=request)
+    
+    return HttpResponse(form_html)
+
+@login_required(login_url='workflow:login')
+def editSuporteForm(request, suporte_id):
+    suporte = get_object_or_404(Suporte, id=suporte_id)
+    
+    if request.method == 'POST':
+        form = SuporteForm(request.POST, instance=suporte)
+        if form.is_valid():
+            suporte = form.save(commit=False)
+            # Calcula o tempo_suporte
+            if suporte.hora_inicio and suporte.hora_fim:
+                inicio = datetime.combine(suporte.data_suporte, suporte.hora_inicio)
+                fim = datetime.combine(suporte.data_suporte, suporte.hora_fim)
+                delta = fim - inicio
+                suporte.tempo_suporte = Decimal(delta.total_seconds() / 3600)
+            else:
+                suporte.tempo_suporte = Decimal(0)
+            # Calcula o valor_total
+            suporte.valor_total = suporte.valor_hora * suporte.tempo_suporte
+            suporte.save()
+            return JsonResponse({'message': 'success'})
+        else:
+            form_html = render_to_string('workflow/createSuporteForm.html', {
+                'form': form,
+                'form_action': reverse('workflow:editSuporteForm', args=[suporte_id])
+            }, request=request)
+            return JsonResponse({'html': form_html})
+    else:
+        form = SuporteForm(instance=suporte)
+        
+    form_html = render_to_string('workflow/createSuporteForm.html', {
+        'form': form,
+        'form_action': reverse('workflow:editSuporteForm', args=[suporte_id])
+    }, request=request)
+    
+    return HttpResponse(form_html)

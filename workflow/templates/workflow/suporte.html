@@ -1,178 +1,279 @@
 {% extends 'global/base.html' %}
+{% load static %}
 
 {% block content %}
+  <link rel="stylesheet" href="{% static 'global/css/suporte.css' %}">
+  
   <main>
-    <section>
-      <button type="button" class="open-modal-btn" data-bs-toggle="modal" data-bs-target="#filterModal">Cadastrar Suporte</button>
+    <div class="container-fluid py-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 text-dark mb-0">Gestão de Suporte</h2>
+        <button type="button" class="btn btn-primary open-modal-btn" data-url="{% url 'workflow:createSuporteForm' %}">
+          <i class="fas fa-plus me-2"></i>Novo Suporte
+        </button>
+      </div>
 
       <!-- Modal Bootstrap -->
-      <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+      <div class="modal fade" id="suporteModal" tabindex="-1" aria-labelledby="suporteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="filterModalLabel">Cadastro de Suporte</h5>
+              <h5 class="modal-title" id="suporteModalLabel">Suporte</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
-            <div class="modal-body">
-              <form action="{{ form_action }}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="mb-3">
-                  {% for field in form %}
-                    <div class="form-label">
-                      <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                      {{ field }}
-                      {{ field.errors }}
-                      {% if field.help_text %}
-                        <p class="form-text">{{ field.help_text }}</p>
-                      {% endif %}
-                    </div>
-                  {% endfor %}
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="open-modal-btn">Salvar</button>
-                  <button type="button" class="open-modal-btn" data-bs-dismiss="modal">Fechar</button>
-                </div>
-              </form>
+            <div class="modal-body" id="modal-form-content">
+              <!-- Conteúdo será carregado via AJAX -->
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
     <!-- Tabela -->
-    <section>
-      <div class="lista" style="padding-top: 0;">
-        <table class="table table-striped table-hover table-bordered">
-          <thead class="table-dark">
-            <tr>
-              <!-- Coluna Cliente -->
-              <th scope="col">
-                Cliente
-                <a href="?sort=cliente&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-                </a>
-              </th>
-    
-              <!-- Coluna Descrição -->
-              <th scope="col">
-                Descrição
-                <a href="?sort=descricao&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-                </a>
-              </th>
-    
-              <!-- Coluna Valor/Hora -->
-              <th scope="col">
-                V/H
-                <a href="?sort=valor_hora&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-                </a>
-              </th>
-    
-              <!-- Coluna Data -->
-              <th scope="col">
-                Data
-                <a href="?sort=data_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-                </a>
-              </th>
-    
-              <!-- Coluna Hora Início -->
-              <th scope="col">
-                H. Ini
-                <a href="?sort=hora_inicio&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-                </a>
-              </th>
-    
-              <!-- Coluna Hora Fim -->
-              <th scope="col">
-                H. Fim
-                <a href="?sort=hora_fim&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-                </a>
-              </th>
-    
-              <!-- Coluna Tempo Total -->
-              <th scope="col">
-                Tempo Total
-                <a href="?sort=tempo_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-                </a>
-              </th>
-    
-              <!-- Coluna Valor Total -->
-              <th scope="col">
-                R$
-                <a href="?sort=valor_total&order={% if order == 'asc' %}desc{% else %}asc{% endif %}">
-                  <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
-                </a>
-              </th>
-            </tr>
-          </thead>
-    
-          <tbody>
-            {% for suporte in page_obj %}
-              <tr>
-                <td>{{ suporte.cliente.nome }}</td>
-                <td>{{ suporte.descricao }}</td>
-                <td>R${{ suporte.valor_hora|floatformat:2 }}</td>
-                <td>{{ suporte.data_suporte|date:'d/m' }}</td>
-                <td>{{ suporte.hora_inicio }}</td>
-                <td>{{ suporte.hora_fim }}</td>
-                <td>{{ suporte.tempo_suporte|floatformat:2 }}</td>
-                <td>R${{ suporte.valor_total|floatformat:2 }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-    
-          <tfoot>
-            <tr>
-              <td colspan="8" class="tfoot-cell">
-                <div class="pagination">
-                  <span class="step-links">
-                    {% if page_obj.has_previous %}
-                      <a href="?page=1"><i class="fa-solid fa-angles-left"></i></a>
-                      <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-angle-left"></i></a>
-                    {% endif %}
-    
-                    <span class="current">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-    
-                    {% if page_obj.has_next %}
-                      <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-angle-right"></i></a>
-                      <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-angles-right"></i></a>
-                    {% endif %}
-                  </span>
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                      <tr>
+                        <!-- Coluna Cliente -->
+                  <th scope="col">
+                    Cliente
+                    <a href="?sort=cliente&order={% if order == 'asc' %}desc{% else %}asc{% endif %}" class="text-white">
+                      <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+                    </a>
+                  </th>
+        
+                  <!-- Coluna Descrição -->
+                  <th scope="col">
+                    Descrição
+                    <a href="?sort=descricao&order={% if order == 'asc' %}desc{% else %}asc{% endif %}" class="text-white">
+                      <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+                    </a>
+                  </th>
+        
+                  <!-- Coluna Valor/Hora -->
+                  <th scope="col">
+                    V/H
+                    <a href="?sort=valor_hora&order={% if order == 'asc' %}desc{% else %}asc{% endif %}" class="text-white">
+                      <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+                    </a>
+                  </th>
+        
+                  <!-- Coluna Data -->
+                  <th scope="col">
+                    Data
+                    <a href="?sort=data_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}" class="text-white">
+                      <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+                    </a>
+                  </th>
+        
+                  <!-- Coluna Hora Início -->
+                  <th scope="col">
+                    H. Ini
+                    <a href="?sort=hora_inicio&order={% if order == 'asc' %}desc{% else %}asc{% endif %}" class="text-white">
+                      <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+                    </a>
+                  </th>
+        
+                  <!-- Coluna Hora Fim -->
+                  <th scope="col">
+                    H. Fim
+                    <a href="?sort=hora_fim&order={% if order == 'asc' %}desc{% else %}asc{% endif %}" class="text-white">
+                      <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+                    </a>
+                  </th>
+        
+                  <!-- Coluna Tempo Total -->
+                  <th scope="col">
+                    Tempo Total
+                    <a href="?sort=tempo_suporte&order={% if order == 'asc' %}desc{% else %}asc{% endif %}" class="text-white">
+                      <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+                    </a>
+                  </th>
+        
+                  <!-- Coluna Valor Total -->
+                  <th scope="col">
+                    R$
+                    <a href="?sort=valor_total&order={% if order == 'asc' %}desc{% else %}asc{% endif %}" class="text-white">
+                      <i class="fa-solid {% if order == 'asc' %}fa-arrow-up{% else %}fa-arrow-down{% endif %}" style="margin-left: 5px;"></i>
+                    </a>
+                  </th>
+                  
+                  <th scope="col" class="text-center">Ações</th>
+                </tr>
+              </thead>
+        
+              <tbody>
+                {% for suporte in page_obj %}
+                  <tr>
+                    <td>{{ suporte.cliente.nome }}</td>
+                    <td>{{ suporte.descricao|truncatechars:50 }}</td>
+                    <td>R$ {{ suporte.valor_hora|floatformat:2 }}</td>
+                    <td>{{ suporte.data_suporte|date:'d/m/Y' }}</td>
+                    <td>{{ suporte.hora_inicio }}</td>
+                    <td>{{ suporte.hora_fim }}</td>
+                    <td>{{ suporte.tempo_suporte|floatformat:2 }}h</td>
+                    <td class="fw-bold text-success">R$ {{ suporte.valor_total|floatformat:2 }}</td>
+                    <td class="text-center">
+                      <button class="btn btn-sm btn-outline-primary edit-suporte" 
+                              data-url="{% url 'workflow:editSuporteForm' suporte.id %}"
+                              title="Editar suporte">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="9" class="text-center py-4 text-muted">
+                      <i class="fas fa-inbox fa-2x mb-2"></i>
+                      <p class="mb-0">Nenhum suporte encontrado</p>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+    
+    <!-- Paginação -->
+    {% if page_obj.paginator.num_pages > 1 %}
+      <div class="container-fluid mt-4">
+        <nav aria-label="Navegação de páginas">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="Primeira página">
+                  <i class="fa-solid fa-angles-left"></i>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Página anterior">
+                  <i class="fa-solid fa-angle-left"></i>
+                </a>
+              </li>
+            {% endif %}
+
+            <li class="page-item active">
+              <span class="page-link">
+                {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+              </span>
+            </li>
+
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Próxima página">
+                  <i class="fa-solid fa-angle-right"></i>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Última página">
+                  <i class="fa-solid fa-angles-right"></i>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    {% endif %}
   </main>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Pega os elementos do modal
-      var modal = document.getElementById('filterModal')
-      var openBtn = document.querySelector('.open-modal-btn')
-      var closeBtn = document.querySelector('.close-modal')
+      const modal = new bootstrap.Modal(document.getElementById('suporteModal'), {
+        backdrop: 'static',
+        keyboard: true
+      });
+      const modalContent = document.getElementById('modal-form-content');
+      const modalTitle = document.getElementById('suporteModalLabel');
     
-      // Quando o botão for clicado, mostra o modal
-      openBtn.addEventListener('click', function () {
-        modal.style.display = 'flex'
-      })
+      function carregarFormulario(url, titulo = 'Suporte') {
+        modalTitle.textContent = titulo;
+        modalContent.innerHTML = '<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"></div></div>';
+        
+        modal.show();
+        
+        fetch(url)
+          .then(response => response.text())
+          .then(html => {
+            modalContent.innerHTML = html;
+            setupForm();
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+            modalContent.innerHTML = '<div class="alert alert-danger">Erro ao carregar formulário</div>';
+          });
+      }
     
-      // Quando clicar no botão de fechar, esconde o modal
-      closeBtn.addEventListener('click', function () {
-        modal.style.display = 'none'
-      })
-    
-      // Fecha o modal se clicar fora dele
-      window.addEventListener('click', function (event) {
-        if (event.target === modal) {
-          modal.style.display = 'none'
+      function setupForm() {
+        const form = modalContent.querySelector('form');
+        if (!form) return;
+        
+        // Adicionar botão cancelar
+        const btnArea = form.querySelector('.btn');
+        if (btnArea && !btnArea.querySelector('.btn-cancelar')) {
+          const btnCancelar = document.createElement('button');
+          btnCancelar.type = 'button';
+          btnCancelar.className = 'btn-cancelar';
+          btnCancelar.textContent = 'CANCELAR';
+          btnCancelar.onclick = () => modal.hide();
+          btnArea.insertBefore(btnCancelar, btnArea.firstChild);
         }
-      })
-    })
+        
+        form.onsubmit = function (e) {
+          e.preventDefault();
+          
+          const formData = new FormData(this);
+          const submitBtn = form.querySelector('.btn-form');
+          
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'SALVANDO...';
+          }
+    
+          fetch(this.action, {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message === 'success') {
+              modal.hide();
+              window.location.reload();
+            } else {
+              modalContent.innerHTML = data.html;
+              setupForm();
+            }
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao salvar suporte');
+          })
+          .finally(() => {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'SALVAR';
+            }
+          });
+        };
+      }
+    
+      // Evento criar suporte
+      document.querySelector('.open-modal-btn').onclick = function (e) {
+        e.preventDefault();
+        carregarFormulario(this.getAttribute('data-url'), 'Novo Suporte');
+      };
+    
+      // Evento editar suporte - delegação mais eficiente
+      document.onclick = function (e) {
+        const editBtn = e.target.closest('.edit-suporte');
+        if (editBtn) {
+          e.preventDefault();
+          carregarFormulario(editBtn.getAttribute('data-url'), 'Editar Suporte');
+        }
+      };
+    });
   </script>
 {% endblock %}

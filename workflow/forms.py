@@ -396,6 +396,12 @@ class SuporteForm(forms.ModelForm):
         decimal_places=2
     )
     
+    data_suporte = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        label='Data do Suporte',
+        required=True
+    )
+    
     hora_inicio = forms.TimeField(
         widget=forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
         label='Hora de Início',
@@ -410,7 +416,7 @@ class SuporteForm(forms.ModelForm):
 
     class Meta:
         model = Suporte
-        fields = ['cliente', 'descricao', 'valor_hora', 'hora_inicio', 'hora_fim']
+        fields = ['cliente', 'descricao', 'valor_hora', 'data_suporte', 'hora_inicio', 'hora_fim']
 
     def clean(self):
         cleaned_data = super().clean()

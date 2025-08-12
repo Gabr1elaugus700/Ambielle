@@ -1,132 +1,214 @@
 {% extends 'global/base.html' %}
+{% load static %}
 
 {% block content %}
+  <link rel="stylesheet" href="{% static 'global/css/clientes_modal.css' %}">
+  
   <main>
-    <section>
-      <button type="button" class="open-modal-btn" data-url="{% url 'workflow:createCliente' %}">Criar Cliente</button>
+    <section style="padding: 20px;">
+      <div style="margin-bottom: 20px;">
+        <button type="button" class="btn btn-primary open-modal-btn" data-url="{% url 'workflow:createCliente' %}">
+          <i class="fas fa-plus"></i> Novo Cliente
+        </button>
+      </div>
 
-      <!-- Modal Bootstrap (usado para Criar e Editar) -->
-      <div class="modal fade" id="clienteModal" tabindex="-1">
+      <!-- Modal -->
+      <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content" style="padding: 0px;">
-            <div class="modal-body" id="modal-form-content" style="padding: 0px;">
-              <!-- O formulário será carregado aqui via AJAX -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="clienteModalLabel">Cliente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-form-content">
+              <!-- Conteúdo carregado via AJAX -->
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <!-- Lista de Clientes -->
-    <section>
-      <div class="lista" style="padding-top: 0px;">
-        <table class="table table-striped table-hover table-bordered">
-          <thead class="table-dark">
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Projetos</th>
-              <th>Contato</th>
-              <th>Email</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for cliente in page_obj %}
+
+      <!-- Tabela -->
+      <div class="card">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-dark">
               <tr>
-                <td>{{ cliente.id }}</td>
-                <td>{{ cliente.nome }}</td>
-                <td style="text-align: center;">3</td> <!-- Ajustar valor real depois -->
-                <td>{{ cliente.contato_principal }}</td>
-                <td>{{ cliente.email }}</td>
-                <td class="text-center">
-                  <a href="{% url 'workflow:deleteCliente' cliente.id %}" onclick="return confirm('Tem certeza que deseja excluir este item?');"><i class="fa-regular fa-trash-can text-danger"></i></a>
-                  &nbsp;
-                  <a href="#" class="edit-client" data-url="{% url 'workflow:updateCliente' cliente.id %}"><i class="fa-regular fa-pen-to-square text-primary"></i></a>
-                </td>
+                <th width="80">ID</th>
+                <th>Nome</th>
+                <th width="100" class="text-center">Projetos</th>
+                <th width="150">Contato</th>
+                <th width="200">Email</th>
+                <th width="100" class="text-center">Ações</th>
               </tr>
-            {% endfor %}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="8" class="tfoot-cell">
-                <div class="pagination">
-                  <span class="step-links">
-                    {% if page_obj.has_previous %}
-                      <a href="?page=1"><i class="fa-solid fa-angles-left"></i></a>
-                      <a href="?page={{ page_obj.previous_page_number }}"><i class="fa-solid fa-angle-left"></i></a>
-                    {% endif %}
-
-                    <span class="current">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
-
-                    {% if page_obj.has_next %}
-                      <a href="?page={{ page_obj.next_page_number }}"><i class="fa-solid fa-angle-right"></i></a>
-                      <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-angles-right"></i></a>
-                    {% endif %}
+            </thead>
+            <tbody>
+              {% for cliente in page_obj %}
+                <tr>
+                  <td>{{ cliente.id }}</td>
+                  <td><strong>{{ cliente.nome }}</strong></td>
+                  <td class="text-center">
+                    <span class="badge bg-info">{{ cliente.total_tarefas|default:0 }}</span>
+                  </td>
+                  <td>{{ cliente.contato_principal|default:"-" }}</td>
+                  <td>{{ cliente.email|default:"-" }}</td>
+                  <td class="text-center">
+                    <div class="btn-group" role="group">
+                      <button type="button" class="btn btn-sm btn-outline-primary edit-client" 
+                              data-url="{% url 'workflow:updateCliente' cliente.id %}" 
+                              title="Editar">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <a href="{% url 'workflow:deleteCliente' cliente.id %}" 
+                         class="btn btn-sm btn-outline-danger" 
+                         onclick="return confirm('Tem certeza que deseja excluir este cliente?');"
+                         title="Excluir">
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center py-4 text-muted">
+                    <i class="fas fa-users fa-2x mb-2"></i><br>
+                    Nenhum cliente cadastrado
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Paginação -->
+        {% if page_obj.has_other_pages %}
+          <div class="card-footer">
+            <nav aria-label="Navegação">
+              <ul class="pagination justify-content-center mb-0">
+                {% if page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; Primeira</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                  </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                  <span class="page-link">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
                   </span>
-                </div>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+                </li>
+                
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Próxima</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        {% endif %}
       </div>
     </section>
   </main>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const modal = new bootstrap.Modal(document.getElementById('clienteModal'))
-      const modalContent = document.getElementById('modal-form-content')
+      const modal = new bootstrap.Modal(document.getElementById('clienteModal'), {
+        backdrop: 'static',
+        keyboard: true
+      });
+      const modalContent = document.getElementById('modal-form-content');
+      const modalTitle = document.getElementById('clienteModalLabel');
     
-      function carregarFormulario(url) {
+      function carregarFormulario(url, titulo = 'Cliente') {
+        modalTitle.textContent = titulo;
+        modalContent.innerHTML = '<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"></div></div>';
+        
+        modal.show();
+        
         fetch(url)
-          .then((response) => response.text())
-          .then((html) => {
-            modalContent.innerHTML = html
-            modal.show()
-            ativarEnvioFormulario()
+          .then(response => response.text())
+          .then(html => {
+            modalContent.innerHTML = html;
+            setupForm();
           })
-          .catch((error) => console.error('Erro ao carregar o formulário:', error))
+          .catch(error => {
+            console.error('Erro:', error);
+            modalContent.innerHTML = '<div class="alert alert-danger">Erro ao carregar formulário</div>';
+          });
       }
     
-      function ativarEnvioFormulario() {
-        const form = modalContent.querySelector('form')
-        if (form) {
-          form.addEventListener('submit', function (e) {
-            e.preventDefault()
-            const formData = new FormData(this)
-    
-            fetch(this.action, {
-              method: 'POST',
-              body: formData
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.message === 'success') {
-                  modal.hide()
-                  location.reload()
-                } else {
-                  modalContent.innerHTML = data.html
-                  ativarEnvioFormulario()
-                }
-              })
-              .catch((error) => console.error('Erro ao enviar o formulário:', error))
-          })
+      function setupForm() {
+        const form = modalContent.querySelector('form');
+        if (!form) return;
+        
+        // Adicionar botão cancelar
+        const btnArea = form.querySelector('.btn');
+        if (btnArea && !btnArea.querySelector('.btn-cancelar')) {
+          const btnCancelar = document.createElement('button');
+          btnCancelar.type = 'button';
+          btnCancelar.className = 'btn-cancelar';
+          btnCancelar.textContent = 'CANCELAR';
+          btnCancelar.onclick = () => modal.hide();
+          btnArea.insertBefore(btnCancelar, btnArea.firstChild);
         }
+        
+        form.onsubmit = function (e) {
+          e.preventDefault();
+          
+          const formData = new FormData(this);
+          const submitBtn = form.querySelector('.btn-form');
+          
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'SALVANDO...';
+          }
+    
+          fetch(this.action, {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message === 'success') {
+              modal.hide();
+              window.location.reload();
+            } else {
+              modalContent.innerHTML = data.html;
+              setupForm();
+            }
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao salvar cliente');
+          })
+          .finally(() => {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'SALVAR';
+            }
+          });
+        };
       }
     
-      // Abrir modal para CRIAR cliente
-      document.querySelector('.open-modal-btn').addEventListener('click', function (event) {
-        event.preventDefault()
-        carregarFormulario(this.getAttribute('data-url'))
-      })
+      // Evento criar cliente
+      document.querySelector('.open-modal-btn').onclick = function (e) {
+        e.preventDefault();
+        carregarFormulario(this.getAttribute('data-url'), 'Novo Cliente');
+      };
     
-      // Abrir modal para EDITAR cliente
-      document.addEventListener('click', function (event) {
-        if (event.target.closest('.edit-client')) {
-          event.preventDefault()
-          const url = event.target.closest('.edit-client').getAttribute('data-url')
-          carregarFormulario(url)
+      // Evento editar cliente - delegação mais eficiente
+      document.onclick = function (e) {
+        const editBtn = e.target.closest('.edit-client');
+        if (editBtn) {
+          e.preventDefault();
+          carregarFormulario(editBtn.getAttribute('data-url'), 'Editar Cliente');
         }
-      })
-    })
+      };
+    });
   </script>
 {% endblock %}
