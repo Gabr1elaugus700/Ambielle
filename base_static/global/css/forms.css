@@ -610,104 +610,72 @@ select:focus {
 }
 
 /* ===================================
-   MODAL CUSTOMIZADO DE LICENÇAS
+   ESTILOS ADICIONAIS PARA MODAIS
    ================================== */
 
-/* Modal overlay customizado */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
+/* Estilos para listas dentro dos modais */
+.modal .list-unstyled li {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: var(--secondary-color);
+    font-family: var(--secondary-font);
+    transition: background-color 0.3s ease;
 }
 
-.modal-overlay .modal-content {
-    background-color: var(--primary-color);
-    border: 3px solid var(--secondary-color);
-    border-radius: 15px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-width: 90%;
-    max-height: 90%;
-    overflow-y: auto;
-    position: relative;
-    padding: 0;
+.modal .list-unstyled li:last-child {
+    border-bottom: none;
 }
 
-.modal-overlay h3 {
-    background: linear-gradient(135deg, var(--secondary-color), #2c3e50);
-    color: white;
-    margin: 0;
-    padding: 1.5rem 2rem;
-    border-radius: 15px 15px 0 0;
-    font-family: var(--primary-font);
-    font-weight: 600;
-    font-size: 1.5rem;
+.modal .list-unstyled li:hover {
+    background-color: #f8fdfd;
 }
 
-.modal-overlay .btn-close {
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 2rem;
-    cursor: pointer;
-    z-index: 10;
-    opacity: 1;
-    width: auto;
-    height: auto;
+/* Melhorias para tabelas em modais */
+.modal .table {
+    margin-bottom: 0;
 }
 
-.modal-overlay .btn-close:hover {
-    opacity: 0.7;
-}
-
-.modal-overlay .table-responsive {
-    padding: 1.5rem 2rem 2rem;
-    background-color: var(--primary-color);
-}
-
-.modal-overlay .table {
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border: 2px solid var(--secondary-color);
-}
-
-.modal-overlay .table th {
+.modal .table th {
     background: linear-gradient(135deg, var(--secondary-color), #2c3e50);
     color: white;
     font-family: var(--primary-font);
     font-weight: 600;
     border: none;
     padding: 1rem;
+    font-size: 0.9rem;
 }
 
-.modal-overlay .table td {
-    padding: 0.75rem 1rem;
+.modal .table td {
+    padding: 0.875rem 1rem;
     border-bottom: 1px solid #e5e7eb;
     color: var(--secondary-color);
     font-family: var(--secondary-font);
+    vertical-align: middle;
 }
 
-.modal-overlay .table tbody tr:last-child td {
+.modal .table tbody tr:last-child td {
     border-bottom: none;
 }
 
-.modal-overlay .table tbody tr:hover {
+.modal .table tbody tr:hover {
     background-color: #f8fdfd;
 }
 
-.modal-overlay .status-badge {
-    padding: 0.25rem 0.75rem;
+.modal .table .fw-bold {
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+/* Form control plaintext melhorado */
+.modal .form-control-plaintext {
+    color: var(--secondary-color);
+    font-family: var(--secondary-font);
+    font-weight: 500;
+}
+
+/* Status badges */
+.status-badge {
+    padding: 0.375rem 0.75rem;
     border-radius: 15px;
     font-size: 0.875rem;
     font-weight: 600;
@@ -716,22 +684,43 @@ select:focus {
     gap: 0.25rem;
 }
 
-.modal-overlay .status-success {
-    background-color: #d4edda;
+.status-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
-.modal-overlay .status-warning {
-    background-color: #fff3cd;
+.status-warning {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
     color: #856404;
     border: 1px solid #ffeaa7;
 }
 
-.modal-overlay .text-center {
-    text-align: center;
-    font-style: italic;
-    color: #6b7280;
+/* Melhorias para responsividade dos modais */
+@media (max-width: 768px) {
+    .modal-dialog.modal-xl,
+    .modal-dialog.modal-lg {
+        max-width: 95%;
+        margin: 0.5rem auto;
+    }
+    
+    .modal .card-body {
+        padding: 1rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem !important;
+    }
+    
+    .modal .table th,
+    .modal .table td {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .modal .row .col-md-6 {
+        margin-bottom: 1rem;
+    }
 }
 
 /* Cards de filtro */
