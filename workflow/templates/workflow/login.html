@@ -1,41 +1,118 @@
 {% extends 'global/base.html' %}
 
 {% block content %}
-
 <div class="containerForm login-page">
-    <div class="tela-form login-form">
-      <div class="title-form">
-        <h1>Login</h1>
-      </div>
-      {% if user.is_authenticated %}
-        <p>
-            Você fez login como {{ user.username }}. 
-            Para sair, Clique <a href="{% url 'workflow:logout' %}" >aqui</a>.
-        </p>
-      {% else %}
-        <form action=" {% url 'workflow:login' %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <div class="form">
-                {% for field in form %}
-                    <div class="form-label">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        {{ field }} 
-                        {{ field.errors }}
-                        {% if field.help_text %}
-                        <p class="help">{{ field.help_text }}</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="btn">
-                <button class="btn-form" type="submit">Entrar</button>
-            </div>
-            </div>
-        </form>
-        {% endif %}
+  <div class="tela-form login-form">
+    <div class="title-form">
+      <h1>
+        <i class="fas fa-sign-in-alt me-2"></i>
+        Login
+      </h1>
     </div>
-
-
+    
+    <div class="form-content">
+      {% if user.is_authenticated %}
+        <div class="authenticated-message">
+          <div class="alert alert-success">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>Bem-vindo, {{ user.first_name|default:user.username }}!</strong>
+          </div>
+          <p class="text-center mb-3">
+            Você já está logado no sistema.
+          </p>
+          <div class="text-center">
+            <a href="{% url 'workflow:logout' %}" class="btn btn-outline-danger">
+              <i class="fas fa-sign-out-alt me-2"></i>
+              Sair do Sistema
+            </a>
+          </div>
+        </div>
+      {% else %}
+        <form action="{% url 'workflow:login' %}" method="POST" class="login-form-fields">
+          {% csrf_token %}
+          
+          <div class="form-fields">
+            {% for field in form %}
+              <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="form-label">
+                  {% if field.label == 'Username' %}
+                    <i class="fas fa-user me-2"></i>
+                  {% elif field.label == 'Password' %}
+                    <i class="fas fa-lock me-2"></i>
+                  {% endif %}
+                  {{ field.label }}
+                </label>
+                
+                <div class="input-wrapper">
+                  {{ field }}
+                  {% if field.name == 'password' %}
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                      <i class="fas fa-eye" id="password-icon"></i>
+                    </button>
+                  {% endif %}
+                </div>
+                
+                {% if field.errors %}
+                  <div class="field-errors">
+                    {% for error in field.errors %}
+                      <small class="error-message">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        {{ error }}
+                      </small>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                
+                {% if field.help_text %}
+                  <small class="form-help">{{ field.help_text }}</small>
+                {% endif %}
+              </div>
+            {% endfor %}
+            
+            {% if form.non_field_errors %}
+              <div class="form-errors">
+                {% for error in form.non_field_errors %}
+                  <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    {{ error }}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-form btn-primary">
+              <i class="fas fa-sign-in-alt me-2"></i>
+              Entrar no Sistema
+            </button>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </div>
 </div>
+
+<script>
+function togglePassword() {
+  const passwordField = document.querySelector('input[name="password"]');
+  const passwordIcon = document.getElementById('password-icon');
+  
+  if (passwordField.type === 'password') {
+    passwordField.type = 'text';
+    passwordIcon.className = 'fas fa-eye-slash';
+  } else {
+    passwordField.type = 'password';
+    passwordIcon.className = 'fas fa-eye';
+  }
+}
+
+// Auto-focus no primeiro campo quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+  const firstInput = document.querySelector('.login-form-fields input');
+  if (firstInput) {
+    firstInput.focus();
+  }
+});
+</script>
 {% endblock %}
