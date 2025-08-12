@@ -344,7 +344,6 @@ select:focus {
     border-radius: 15px;
     border: none;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    background-color: var(--primary-color);
 }
 
 #relatoriosModal .modal-header {
@@ -364,7 +363,6 @@ select:focus {
 
 #relatoriosModal .modal-body {
     padding: 2rem;
-    background-color: var(--primary-color) !important;
 }
 
 #relatoriosModal .card {
@@ -485,7 +483,6 @@ select:focus {
 
 .modal-body {
     padding: 2rem;
-    background-color: var(--primary-color) !important;
     color: var(--secondary-color);
 }
 

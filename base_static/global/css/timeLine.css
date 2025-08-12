@@ -2,6 +2,418 @@
     min-width: 40rem;
 }
 
+/* Modal de Relatórios - Estilos Modernos */
+#relatoriosModal .modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+#relatoriosModal .modal-dialog {
+    padding: 0;
+    margin: 1.75rem auto;
+}
+
+#relatoriosModal .modal-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    border: none;
+    margin: 0;
+    padding: 1rem 1.5rem;
+}
+
+#relatoriosModal .modal-header .btn-close {
+    filter: invert(1);
+    opacity: 0.8;
+}
+
+#relatoriosModal .modal-header .btn-close:hover {
+    opacity: 1;
+}
+
+#relatoriosModal .modal-body {
+    background: white;
+    border-radius: 0 0 12px 12px;
+    margin: 0;
+    border: none;
+}
+
+#relatoriosModal .modal-title {
+    color: white !important;
+}
+
+/* Remove qualquer borda ou espaçamento do Bootstrap */
+#relatoriosModal .modal-content * {
+    box-shadow: none;
+}
+
+/* Força a remoção de qualquer borda branca do Bootstrap */
+#relatoriosModal.modal {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#relatoriosModal .modal-content {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+#relatoriosModal .modal-header,
+#relatoriosModal .modal-body {
+    border: none !important;
+}
+
+/* Garante que não há espaçamento extra */
+#relatoriosModal .modal-dialog {
+    max-width: 90%;
+    width: 90%;
+}
+
+/* ====== ESTILOS GLOBAIS PARA TODOS OS MODAIS DA TIMELINE ====== */
+
+/* Centralização e remoção de bordas brancas para todos os modais */
+.modal.fade,
+.modal-padrao.fade {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal .modal-dialog,
+.modal-padrao .modal-dialog {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+}
+
+.modal .modal-content,
+.modal-padrao .modal-content {
+    margin: auto;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+/* Headers uniformes para todos os modais */
+.modal .modal-header,
+.modal-padrao .modal-header {
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1rem 1.5rem !important;
+    margin: 0 !important;
+}
+
+.modal .modal-title,
+.modal-padrao .modal-title {
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+.modal .btn-close,
+.modal-padrao .btn-close {
+    filter: invert(1) !important;
+    opacity: 0.8 !important;
+    background: none !important;
+    border: none !important;
+}
+
+.modal .btn-close:hover,
+.modal-padrao .btn-close:hover {
+    opacity: 1 !important;
+}
+
+/* Bodies uniformes para todos os modais */
+.modal .modal-body,
+.modal-padrao .modal-body {
+    background: white !important;
+    border: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* Footers uniformes */
+.modal .modal-footer,
+.modal-padrao .modal-footer {
+    background: #f8f9fa !important;
+    border: none !important;
+    border-radius: 0 0 12px 12px !important;
+    margin: 0 !important;
+}
+
+/* Responsividade para todos os modais */
+@media (max-width: 768px) {
+    .modal .modal-dialog,
+    .modal-padrao .modal-dialog {
+        padding: 0.5rem;
+        min-height: 100vh;
+        align-items: center;
+    }
+    
+    .modal .modal-content,
+    .modal-padrao .modal-content {
+        max-height: 95vh;
+        overflow-y: auto;
+    }
+}
+
+/* Estilos específicos para cada modal */
+
+/* Modal de Filtro */
+#filterModal .modal-dialog {
+    max-width: 600px;
+}
+
+/* Modal de Editar Tarefa */
+#modal-editar-tarefa .modal-dialog {
+    max-width: 800px;
+}
+
+/* Modal de Criar Tarefa */
+#modal-criar-tarefa .modal-dialog {
+    max-width: 800px;
+}
+
+/* Modal de Relatórios - mantém configuração especial */
+#relatoriosModal .modal-dialog {
+    max-width: 1200px;
+    width: 95%;
+}
+
+/* Força a centralização vertical para todos os modais */
+.modal.show .modal-dialog,
+.modal-padrao.show .modal-dialog {
+    transform: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: calc(100vh - 2rem) !important;
+    margin: 1rem auto !important;
+}
+
+/* Override para garantir que não há conflitos com outros CSS */
+.modal .modal-dialog::before,
+.modal-padrao .modal-dialog::before {
+    content: '' !important;
+    display: inline-block !important;
+    height: auto !important;
+    vertical-align: middle !important;
+}
+
+/* Animações suaves */
+.modal.fade .modal-dialog,
+.modal-padrao.fade .modal-dialog {
+    transition: transform 0.3s ease-out !important;
+    transform: translate(0, -50px) !important;
+}
+
+.modal.show .modal-dialog,
+.modal-padrao.show .modal-dialog {
+    transform: none !important;
+}
+
+/* Backdrop personalizado */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Remove qualquer interferência de z-index */
+.modal {
+    z-index: 1055 !important;
+}
+
+.modal-backdrop {
+    z-index: 1050 !important;
+}
+
+/* Garante que o modal seja exibido corretamente */
+.modal.show {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Correção para modais com scroll */
+.modal-body {
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+}
+
+/* Customização da scrollbar para modal-body */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+#relatoriosModal .form-label {
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+#relatoriosModal .form-control,
+#relatoriosModal .form-select {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+#relatoriosModal .form-control:focus,
+#relatoriosModal .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+}
+
+#relatoriosModal .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#relatoriosModal .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#relatoriosModal .card-body {
+    padding: 1.5rem;
+}
+
+#relatoriosModal .btn-outline-success:hover,
+#relatoriosModal .btn-outline-danger:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+#relatoriosModal .btn-group .btn {
+    flex: 1;
+}
+
+#relatoriosModal .border-bottom {
+    border-color: #e9ecef !important;
+}
+
+#relatoriosModal .text-primary {
+    color: black !important;
+}
+
+#relatoriosModal .invalid-feedback {
+    display: block;
+    font-size: 0.875rem;
+    color: #dc3545;
+    margin-top: 0.25rem;
+}
+
+#relatoriosModal .is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.1);
+}
+
+/* Animações para os botões de exportação */
+#exportarPdf:disabled,
+#exportarXlsx:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+#exportarPdf:not(:disabled):hover,
+#exportarXlsx:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsividade para o modal */
+@media (max-width: 768px) {
+    #relatoriosModal .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    #relatoriosModal .row {
+        margin: 0;
+    }
+    
+    #relatoriosModal .col-lg-6 {
+        padding: 0 0.5rem;
+    }
+    
+    #relatoriosModal .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Estilos para os botões de ação */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn-filter,
+.btn-nova-tarefa,
+.btn-relatorios {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-filter {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    color: white;
+}
+
+.btn-nova-tarefa {
+    background: linear-gradient(135deg, #198754, #157347);
+    color: white;
+}
+
+.btn-relatorios {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+}
+
+.btn-filter:hover,
+.btn-nova-tarefa:hover,
+.btn-relatorios:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0.9;
+}
+
+.btn-filter:active,
+.btn-nova-tarefa:active,
+.btn-relatorios:active {
+    transform: translateY(0);
+}
+
 /* Estilo para os cards */
 .tasks-row {
     display: flex;

@@ -7,6 +7,9 @@
     <section class="action-buttons">
         <button class="btn-filter" data-bs-toggle="modal" data-bs-target="#filterModal">Filtrar Atividades</button>
         <button class="btn-nova-tarefa" id="btn-criar-tarefa">Nova Tarefa</button>
+        <button class="btn-relatorios" id="btn-relatorios">
+            <i class="fas fa-chart-bar me-2"></i>Relatórios
+        </button>
     </section>
     
 <div id="filterModal" class="modal fade modal-padrao modal-tarefas" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
@@ -153,6 +156,261 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal para Relatórios -->
+    <div class="modal fade" id="relatoriosModal" tabindex="-1" aria-labelledby="relatoriosModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title d-flex align-items-center" id="relatoriosModalLabel">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Gerar Relatórios
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                
+                <div class="modal-body p-4">
+                    <!-- Seção de Filtros Personalizados -->
+                    <div class="mb-5">
+                        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                            <i class="fas fa-filter text-primary me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h5 class="mb-1 text-dark">Relatório Personalizado</h5>
+                                <small class="text-muted">Configure filtros para gerar relatórios específicos</small>
+                            </div>
+                        </div>
+                        
+                        <form id="formRelatorios">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="tipoRelatorio" class="form-label fw-bold">
+                                            <i class="fas fa-list me-1"></i>Tipo de Relatório *
+                                        </label>
+                                        <select id="tipoRelatorio" class="form-select" required>
+                                            <option value="">-- Selecione um tipo --</option>
+                                            <option value="tarefas">📊 Tarefas</option>
+                                            <option value="clientes">👥 Clientes</option>
+                                            <option value="clientes_servicos">🔗 Clientes x Serviços</option>
+                                            <option value="clientes_servicos_valores">💰 Clientes x Serviços x Valores</option>
+                                            <option value="clientes_suporte">🛠️ Clientes x Suporte</option>
+                                            <option value="demandas_por_cliente">📈 Demandas por Cliente</option>
+                                        </select>
+                                        <div class="form-text">Escolha o tipo de relatório que deseja gerar</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="filtroCliente" class="form-label fw-bold">
+                                            <i class="fas fa-building me-1"></i>Cliente
+                                        </label>
+                                        <input type="text" id="filtroCliente" class="form-control" 
+                                               placeholder="Digite o nome do cliente" 
+                                               autocomplete="off">
+                                        <div class="form-text">Filtro opcional por nome do cliente</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="filtroStatus" class="form-label fw-bold">
+                                            <i class="fas fa-tasks me-1"></i>Status
+                                        </label>
+                                        <select id="filtroStatus" class="form-select">
+                                            <option value="">-- Todos os status --</option>
+                                            <option value="Iniciado">🟡 Iniciado</option>
+                                            <option value="Coleta De Informações">🔵 Coleta de Informações</option>
+                                            <option value="Execucao">🟢 Execução</option>
+                                            <option value="Aprovação Cliente">🟠 Aprovação Cliente</option>
+                                            <option value="Concluído">✅ Concluído</option>
+                                            <option value="Encerrado">⚫ Encerrado</option>
+                                            <option value="Protocolado">🔴 Protocolado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="filtroServico" class="form-label fw-bold">
+                                            <i class="fas fa-cogs me-1"></i>Tipo de Serviço
+                                        </label>
+                                        <input type="text" id="filtroServico" class="form-control" 
+                                               placeholder="Digite o tipo de serviço" 
+                                               autocomplete="off">
+                                        <div class="form-text">Filtro opcional por tipo de serviço</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="filtroDataInicial" class="form-label fw-bold">
+                                            <i class="fas fa-calendar-alt me-1"></i>Data Inicial
+                                        </label>
+                                        <input type="date" id="filtroDataInicial" class="form-control">
+                                        <div class="form-text">Data de início do período</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="filtroDataFinal" class="form-label fw-bold">
+                                            <i class="fas fa-calendar-check me-1"></i>Data Final
+                                        </label>
+                                        <input type="date" id="filtroDataFinal" class="form-control">
+                                        <div class="form-text">Data final do período</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Botões de Exportação -->
+                            <div class="border-top pt-3 mt-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        <small>Selecione o tipo de relatório para habilitar a exportação</small>
+                                    </div>
+                                    <div class="btn-group" role="group" aria-label="Botões de exportação">
+                                        <button id="exportarPdf" class="btn btn-danger" type="button" disabled>
+                                            <i class="fas fa-file-pdf me-2"></i>Exportar PDF
+                                        </button>
+                                        <button id="exportarXlsx" class="btn btn-success" type="button" disabled>
+                                            <i class="fas fa-file-excel me-2"></i>Exportar XLSX
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Seção de Relatórios Predefinidos -->
+                    <div class="mt-5 pt-4 border-top">
+                        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                            <i class="fas fa-download text-primary me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <h5 class="mb-1 text-dark">Relatórios Predefinidos</h5>
+                                <small class="text-muted">Baixe relatórios completos sem filtros personalizados</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-tasks fa-2x text-info mb-2"></i>
+                                        <h6 class="card-title">Todas as Tarefas</h6>
+                                        <p class="card-text text-muted small">Lista completa de todas as tarefas</p>
+                                        <div class="btn-group w-100" role="group">
+                                            <a href="{% url 'workflow:exportar_xlsx' 'tarefas' %}" 
+                                               class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-file-excel me-1"></i>XLSX
+                                            </a>
+                                            <a href="{% url 'workflow:exportar_pdf' 'tarefas' %}" 
+                                               class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-file-pdf me-1"></i>PDF
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                                        <h6 class="card-title">Clientes</h6>
+                                        <p class="card-text text-muted small">Lista completa de clientes cadastrados</p>
+                                        <div class="btn-group w-100" role="group">
+                                            <a href="{% url 'workflow:exportar_xlsx' 'clientes' %}" 
+                                               class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-file-excel me-1"></i>XLSX
+                                            </a>
+                                            <a href="{% url 'workflow:exportar_pdf' 'clientes' %}" 
+                                               class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-file-pdf me-1"></i>PDF
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-handshake fa-2x text-info mb-2"></i>
+                                        <h6 class="card-title">Clientes x Serviços</h6>
+                                        <p class="card-text text-muted small">Relacionamento clientes e serviços</p>
+                                        <div class="btn-group w-100" role="group">
+                                            <a href="{% url 'workflow:exportar_xlsx' 'clientes_servicos' %}" 
+                                               class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-file-excel me-1"></i>XLSX
+                                            </a>
+                                            <a href="{% url 'workflow:exportar_pdf' 'clientes_servicos' %}" 
+                                               class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-file-pdf me-1"></i>PDF
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
+                                        <h6 class="card-title">Clientes x Serviços x Valores</h6>
+                                        <p class="card-text text-muted small">Relatório financeiro completo</p>
+                                        <div class="btn-group w-100" role="group">
+                                            <a href="{% url 'workflow:exportar_xlsx' 'clientes_servicos_valores' %}" 
+                                               class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-file-excel me-1"></i>XLSX
+                                            </a>
+                                            <a href="{% url 'workflow:exportar_pdf' 'clientes_servicos_valores' %}" 
+                                               class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-file-pdf me-1"></i>PDF
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-headset fa-2x text-warning mb-2"></i>
+                                        <h6 class="card-title">Clientes x Suporte</h6>
+                                        <p class="card-text text-muted small">Histórico de atendimentos</p>
+                                        <div class="btn-group w-100" role="group">
+                                            <a href="{% url 'workflow:exportar_xlsx' 'clientes_suporte' %}" 
+                                               class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-file-excel me-1"></i>XLSX
+                                            </a>
+                                            <a href="{% url 'workflow:exportar_pdf' 'clientes_suporte' %}" 
+                                               class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-file-pdf me-1"></i>PDF
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                                        <h6 class="card-title">Demandas por Cliente</h6>
+                                        <p class="card-text text-muted small">Análise de demandas por cliente</p>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'workflow:exportar_xlsx' 'demandas_por_cliente' %}" 
+                                               class="btn btn-outline-success btn-sm">
+                                                <i class="fas fa-file-excel me-1"></i>XLSX
+                                            </a>
+                                            <a href="{% url 'workflow:exportar_pdf' 'demandas_por_cliente' %}" 
+                                               class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-file-pdf me-1"></i>PDF
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <!-- Scripts -->
@@ -187,6 +445,15 @@
             });
         }
 
+        // Configurar botão de relatórios
+        const btnRelatorios = document.getElementById('btn-relatorios');
+        if (btnRelatorios) {
+            btnRelatorios.addEventListener('click', function () {
+                console.log('Abrindo modal de relatórios');
+                openRelatoriosModal();
+            });
+        }
+
         // Garantir que os botões de fechar do modal de edição funcionem
         document.addEventListener('click', function(e) {
             if (e.target.matches('#modal-editar-tarefa .btn-close') || 
@@ -211,6 +478,148 @@
                 );
             });
         });
+
+        // Funções para o modal de relatórios
+        function openRelatoriosModal() {
+            const modal = new bootstrap.Modal(document.getElementById('relatoriosModal'));
+            modal.show();
+            resetReportForm();
+        }
+
+        function resetReportForm() {
+            const form = document.getElementById('formRelatorios');
+            if (form) {
+                form.reset();
+            }
+            
+            // Reset validation states
+            const inputs = form?.querySelectorAll('.is-invalid');
+            inputs?.forEach(input => {
+                input.classList.remove('is-invalid');
+            });
+            
+            // Remove feedback messages
+            const feedbacks = form?.querySelectorAll('.invalid-feedback');
+            feedbacks?.forEach(feedback => feedback.remove());
+            
+            // Reset export buttons
+            toggleExportButtons();
+        }
+
+        function toggleExportButtons() {
+            const tipoRelatorio = document.getElementById('tipoRelatorio');
+            const btnPdf = document.getElementById('exportarPdf');
+            const btnXlsx = document.getElementById('exportarXlsx');
+            
+            const hasSelection = tipoRelatorio && tipoRelatorio.value;
+            
+            if (btnPdf) {
+                btnPdf.disabled = !hasSelection;
+                btnPdf.classList.toggle('btn-danger', hasSelection);
+                btnPdf.classList.toggle('btn-outline-danger', !hasSelection);
+            }
+            
+            if (btnXlsx) {
+                btnXlsx.disabled = !hasSelection;
+                btnXlsx.classList.toggle('btn-success', hasSelection);
+                btnXlsx.classList.toggle('btn-outline-success', !hasSelection);
+            }
+        }
+
+        function validateDateRange() {
+            const dataInicial = document.getElementById('filtroDataInicial');
+            const dataFinal = document.getElementById('filtroDataFinal');
+            
+            if (!dataInicial || !dataFinal) return true;
+            
+            const inicial = new Date(dataInicial.value);
+            const final = new Date(dataFinal.value);
+            
+            // Remove previous validation classes
+            dataInicial.classList.remove('is-invalid');
+            dataFinal.classList.remove('is-invalid');
+            
+            // Remove existing feedback
+            const existingFeedback = dataFinal.parentNode.querySelector('.invalid-feedback');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+            
+            if (dataInicial.value && dataFinal.value && inicial > final) {
+                dataFinal.classList.add('is-invalid');
+                
+                const feedback = document.createElement('div');
+                feedback.className = 'invalid-feedback';
+                feedback.textContent = 'A data final deve ser posterior à data inicial';
+                dataFinal.parentNode.appendChild(feedback);
+                
+                return false;
+            }
+            
+            return true;
+        }
+
+        function exportReport(formato) {
+            const tipo = document.getElementById('tipoRelatorio').value;
+            
+            if (!tipo) {
+                alert('Por favor, selecione um tipo de relatório');
+                return;
+            }
+
+            // Validate date range before export
+            if (!validateDateRange()) {
+                alert('Por favor, corrija os erros de validação antes de exportar');
+                return;
+            }
+
+            const params = new URLSearchParams();
+            const filters = {
+                cliente: document.getElementById('filtroCliente').value?.trim(),
+                status: document.getElementById('filtroStatus').value,
+                tipo_servico: document.getElementById('filtroServico').value?.trim(),
+                data_inicial: document.getElementById('filtroDataInicial').value,
+                data_final: document.getElementById('filtroDataFinal').value
+            };
+
+            // Only add non-empty filters
+            Object.entries(filters).forEach(([key, value]) => {
+                if (value) params.append(key, value);
+            });
+
+            const url = `/exportar-${formato}/${tipo}/?${params.toString()}`;
+            
+            // Open in new tab
+            const newWindow = window.open(url, '_blank');
+            
+            if (!newWindow) {
+                alert('Pop-up bloqueado. Por favor, permita pop-ups para este site.');
+            } else {
+                alert(`Gerando relatório ${formato.toUpperCase()}...`);
+            }
+        }
+
+        // Event listeners para o modal de relatórios
+        const tipoRelatorio = document.getElementById('tipoRelatorio');
+        if (tipoRelatorio) {
+            tipoRelatorio.addEventListener('change', toggleExportButtons);
+        }
+
+        const dataInicial = document.getElementById('filtroDataInicial');
+        const dataFinal = document.getElementById('filtroDataFinal');
+        
+        if (dataInicial) {
+            dataInicial.addEventListener('change', validateDateRange);
+        }
+        if (dataFinal) {
+            dataFinal.addEventListener('change', validateDateRange);
+        }
+
+        const btnPdf = document.getElementById('exportarPdf');
+        const btnXlsx = document.getElementById('exportarXlsx');
+        
+        if (btnPdf) btnPdf.addEventListener('click', () => exportReport('pdf'));
+        if (btnXlsx) btnXlsx.addEventListener('click', () => exportReport('xlsx'));
     });
 
     // Função global para excluir tarefa
