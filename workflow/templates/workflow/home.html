@@ -2,558 +2,1022 @@
 
 {% block content %}
   <main>
-    <section>
+    <section class="dashboard-overview">
       <div class="saudacao-container">
         <div class="saudacao">
-          <h1>Olá, <strong>{{ user.first_name }}</strong></h1>
-          <span>Veja o que temos à fazer:</span>
+          <h1>Olá, <strong>{{ user.first_name }}</strong>!</h1>
+          <p>Veja o que temos a fazer:</p>
         </div>
         <div class="alertas">
-          <div class="cardHome" id="alertCard">
-            <h2>Alerta<span class="dot orange"></span></h2>
+          <div class="cardHome" id="alertCard" role="button" tabindex="0" aria-label="Ver alertas de licenças">
+            <h2>Alertas<span class="dot orange" aria-hidden="true"></span></h2>
+            <div class="progress-info">
+              <span class="numberof">{{ licencas|length }}</span>
+            </div>
+          </div>
+
+          <!-- Modal para Licenças -->
+          <div id="popupLicencas" class="modal-overlay" role="dialog" aria-labelledby="licencas-title" aria-hidden="true">
+            <div id="popupContent" class="modal-content">
+              <button id="fecharPopup" class="btn-close" aria-label="Fechar modal">&times;</button>
+              <h3 id="licencas-title">Licenças para Vencer</h3>
+              <div class="table-responsive">
+                <table id="tabelaLicencas" class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Cliente</th>
+                      <th scope="col">Data de Vencimento</th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Renovação Iniciada</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for licenca in licencas %}
+                      <tr>
+                        <td>{{ licenca.cliente.nome }}</td>
+                        <td>{{ licenca.data_vencimento|date:"d/m/Y" }}</td>
+                        <td>{{ licenca.tipo_licenca }}</td>
+                        <td>
+                          {% if licenca.renovacao_iniciada %}
+                            <span class="status-badge status-success">✅ Sim</span>
+                          {% else %}
+                            <span class="status-badge status-warning">❌ Não</span>
+                          {% endif %}
+                        </td>
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="4" class="text-center">Nenhuma licença para vencer nos próximos 30 dias.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="cardHome" id="clientesCard" role="button" tabindex="0" aria-label="Ver clientes atendidos">
+            <h2>Clientes Atendidos<span class="dot yellow" aria-hidden="true"></span></h2>
             <div class="progress-info">
               <span class="numberof">{{ clientes }}</span>
             </div>
           </div>
 
-          <div id="popupLicencas">
-            <div id="popupContent">
-              <span id="fecharPopup">&times;</span>
-              <h3>Licenças para Vencer</h3>
-              <table id="tabelaLicencas">
-                <thead>
-                  <tr>
-                    <th>Cliente</th>
-                    <th>Data de Vencimento</th>
-                    <th>Tipo</th>
-                    <th>Iniciado?</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for licenca in licencas %}
-                    <tr>
-                      <td>{{ licenca.cliente.nome }}</td>
-                      <td>{{ licenca.data_vencimento }}</td>
-                      <td>{{ licenca.tipo_licenca }}</td>
-                      <td>
-                        {% if licenca.renovacao_iniciada %}
-                          ✅ Sim
-                        {% else %}
-                          ❌ Não
-                        {% endif %}
-                      </td>
-                    </tr>
-                  {% empty %}
-                    <tr>
-                      <td colspan="5">Nenhuma licença para vencer nos próximos 30 dias.</td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="cardHome" id="clientesCard">
-            <h2>Clientes Atendidos<span class="dot yellow"></span></h2>
+          <div class="cardHome" id="relatoriosCard" role="button" tabindex="0" aria-label="Gerar relatórios">
+            <h2>Relatórios<span class="dot blue" aria-hidden="true"></span></h2>
             <div class="progress-info">
-              <span class="numberof">{{ clientes }}</span>
+              <span class="numberof"><i class="fa-solid fa-file-lines" aria-hidden="true"></i></span>
             </div>
           </div>
 
-          <div class="cardHome" id="relatoriosCard">
-            <h2>Relatórios<span class="dot blue"></span></h2>
-            <div class="progress-info">
-              <span class="numberof"><i class="fa-solid fa-file-lines"></i></span>
-            </div>
-          </div>
-
-          <div class="cardHome">
-            <h2>Em Atendimento<span class="dot blue"></span></h2>
+          <div class="cardHome" role="button" tabindex="0" aria-label="Tarefas em atendimento">
+            <h2>Em Atendimento<span class="dot blue" aria-hidden="true"></span></h2>
             <div class="progress-info">
               <span class="numberof">{{ tarefas_em_aberto }}</span>
             </div>
           </div>
         </div>
-      </div>
     </section>
-    <section>
+    
+    <section class="demand-section">
       <div class="demand-container">
         <div class="prox-demanda">
           <div class="principal">
             <h2>Próximas do Vencimento</h2>
-            {% comment %} <p>Próximos 20 dias</p> {% endcomment %}
           </div>
-
-          <a href=" {% url 'workflow:get_tarefas_filtradas' %}">Ver todas demandas</a>
+          <a href="{% url 'workflow:get_tarefas_filtradas' %}" class="view-all-link">Ver todas as demandas</a>
         </div>
 
         <div class="demand-cards-wrapper">
-          <!-- Iniciado -->
+          <!-- Status: Iniciado -->
           <div class="demand-cards-status">
             <div class="status">
               <h3>
-                Iniciado<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                Iniciado
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                   <circle cx="9" cy="9" r="8.5" fill="#FFD700" stroke="black" />
                 </svg>
               </h3>
             </div>
             <div class="demand-card">
               {% for demanda in demandas_iniciado %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                <div class="tarefa-clicavel" 
+                     data-id="{{ demanda.id }}" 
+                     data-status="{{ demanda.status }}"
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Editar tarefa {{ demanda.cliente }} - {{ demanda.tipo_servico }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.cliente|upper }}</strong> - {{ demanda.tipo_servico }} -
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
               {% empty %}
-                <p>Nenhuma demanda Iniciada.</p>
+                <p class="empty-state">Nenhuma demanda iniciada.</p>
               {% endfor %}
             </div>
           </div>
 
-          <!-- Coleta -->
+          <!-- Status: Coleta -->
           <div class="demand-cards-status">
             <div class="status">
               <h3>
-                Coleta<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                Coleta
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                   <circle cx="9" cy="9" r="8.5" fill="#00BFFF" stroke="black" />
                 </svg>
               </h3>
             </div>
             <div class="demand-card">
               {% for demanda in demandas_coleta %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                <div class="tarefa-clicavel" 
+                     data-id="{{ demanda.id }}" 
+                     data-status="{{ demanda.status }}"
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Editar tarefa {{ demanda.cliente }} - {{ demanda.tipo_servico }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.cliente|upper }}</strong> - {{ demanda.tipo_servico }} -
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
               {% empty %}
-                <p>Nenhuma demanda em Coleta.</p>
+                <p class="empty-state">Nenhuma demanda em coleta.</p>
               {% endfor %}
             </div>
           </div>
 
-          <!-- Execução -->
+          <!-- Status: Execução -->
           <div class="demand-cards-status">
             <div class="status">
               <h3>
-                Execução<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                Execução
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                   <circle cx="9" cy="9" r="8.5" fill="#32CD32" stroke="black" />
                 </svg>
               </h3>
             </div>
             <div class="demand-card">
               {% for demanda in demandas_execucao %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                <div class="tarefa-clicavel" 
+                     data-id="{{ demanda.id }}" 
+                     data-status="{{ demanda.status }}"
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Editar tarefa {{ demanda.cliente }} - {{ demanda.tipo_servico }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.cliente|upper }}</strong> - {{ demanda.tipo_servico }} -
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
               {% empty %}
-                <p>Nenhuma demanda em Execução.</p>
+                <p class="empty-state">Nenhuma demanda em execução.</p>
               {% endfor %}
             </div>
           </div>
 
-          <!-- Aprovação -->
+          <!-- Status: Aprovação -->
           <div class="demand-cards-status">
             <div class="status">
               <h3>
-                Aprovação<svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+                Aprovação
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none" aria-hidden="true">
                   <circle cx="9" cy="9.04138" r="8.5" fill="#FF8C00" stroke="black" />
                 </svg>
               </h3>
             </div>
             <div class="demand-card">
               {% for demanda in demandas_aprovacao %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                <div class="tarefa-clicavel" 
+                     data-id="{{ demanda.id }}" 
+                     data-status="{{ demanda.status }}"
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Editar tarefa {{ demanda.cliente }} - {{ demanda.tipo_servico }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.cliente|upper }}</strong> - {{ demanda.tipo_servico }} -
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
               {% empty %}
-                <p>Nenhuma demanda em Aprovação.</p>
+                <p class="empty-state">Nenhuma demanda em aprovação.</p>
               {% endfor %}
             </div>
           </div>
+          
+          <!-- Status: Protocolado -->
           <div class="demand-cards-status">
             <div class="status">
               <h3>
-                Protocolado<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                Protocolado
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                   <circle cx="9" cy="9" r="8.5" fill="#FF4700" stroke="black" />
                 </svg>
               </h3>
             </div>
             <div class="demand-card">
               {% for demanda in demandas_protocolado %}
-                <div class="tarefa-clicavel" data-id="{{ demanda.id }}" data-status="{{ demanda.status }}">
+                <div class="tarefa-clicavel" 
+                     data-id="{{ demanda.id }}" 
+                     data-status="{{ demanda.status }}"
+                     role="button" 
+                     tabindex="0"
+                     aria-label="Editar tarefa {{ demanda.cliente }} - {{ demanda.tipo_servico }}">
                   <p>
-                    <strong>{{ demanda.cliente|upper }} - </strong>{{ demanda.tipo_servico }} -
+                    <strong>{{ demanda.cliente|upper }}</strong> - {{ demanda.tipo_servico }} -
                     <strong>{{ demanda.prazo_final|date:'d/m' }}</strong>
                   </p>
                 </div>
               {% empty %}
-                <p>Nenhuma demanda Protocolada</p>
+                <p class="empty-state">Nenhuma demanda protocolada.</p>
               {% endfor %}
             </div>
           </div>
         </div>
       </div>
     </section>
-  <div class="modal fade" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
+    
+    <!-- Modal para Editar Tarefa -->
+    <div class="modal fade" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
       <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="modal-editar-tarefa">Editar Tarefa</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                  <form id="form-editar-tarefa" method="post">
-                      {% csrf_token %}
-                      <input type="hidden" name="tarefa_id" id="tarefa-id">
-                      <!-- Campo oculto para o cliente e tipo servico-->
-                      <input type="hidden" name="cliente" id="id_cliente">
-                      <input type="hidden" name="tipo_servico" id="id_tipo_servico">
-                      <!-- Exibe o nome do cliente como texto -->
-                      <div class="mb-3">
-                          <label class="form-label">Cliente</label>
-                          <p id="cliente-nome"></p>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Serviço</label>
-                        <p id="tipo_servico_nome"></p>
-                      </div>
-                      <!-- Renderiza os outros campos do formulário -->
-                      <div class="mb-3">
-                          <label for="id_status" class="form-label">Status</label>
-                          <select name="status" id="id_status" class="form-select">
-                              {% for key, value in form.status.field.choices %}
-                                  <option value="{{ key }}">{{ value }}</option>
-                              {% endfor %}
-                          </select>
-                      </div>
-                      <div class="mb-3">
-                          <label for="id_data_inicio" class="form-label">Data de Início</label>
-                          <input type="date" name="data_inicio" id="id_data_inicio" class="form-control">
-                      </div>
-                      <div class="mb-3">
-                          <label for="id_prazo_final" class="form-label">Prazo Final</label>
-                          <input type="date" name="prazo_final" id="id_prazo_final" class="form-control">
-                      </div>
-                      <div class="mb-3">
-                          <label for="id_observacoes" class="form-label">Observações</label>
-                          <textarea name="observacoes" id="id_observacoes" class="form-control"></textarea>
-                      </div>
-                      <div class="mb-3">
-                          <label for="id_valor_total_servico" class="form-label">Valor Total</label>
-                          <input type="number" name="valor_total_servico" id="id_valor_total_servico" class="form-control">
-                      </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" id="btn-excluir-tarefa" class="btn btn-danger" data-tarefa-id="">
-                      Excluir Tarefa
-                  </button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                  <button type="submit" form="form-editar-tarefa" class="btn btn-primary">Salvar</button>
-              </div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalEditarTarefaLabel">Editar Tarefa</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
-      </div>
-  </div>
-
-  <!-- Modal lista de clientes -->
-  <div class="modal fade" id="clientesModal" tabindex="-1" aria-labelledby="clientesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="clientesModalLabel">Clientes Cadastrados</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <ul id="listaClientes" class="list-unstyled mb-0"></ul>
+          <div class="modal-body">
+            <form id="form-editar-tarefa" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="tarefa_id" id="tarefa-id">
+              <input type="hidden" name="cliente" id="id_cliente">
+              <input type="hidden" name="tipo_servico" id="id_tipo_servico">
+              
+              <div class="mb-3">
+                <label class="form-label">Cliente</label>
+                <p id="cliente-nome" class="form-control-plaintext"></p>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Serviço</label>
+                <p id="tipo_servico_nome" class="form-control-plaintext"></p>
+              </div>
+              
+              <div class="mb-3">
+                <label for="id_status" class="form-label">Status</label>
+                <select name="status" id="id_status" class="form-select" required>
+                  {% for key, value in form.status.field.choices %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              
+              <div class="mb-3">
+                <label for="id_data_inicio" class="form-label">Data de Início</label>
+                <input type="date" name="data_inicio" id="id_data_inicio" class="form-control">
+              </div>
+              
+              <div class="mb-3">
+                <label for="id_prazo_final" class="form-label">Prazo Final</label>
+                <input type="date" name="prazo_final" id="id_prazo_final" class="form-control" required>
+              </div>
+              
+              <div class="mb-3">
+                <label for="id_observacoes" class="form-label">Observações</label>
+                <textarea name="observacoes" id="id_observacoes" class="form-control" rows="3"></textarea>
+              </div>
+              
+              <div class="mb-3">
+                <label for="id_valor_total_servico" class="form-label">Valor Total</label>
+                <input type="number" name="valor_total_servico" id="id_valor_total_servico" class="form-control" step="0.01" min="0">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="btn-excluir-tarefa" class="btn btn-danger">
+              Excluir Tarefa
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <button type="submit" form="form-editar-tarefa" class="btn btn-primary">Salvar Alterações</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal relatórios -->
-  <div class="modal fade" id="relatoriosModal" tabindex="-1" aria-labelledby="relatoriosModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="relatoriosModalLabel">Relatórios</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-
-          <form id="formRelatorios">
-            <div class="mb-3">
-              <label for="tipoRelatorio" class="form-label">Tipo de Relatório</label>
-              <select id="tipoRelatorio" class="form-select">
-                <option value="clientes">Clientes</option>
-                <option value="clientes_servicos">Clientes x Serviços</option>
-                <option value="clientes_servicos_valores">Clientes x Serviços x Valores</option>
-                <option value="clientes_suporte">Clientes x Suporte</option>
-                <option value="demandas_por_cliente">Demandas por Cliente</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="filtroCliente" class="form-label">Cliente</label>
-              <input type="text" id="filtroCliente" class="form-control" />
-            </div>
-            <div class="mb-3">
-              <label for="filtroStatus" class="form-label">Status</label>
-              <select id="filtroStatus" class="form-select">
-                <option value="">Todos</option>
-                <option value="Iniciado">Iniciado</option>
-                <option value="Coleta De Informações">Coleta de Informações</option>
-                <option value="Execucao">Execução</option>
-                <option value="Aprovação Cliente">Aprovação Cliente</option>
-                <option value="Concluído">Concluído</option>
-                <option value="Encerrado">Encerrado</option>
-                <option value="Protocolado">Protocolado</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="filtroServico" class="form-label">Tipo de Serviço</label>
-              <input type="text" id="filtroServico" class="form-control" />
-            </div>
-            <div class="mb-3">
-              <label for="filtroDataInicial" class="form-label">Data Inicial</label>
-              <input type="date" id="filtroDataInicial" class="form-control" />
-            </div>
-            <div class="mb-3">
-              <label for="filtroDataFinal" class="form-label">Data Final</label>
-              <input type="date" id="filtroDataFinal" class="form-control" />
-            </div>
-          </form>
-          <div class="d-flex justify-content-end gap-2">
-            <button id="exportarPdf" class="btn btn-danger" type="button">Exportar PDF</button>
-            <button id="exportarXlsx" class="btn btn-success" type="button">Exportar XLSX</button>
+    <!-- Modal para Lista de Clientes -->
+    <div class="modal fade" id="clientesModal" tabindex="-1" aria-labelledby="clientesModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="clientesModalLabel">Clientes Cadastrados</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
-
-          <ul class="list-unstyled">
-            <li><a href="{% url 'workflow:exportar_xlsx' 'clientes' %}">Clientes (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'clientes' %}">Clientes (PDF)</a></li>
-            <li><a href="{% url 'workflow:exportar_xlsx' 'clientes_servicos' %}">Clientes x Serviços (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'clientes_servicos' %}">Clientes x Serviços (PDF)</a></li>
-            <li><a href="{% url 'workflow:exportar_xlsx' 'clientes_servicos_valores' %}">Clientes x Serviços x Valores (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'clientes_servicos_valores' %}">Clientes x Serviços x Valores (PDF)</a></li>
-            <li><a href="{% url 'workflow:exportar_xlsx' 'clientes_suporte' %}">Clientes x Suporte (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'clientes_suporte' %}">Clientes x Suporte (PDF)</a></li>
-            <li><a href="{% url 'workflow:exportar_xlsx' 'demandas_por_cliente' %}">Demandas por Cliente (XLSX)</a> | <a href="{% url 'workflow:exportar_pdf' 'demandas_por_cliente' %}">Demandas por Cliente (PDF)</a></li>
-          </ul>
-
+          <div class="modal-body">
+            <ul id="listaClientes" class="list-unstyled mb-0"></ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  
+
+    <!-- Modal para Relatórios -->
+    <div class="modal fade" id="relatoriosModal" tabindex="-1" aria-labelledby="relatoriosModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title d-flex align-items-center" id="relatoriosModalLabel">
+              <i class="fas fa-chart-bar me-2"></i>
+              Gerar Relatórios
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          
+          <div class="modal-body p-4">
+            <!-- Seção de Filtros Personalizados -->
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h6 class="card-title mb-0">
+                  <i class="fas fa-filter me-2"></i>
+                  Relatório Personalizado
+                </h6>
+              </div>
+              <div class="card-body">
+                <form id="formRelatorios">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="tipoRelatorio" class="form-label fw-bold">
+                          <i class="fas fa-list me-1"></i>Tipo de Relatório *
+                        </label>
+                        <select id="tipoRelatorio" class="form-select" required>
+                          <option value="">-- Selecione um tipo --</option>
+                          <option value="clientes">📊 Clientes</option>
+                          <option value="clientes_servicos">🔗 Clientes x Serviços</option>
+                          <option value="clientes_servicos_valores">💰 Clientes x Serviços x Valores</option>
+                          <option value="clientes_suporte">🛠️ Clientes x Suporte</option>
+                          <option value="demandas_por_cliente">📈 Demandas por Cliente</option>
+                        </select>
+                        <div class="form-text">Escolha o tipo de relatório que deseja gerar</div>
+                      </div>
+                      
+                      <div class="mb-3">
+                        <label for="filtroCliente" class="form-label fw-bold">
+                          <i class="fas fa-building me-1"></i>Cliente
+                        </label>
+                        <input type="text" id="filtroCliente" class="form-control" 
+                               placeholder="Digite o nome do cliente" 
+                               autocomplete="off">
+                        <div class="form-text">Filtro opcional por nome do cliente</div>
+                      </div>
+                      
+                      <div class="mb-3">
+                        <label for="filtroStatus" class="form-label fw-bold">
+                          <i class="fas fa-tasks me-1"></i>Status
+                        </label>
+                        <select id="filtroStatus" class="form-select">
+                          <option value="">-- Todos os status --</option>
+                          <option value="Iniciado">🟡 Iniciado</option>
+                          <option value="Coleta De Informações">🔵 Coleta de Informações</option>
+                          <option value="Execucao">🟢 Execução</option>
+                          <option value="Aprovação Cliente">🟠 Aprovação Cliente</option>
+                          <option value="Concluído">✅ Concluído</option>
+                          <option value="Encerrado">⚫ Encerrado</option>
+                          <option value="Protocolado">🔴 Protocolado</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <label for="filtroServico" class="form-label fw-bold">
+                          <i class="fas fa-cogs me-1"></i>Tipo de Serviço
+                        </label>
+                        <input type="text" id="filtroServico" class="form-control" 
+                               placeholder="Digite o tipo de serviço" 
+                               autocomplete="off">
+                        <div class="form-text">Filtro opcional por tipo de serviço</div>
+                      </div>
+                      
+                      <div class="mb-3">
+                        <label for="filtroDataInicial" class="form-label fw-bold">
+                          <i class="fas fa-calendar-alt me-1"></i>Data Inicial
+                        </label>
+                        <input type="date" id="filtroDataInicial" class="form-control">
+                        <div class="form-text">Data de início do período</div>
+                      </div>
+                      
+                      <div class="mb-3">
+                        <label for="filtroDataFinal" class="form-label fw-bold">
+                          <i class="fas fa-calendar-check me-1"></i>Data Final
+                        </label>
+                        <input type="date" id="filtroDataFinal" class="form-control">
+                        <div class="form-text">Data final do período</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Botões de Exportação -->
+                  <div class="border-top pt-3 mt-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        <small>Selecione o tipo de relatório para habilitar a exportação</small>
+                      </div>
+                      <div class="btn-group" role="group" aria-label="Botões de exportação">
+                        <button id="exportarPdf" class="btn btn-danger" type="button" disabled>
+                          <i class="fas fa-file-pdf me-2"></i>Exportar PDF
+                        </button>
+                        <button id="exportarXlsx" class="btn btn-success" type="button" disabled>
+                          <i class="fas fa-file-excel me-2"></i>Exportar XLSX
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            
+            <!-- Seção de Relatórios Predefinidos -->
+            <div class="card">
+              <div class="card-header bg-light">
+                <h6 class="card-title mb-0">
+                  <i class="fas fa-download me-2"></i>
+                  Relatórios Predefinidos
+                </h6>
+              </div>
+              <div class="card-body">
+                <p class="text-muted mb-3">
+                  <i class="fas fa-lightbulb me-1"></i>
+                  Baixe relatórios completos sem filtros personalizados
+                </p>
+                
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                      <div class="card-body text-center">
+                        <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                        <h6 class="card-title">Clientes</h6>
+                        <p class="card-text text-muted small">Lista completa de clientes cadastrados</p>
+                        <div class="btn-group w-100" role="group">
+                          <a href="{% url 'workflow:exportar_xlsx' 'clientes' %}" 
+                             class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-file-excel me-1"></i>XLSX
+                          </a>
+                          <a href="{% url 'workflow:exportar_pdf' 'clientes' %}" 
+                             class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-file-pdf me-1"></i>PDF
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                      <div class="card-body text-center">
+                        <i class="fas fa-handshake fa-2x text-info mb-2"></i>
+                        <h6 class="card-title">Clientes x Serviços</h6>
+                        <p class="card-text text-muted small">Relacionamento clientes e serviços</p>
+                        <div class="btn-group w-100" role="group">
+                          <a href="{% url 'workflow:exportar_xlsx' 'clientes_servicos' %}" 
+                             class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-file-excel me-1"></i>XLSX
+                          </a>
+                          <a href="{% url 'workflow:exportar_pdf' 'clientes_servicos' %}" 
+                             class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-file-pdf me-1"></i>PDF
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                      <div class="card-body text-center">
+                        <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
+                        <h6 class="card-title">Clientes x Serviços x Valores</h6>
+                        <p class="card-text text-muted small">Relatório financeiro completo</p>
+                        <div class="btn-group w-100" role="group">
+                          <a href="{% url 'workflow:exportar_xlsx' 'clientes_servicos_valores' %}" 
+                             class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-file-excel me-1"></i>XLSX
+                          </a>
+                          <a href="{% url 'workflow:exportar_pdf' 'clientes_servicos_valores' %}" 
+                             class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-file-pdf me-1"></i>PDF
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                      <div class="card-body text-center">
+                        <i class="fas fa-headset fa-2x text-warning mb-2"></i>
+                        <h6 class="card-title">Clientes x Suporte</h6>
+                        <p class="card-text text-muted small">Histórico de atendimentos</p>
+                        <div class="btn-group w-100" role="group">
+                          <a href="{% url 'workflow:exportar_xlsx' 'clientes_suporte' %}" 
+                             class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-file-excel me-1"></i>XLSX
+                          </a>
+                          <a href="{% url 'workflow:exportar_pdf' 'clientes_suporte' %}" 
+                             class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-file-pdf me-1"></i>PDF
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-12">
+                    <div class="card border-0 shadow-sm">
+                      <div class="card-body text-center">
+                        <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                        <h6 class="card-title">Demandas por Cliente</h6>
+                        <p class="card-text text-muted small">Análise de demandas por cliente</p>
+                        <div class="btn-group" role="group">
+                          <a href="{% url 'workflow:exportar_xlsx' 'demandas_por_cliente' %}" 
+                             class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-file-excel me-1"></i>XLSX
+                          </a>
+                          <a href="{% url 'workflow:exportar_pdf' 'demandas_por_cliente' %}" 
+                             class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-file-pdf me-1"></i>PDF
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              <i class="fas fa-times me-1"></i>Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
+
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      document.addEventListener("click", function (event) {
-        let tarefa = event.target.closest(".tarefa-clicavel"); // Captura a tarefa clicada
+    /**
+     * Dashboard Application - Gestão de Tarefas e Relatórios
+     */
+    class DashboardApp {
+      constructor() {
+        this.csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        this.init();
+      }
+
+      init() {
+        this.bindEvents();
+        this.setupKeyboardNavigation();
+      }
+
+      bindEvents() {
+        // Event delegation para tarefas clicáveis
+        document.addEventListener('click', this.handleTaskClick.bind(this));
+        document.addEventListener('click', this.handleCardClick.bind(this));
+        
+        // Form submissions
+        const formEditarTarefa = document.getElementById('form-editar-tarefa');
+        if (formEditarTarefa) {
+          formEditarTarefa.addEventListener('submit', this.handleTaskEdit.bind(this));
+        }
+
+        // Delete button
+        const btnExcluir = document.getElementById('btn-excluir-tarefa');
+        if (btnExcluir) {
+          btnExcluir.addEventListener('click', this.handleTaskDelete.bind(this));
+        }
+
+        // Export buttons
+        const btnPdf = document.getElementById('exportarPdf');
+        const btnXlsx = document.getElementById('exportarXlsx');
+        
+        if (btnPdf) btnPdf.addEventListener('click', () => this.exportReport('pdf'));
+        if (btnXlsx) btnXlsx.addEventListener('click', () => this.exportReport('xlsx'));
+
+        // Modal events
+        this.setupModalEvents();
+        this.setupReportModalEvents();
+      }
+
+      setupKeyboardNavigation() {
+        // Adiciona suporte para navegação por teclado nos cards e tarefas
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            const target = event.target;
+            if (target.classList.contains('tarefa-clicavel') || target.classList.contains('cardHome')) {
+              event.preventDefault();
+              target.click();
+            }
+          }
+        });
+      }
+
+      handleTaskClick(event) {
+        const tarefa = event.target.closest('.tarefa-clicavel');
         if (!tarefa) return;
 
-        let tarefaId = tarefa.getAttribute("data-id"); // Pega o ID da tarefa
-        let tarefaStatus = tarefa.getAttribute("data-status"); // Opcional: pega o status também
+        event.preventDefault();
+        this.openTaskModal(tarefa);
+      }
 
-        // Adiciona o ID no campo hidden e no botão de excluir
-        document.getElementById("tarefa-id").value = tarefaId;
-        document.getElementById("btn-excluir-tarefa").setAttribute("data-tarefa-id", tarefaId);
+      handleCardClick(event) {
+        const card = event.target.closest('.cardHome');
+        if (!card) return;
 
-        // Faz uma requisição AJAX para buscar os dados da tarefa
-        fetch(`/api/tarefas/${tarefaId}/`)
-            .then(response => response.json())
-            .then(data => {
-                // Preenche o formulário com os dados da tarefa
-                document.getElementById('tarefa-id').value = data.id;
-                document.getElementById('id_cliente').value = data.cliente_id;
-                document.getElementById('id_tipo_servico').value = data.tipo_servico_id;
-                document.querySelector('#cliente-nome').textContent = data.cliente_nome;
-                document.querySelector('#tipo_servico_nome').textContent = data.tipo_servico_nome;
+        event.preventDefault();
+        
+        if (card.id === 'alertCard') {
+          this.openLicencasPopup();
+        } else if (card.id === 'clientesCard') {
+          this.openClientesModal();
+        } else if (card.id === 'relatoriosCard') {
+          this.openRelatoriosModal();
+        }
+      }
 
-                // Preenche os outros campos do formulário
-                document.getElementById('id_status').value = data.status;
-                document.getElementById('id_data_inicio').value = data.data_inicio;
-                document.getElementById('id_prazo_final').value = data.prazo_final;
-                document.getElementById('id_observacoes').value = data.observacoes;
-                document.getElementById('id_valor_total_servico').value = data.valor_total_servico;
-            })
-            .catch(error => console.error('Erro ao buscar dados da tarefa:', error));
+      async openTaskModal(tarefa) {
+        const tarefaId = tarefa.getAttribute('data-id');
+        
+        try {
+          this.showLoading(true);
+          const data = await this.fetchTaskData(tarefaId);
+          this.populateTaskForm(data);
+          this.showTaskModal();
+        } catch (error) {
+          this.showError('Erro ao carregar dados da tarefa: ' + error.message);
+        } finally {
+          this.showLoading(false);
+        }
+      }
 
-        // Abre o modal (caso esteja usando Bootstrap)
-        let modal = new bootstrap.Modal(document.getElementById("modal-editar-tarefa"));
+      async fetchTaskData(tarefaId) {
+        const response = await fetch(`/api/tarefas/${tarefaId}/`);
+        if (!response.ok) {
+          throw new Error('Falha ao buscar dados da tarefa');
+        }
+        return response.json();
+      }
+
+      populateTaskForm(data) {
+        const fields = {
+          'tarefa-id': data.id,
+          'id_cliente': data.cliente_id,
+          'id_tipo_servico': data.tipo_servico_id,
+          'id_status': data.status,
+          'id_data_inicio': data.data_inicio,
+          'id_prazo_final': data.prazo_final,
+          'id_observacoes': data.observacoes || '',
+          'id_valor_total_servico': data.valor_total_servico || ''
+        };
+
+        Object.entries(fields).forEach(([id, value]) => {
+          const element = document.getElementById(id);
+          if (element) element.value = value;
+        });
+
+        // Campos de texto readonly
+        const clienteNome = document.getElementById('cliente-nome');
+        const tipoServicoNome = document.getElementById('tipo_servico_nome');
+        
+        if (clienteNome) clienteNome.textContent = data.cliente_nome;
+        if (tipoServicoNome) tipoServicoNome.textContent = data.tipo_servico_nome;
+      }
+
+      showTaskModal() {
+        const modal = new bootstrap.Modal(document.getElementById('modal-editar-tarefa'));
         modal.show();
-    });
+      }
 
-    // Enviar formulário de edição
-    document.getElementById('form-editar-tarefa').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita o envio tradicional do formulário
+      async handleTaskEdit(event) {
+        event.preventDefault();
+        
         const tarefaId = document.getElementById('tarefa-id').value;
-        var formData = new FormData(this); // Captura os dados do formulário
-        document.getElementById("tarefa-id").value = tarefaId;
+        const formData = new FormData(event.target);
 
-        fetch(`tarefa/${tarefaId}/editar/`, {
+        try {
+          this.showLoading(true);
+          const response = await fetch(`tarefa/${tarefaId}/editar/`, {
             method: 'POST',
             body: formData,
             headers: {
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+              'X-CSRFToken': this.csrfToken,
             },
-        })
-        .then(response => response.json())
-        .then(data => {
+          });
+
+          const data = await response.json();
+          
           if (data.success) {
-              alert('Tarefa atualizada com sucesso!');// Fecha o modal
-              location.reload(); // Recarrega a página (ou atualiza a tabela dinamicamente)
+            this.showSuccess('Tarefa atualizada com sucesso!');
+            setTimeout(() => window.location.reload(), 1500);
           } else {
-              // Trata o erro de forma mais detalhada
-              if (typeof data.error === 'object') {
-                  // Se o erro for um objeto, converte para uma string legível
-                  let errorMessage = '';
-                  for (let key in data.error) {
-                      errorMessage += `${key}: ${data.error[key].join(', ')}\n`;
-                  }
-                  alert('Erro ao atualizar a tarefa:\n' + errorMessage);
-              } else {
-                  // Se o erro for uma string, exibe diretamente
-                  alert('Erro ao atualizar a tarefa: ' + data.error);
-              }
+            this.showError(this.formatErrorMessage(data.error));
           }
-      })
-    });
+        } catch (error) {
+          this.showError('Erro na comunicação com o servidor: ' + error.message);
+        } finally {
+          this.showLoading(false);
+        }
+      }
 
-    // Excluir tarefa
-    document.addEventListener("click", function (event) {
-        let botaoExcluir = event.target.closest("#btn-excluir-tarefa");
-        if (!botaoExcluir) return;
-
+      async handleTaskDelete() {
         const tarefaId = document.getElementById('tarefa-id').value;
-        let csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-        let deleteUrl = `/ambielle/tarefa/${tarefaId}/delete/`;
-
+        
         if (!tarefaId) {
-            console.error("Erro: tarefaId não encontrado!");
-            return;
+          this.showError('ID da tarefa não encontrado!');
+          return;
         }
 
-        if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
-            fetch(deleteUrl, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrfToken
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro na requisição: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert('Tarefa excluída com sucesso!');
-                    location.reload();
-                } else {
-                    alert('Erro: ' + data.error);
-                }
-            })
-            .catch(error => console.error('Erro:', error));
+        if (!confirm('Tem certeza que deseja excluir esta tarefa?')) {
+          return;
         }
-      });
-      // Popup de licenças
-      const popupLicencas = document.getElementById('popupLicencas');
-      const fecharPopup = document.getElementById('fecharPopup');
 
-      const clientesCard = document.getElementById('clientesCard');
-      const relatoriosCard = document.getElementById('relatoriosCard');
-
-      if (clientesCard) {
-          clientesCard.addEventListener('click', function () {
-              fetch('/api/clientes/')
-                  .then(response => response.json())
-                  .then(data => {
-                      const lista = document.getElementById('listaClientes');
-                      lista.innerHTML = '';
-                      data.clientes.forEach(c => {
-                          const li = document.createElement('li');
-                          li.textContent = `${c.nome} - ${c.cnpj}`;
-                          lista.appendChild(li);
-                      });
-                      const modal = new bootstrap.Modal(document.getElementById('clientesModal'));
-                      modal.show();
-                  });
+        try {
+          this.showLoading(true);
+          const response = await fetch(`/ambielle/tarefa/${tarefaId}/delete/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': this.csrfToken
+            }
           });
+
+          if (!response.ok) {
+            throw new Error('Erro na requisição: ' + response.statusText);
+          }
+
+          const data = await response.json();
+          
+          if (data.success) {
+            this.showSuccess('Tarefa excluída com sucesso!');
+            setTimeout(() => window.location.reload(), 1500);
+          } else {
+            this.showError('Erro: ' + data.error);
+          }
+        } catch (error) {
+          this.showError('Erro: ' + error.message);
+        } finally {
+          this.showLoading(false);
+        }
       }
 
-      if (relatoriosCard) {
-          relatoriosCard.addEventListener('click', function () {
-              const modal = new bootstrap.Modal(document.getElementById('relatoriosModal'));
-              modal.show();
+      async openClientesModal() {
+        try {
+          this.showLoading(true);
+          const response = await fetch('/api/clientes/');
+          const data = await response.json();
+          
+          const lista = document.getElementById('listaClientes');
+          lista.innerHTML = '';
+          
+          data.clientes.forEach(cliente => {
+            const li = document.createElement('li');
+            li.className = 'mb-2 p-2 border-bottom';
+            li.innerHTML = `
+              <strong>${cliente.nome}</strong><br>
+              <small class="text-muted">CNPJ: ${cliente.cnpj}</small>
+            `;
+            lista.appendChild(li);
           });
+          
+          const modal = new bootstrap.Modal(document.getElementById('clientesModal'));
+          modal.show();
+        } catch (error) {
+          this.showError('Erro ao carregar clientes: ' + error.message);
+        } finally {
+          this.showLoading(false);
+        }
       }
 
-
-      const exportar = (formato) => {
-          const tipo = document.getElementById('tipoRelatorio').value;
-          const params = new URLSearchParams();
-          const cliente = document.getElementById('filtroCliente').value;
-          if (cliente) params.append('cliente', cliente);
-          const status = document.getElementById('filtroStatus').value;
-          if (status) params.append('status', status);
-          const servico = document.getElementById('filtroServico').value;
-          if (servico) params.append('tipo_servico', servico);
-          const dataInicial = document.getElementById('filtroDataInicial').value;
-          if (dataInicial) params.append('data_inicial', dataInicial);
-          const dataFinal = document.getElementById('filtroDataFinal').value;
-          if (dataFinal) params.append('data_final', dataFinal);
-          window.location.href = `/exportar-${formato}/${tipo}/?` + params.toString();
-      };
-
-      const btnPdf = document.getElementById('exportarPdf');
-      if (btnPdf) {
-          btnPdf.addEventListener('click', function () {
-              exportar('pdf');
-          });
+      openRelatoriosModal() {
+        const modal = new bootstrap.Modal(document.getElementById('relatoriosModal'));
+        modal.show();
+        
+        // Reset form when modal opens
+        this.resetReportForm();
       }
 
-      const btnXlsx = document.getElementById('exportarXlsx');
-      if (btnXlsx) {
-          btnXlsx.addEventListener('click', function () {
-              exportar('xlsx');
-          });
+      setupReportModalEvents() {
+        // Monitor tipo de relatório selection
+        const tipoRelatorio = document.getElementById('tipoRelatorio');
+        if (tipoRelatorio) {
+          tipoRelatorio.addEventListener('change', this.toggleExportButtons.bind(this));
+        }
+
+        // Monitor data fields for validation
+        const dataInicial = document.getElementById('filtroDataInicial');
+        const dataFinal = document.getElementById('filtroDataFinal');
+        
+        if (dataInicial) {
+          dataInicial.addEventListener('change', this.validateDateRange.bind(this));
+        }
+        if (dataFinal) {
+          dataFinal.addEventListener('change', this.validateDateRange.bind(this));
+        }
+
+        // Add form validation feedback
+        const form = document.getElementById('formRelatorios');
+        if (form) {
+          form.addEventListener('submit', (e) => e.preventDefault());
+        }
       }
-      if (popupLicencas && fecharPopup) {
-          document.getElementById('alertCard').onclick = function () {
-              popupLicencas.style.display = 'block';
-  
-              // Simulação de busca de licenças para vencer
-              fetch('/api/licencas-para-vencer') // Altere para o seu endpoint real
-                  .then((response) => response.json())
-                  .then((data) => {
-                      const lista = document.getElementById('listaLicencas');
-                      lista.innerHTML = ''; // Limpa a lista antes de adicionar os novos itens
-  
-                      data.licencas.forEach((licenca) => {
-                          const item = document.createElement('div');
-                          item.textContent = `Licença: ${licenca.nome} - Vence em: ${licenca.dataVencimento}`;
-                          lista.appendChild(item);
-                      });
-                  })
-                  .catch((error) => console.error('Erro ao buscar licenças:', error));
-          };
-  
-          // Fechar popup de licenças
-          fecharPopup.onclick = function () {
-              popupLicencas.style.display = 'none';
-          };
-  
-          // Fechar popup de licenças ao clicar fora dele
-          window.addEventListener('click', function (event) {
-              if (event.target === popupLicencas) {
-                  popupLicencas.style.display = 'none';
-              }
-          });
+
+      toggleExportButtons() {
+        const tipoRelatorio = document.getElementById('tipoRelatorio');
+        const btnPdf = document.getElementById('exportarPdf');
+        const btnXlsx = document.getElementById('exportarXlsx');
+        
+        const hasSelection = tipoRelatorio && tipoRelatorio.value;
+        
+        if (btnPdf) {
+          btnPdf.disabled = !hasSelection;
+          btnPdf.classList.toggle('btn-danger', hasSelection);
+          btnPdf.classList.toggle('btn-outline-danger', !hasSelection);
+        }
+        
+        if (btnXlsx) {
+          btnXlsx.disabled = !hasSelection;
+          btnXlsx.classList.toggle('btn-success', hasSelection);
+          btnXlsx.classList.toggle('btn-outline-success', !hasSelection);
+        }
       }
-  });
+
+      validateDateRange() {
+        const dataInicial = document.getElementById('filtroDataInicial');
+        const dataFinal = document.getElementById('filtroDataFinal');
+        
+        if (!dataInicial || !dataFinal) return;
+        
+        const inicial = new Date(dataInicial.value);
+        const final = new Date(dataFinal.value);
+        
+        // Remove previous validation classes
+        dataInicial.classList.remove('is-invalid');
+        dataFinal.classList.remove('is-invalid');
+        
+        // Remove existing feedback
+        const existingFeedback = dataFinal.parentNode.querySelector('.invalid-feedback');
+        if (existingFeedback) {
+          existingFeedback.remove();
+        }
+        
+        if (dataInicial.value && dataFinal.value && inicial > final) {
+          dataFinal.classList.add('is-invalid');
+          
+          const feedback = document.createElement('div');
+          feedback.className = 'invalid-feedback';
+          feedback.textContent = 'A data final deve ser posterior à data inicial';
+          dataFinal.parentNode.appendChild(feedback);
+          
+          return false;
+        }
+        
+        return true;
+      }
+
+      resetReportForm() {
+        const form = document.getElementById('formRelatorios');
+        if (form) {
+          form.reset();
+        }
+        
+        // Reset validation states
+        const inputs = form?.querySelectorAll('.is-invalid');
+        inputs?.forEach(input => {
+          input.classList.remove('is-invalid');
+        });
+        
+        // Remove feedback messages
+        const feedbacks = form?.querySelectorAll('.invalid-feedback');
+        feedbacks?.forEach(feedback => feedback.remove());
+        
+        // Reset export buttons
+        this.toggleExportButtons();
+      }
+
+      openLicencasPopup() {
+        const popup = document.getElementById('popupLicencas');
+        if (popup) {
+          popup.style.display = 'block';
+          popup.setAttribute('aria-hidden', 'false');
+          
+          // Focus no botão de fechar para acessibilidade
+          const closeBtn = document.getElementById('fecharPopup');
+          if (closeBtn) closeBtn.focus();
+        }
+      }
+
+      setupModalEvents() {
+        // Popup de licenças
+        const popup = document.getElementById('popupLicencas');
+        const fecharPopup = document.getElementById('fecharPopup');
+
+        if (fecharPopup) {
+          fecharPopup.addEventListener('click', () => {
+            popup.style.display = 'none';
+            popup.setAttribute('aria-hidden', 'true');
+          });
+        }
+
+        // Fechar popup ao clicar fora
+        if (popup) {
+          popup.addEventListener('click', (event) => {
+            if (event.target === popup) {
+              popup.style.display = 'none';
+              popup.setAttribute('aria-hidden', 'true');
+            }
+          });
+        }
+
+        // Fechar popup com ESC
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && popup && popup.style.display === 'block') {
+            popup.style.display = 'none';
+            popup.setAttribute('aria-hidden', 'true');
+          }
+        });
+      }
+
+      exportReport(formato) {
+        const tipo = document.getElementById('tipoRelatorio').value;
+        
+        if (!tipo) {
+          this.showError('Por favor, selecione um tipo de relatório');
+          return;
+        }
+
+        // Validate date range before export
+        if (!this.validateDateRange()) {
+          this.showError('Por favor, corrija os erros de validação antes de exportar');
+          return;
+        }
+
+        const params = new URLSearchParams();
+        const filters = {
+          cliente: document.getElementById('filtroCliente').value?.trim(),
+          status: document.getElementById('filtroStatus').value,
+          tipo_servico: document.getElementById('filtroServico').value?.trim(),
+          data_inicial: document.getElementById('filtroDataInicial').value,
+          data_final: document.getElementById('filtroDataFinal').value
+        };
+
+        // Only add non-empty filters
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value) params.append(key, value);
+        });
+
+        const url = `/exportar-${formato}/${tipo}/?${params.toString()}`;
+        
+        // Show loading state
+        this.showLoading(true);
+        
+        // Open in new tab
+        const newWindow = window.open(url, '_blank');
+        
+        // Handle if popup was blocked
+        if (!newWindow) {
+          this.showError('Pop-up bloqueado. Por favor, permita pop-ups para este site.');
+        } else {
+          this.showSuccess(`Gerando relatório ${formato.toUpperCase()}...`);
+        }
+        
+        // Reset loading state after a moment
+        setTimeout(() => this.showLoading(false), 2000);
+      }
+
+      formatErrorMessage(error) {
+        if (typeof error === 'object') {
+          return Object.entries(error)
+            .map(([key, value]) => `${key}: ${Array.isArray(value) ? value.join(', ') : value}`)
+            .join('\n');
+        }
+        return error.toString();
+      }
+
+      showLoading(show) {
+        // Implementar indicador de loading se necessário
+        document.body.style.cursor = show ? 'wait' : 'default';
+      }
+
+      showError(message) {
+        // Melhor seria usar um sistema de toast, mas alert funciona por enquanto
+        alert('Erro: ' + message);
+      }
+
+      showSuccess(message) {
+        alert(message);
+      }
+    }
+
+    // Inicializar aplicação quando DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', () => {
+      new DashboardApp();
+    });
   </script>
 {% endblock %}
