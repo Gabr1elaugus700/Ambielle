@@ -2,45 +2,47 @@
 {% load static %}
 
 {% block content %}
-  <link rel="stylesheet" href="{% static 'global/css/clientes_modal.css' %}">
-  
   <main>
-    <section style="padding: 20px;">
-      <div style="margin-bottom: 20px;">
+    <div class="container-fluid py-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 text-dark mb-0">Gestão de Clientes</h2>
         <button type="button" class="btn btn-primary open-modal-btn" data-url="{% url 'workflow:createCliente' %}">
-          <i class="fas fa-plus"></i> Novo Cliente
+          <i class="fas fa-plus me-2"></i>Novo Cliente
         </button>
       </div>
 
-      <!-- Modal -->
-      <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+      <!-- Modal Bootstrap -->
+      <div class="modal fade modal-padrao modal-clientes" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="clienteModalLabel">Cliente</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
             </div>
             <div class="modal-body" id="modal-form-content">
-              <!-- Conteúdo carregado via AJAX -->
+              <!-- Conteúdo será carregado via AJAX -->
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Tabela -->
+    </div>
+    
+    <!-- Tabela -->
+    <div class="container-fluid">
       <div class="card">
-        <div class="table-responsive">
-          <table class="table table-hover mb-0">
-            <thead class="table-dark">
-              <tr>
-                <th width="80">ID</th>
-                <th>Nome</th>
-                <th width="100" class="text-center">Projetos</th>
-                <th width="150">Contato</th>
-                <th width="200">Email</th>
-                <th width="100" class="text-center">Ações</th>
-              </tr>
-            </thead>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th width="80">ID</th>
+                  <th>Nome</th>
+                  <th width="100" class="text-center">Projetos</th>
+                  <th width="150">Contato</th>
+                  <th width="200">Email</th>
+                  <th width="100" class="text-center">Ações</th>
+                </tr>
+              </thead>
             <tbody>
               {% for cliente in page_obj %}
                 <tr>
@@ -116,99 +118,11 @@
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const modal = new bootstrap.Modal(document.getElementById('clienteModal'), {
-        backdrop: 'static',
-        keyboard: true
-      });
-      const modalContent = document.getElementById('modal-form-content');
-      const modalTitle = document.getElementById('clienteModalLabel');
-    
-      function carregarFormulario(url, titulo = 'Cliente') {
-        modalTitle.textContent = titulo;
-        modalContent.innerHTML = '<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"></div></div>';
-        
-        modal.show();
-        
-        fetch(url)
-          .then(response => response.text())
-          .then(html => {
-            modalContent.innerHTML = html;
-            setupForm();
-          })
-          .catch(error => {
-            console.error('Erro:', error);
-            modalContent.innerHTML = '<div class="alert alert-danger">Erro ao carregar formulário</div>';
-          });
-      }
-    
-      function setupForm() {
-        const form = modalContent.querySelector('form');
-        if (!form) return;
-        
-        // Adicionar botão cancelar
-        const btnArea = form.querySelector('.btn');
-        if (btnArea && !btnArea.querySelector('.btn-cancelar')) {
-          const btnCancelar = document.createElement('button');
-          btnCancelar.type = 'button';
-          btnCancelar.className = 'btn-cancelar';
-          btnCancelar.textContent = 'CANCELAR';
-          btnCancelar.onclick = () => modal.hide();
-          btnArea.insertBefore(btnCancelar, btnArea.firstChild);
-        }
-        
-        form.onsubmit = function (e) {
-          e.preventDefault();
-          
-          const formData = new FormData(this);
-          const submitBtn = form.querySelector('.btn-form');
-          
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'SALVANDO...';
-          }
-    
-          fetch(this.action, {
-            method: 'POST',
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.message === 'success') {
-              modal.hide();
-              window.location.reload();
-            } else {
-              modalContent.innerHTML = data.html;
-              setupForm();
-            }
-          })
-          .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao salvar cliente');
-          })
-          .finally(() => {
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'SALVAR';
-            }
-          });
-        };
-      }
-    
-      // Evento criar cliente
-      document.querySelector('.open-modal-btn').onclick = function (e) {
-        e.preventDefault();
-        carregarFormulario(this.getAttribute('data-url'), 'Novo Cliente');
-      };
-    
-      // Evento editar cliente - delegação mais eficiente
-      document.onclick = function (e) {
-        const editBtn = e.target.closest('.edit-client');
-        if (editBtn) {
-          e.preventDefault();
-          carregarFormulario(editBtn.getAttribute('data-url'), 'Editar Cliente');
-        }
-      };
+    // Inicializar modal padrão para clientes
+    initModalPadrao('clienteModal', {
+      titleCreate: 'Novo Cliente',
+      titleEdit: 'Editar Cliente',
+      saveErrorMessage: 'Erro ao salvar cliente'
     });
   </script>
 {% endblock %}

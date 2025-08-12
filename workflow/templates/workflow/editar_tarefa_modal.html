@@ -1,34 +1,37 @@
 {% if error %}
     <div class="alert alert-danger">{{ error }}</div>
 {% else %}
-<form id="form-tarefa" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    
-    {% for field in form %}
-        <div class="form-group">
-            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-                <div class="text-danger">
-                    {% for error in field.errors %}
-                        <small>{{ error }}</small>
-                    {% endfor %}
+<div class="containerForm">
+    <form id="form-tarefa" method="POST" action="{% url 'workflow:editar_tarefa' tarefa.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form">
+            {% for field in form %}
+                <div class="form-label">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger">
+                            {% for error in field.errors %}
+                                <small>{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                    {% endif %}
                 </div>
-            {% endif %}
-            {% if field.help_text %}
-                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endfor %}
+        </div>
+        
+        <div class="btn">
+            <button type="submit" class="btn-form">SALVAR</button>
+            {% if tarefa %}
+            <button type="button" class="btn-excluir" onclick="excluirTarefa({{ tarefa.id }})">EXCLUIR</button>
             {% endif %}
         </div>
-    {% endfor %}
-    
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary close-modal">Fechar</button>
-        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-        {% if tarefa %}
-        <button type="button" class="btn btn-danger btn-excluir" data-tarefa-id="{{ tarefa.id }}">Excluir</button>
-        {% endif %}
-    </div>
-</form>
+    </form>
+</div>
 {% endif %}
 
 <style>

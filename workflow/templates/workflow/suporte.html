@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block content %}
-  <link rel="stylesheet" href="{% static 'global/css/suporte.css' %}">
-  
   <main>
     <div class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -14,7 +12,7 @@
       </div>
 
       <!-- Modal Bootstrap -->
-      <div class="modal fade" id="suporteModal" tabindex="-1" aria-labelledby="suporteModalLabel" aria-hidden="true">
+      <div class="modal fade modal-padrao modal-suporte" id="suporteModal" tabindex="-1" aria-labelledby="suporteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -181,99 +179,11 @@
   </main>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const modal = new bootstrap.Modal(document.getElementById('suporteModal'), {
-        backdrop: 'static',
-        keyboard: true
-      });
-      const modalContent = document.getElementById('modal-form-content');
-      const modalTitle = document.getElementById('suporteModalLabel');
-    
-      function carregarFormulario(url, titulo = 'Suporte') {
-        modalTitle.textContent = titulo;
-        modalContent.innerHTML = '<div class="text-center py-3"><div class="spinner-border spinner-border-sm text-primary" role="status"></div></div>';
-        
-        modal.show();
-        
-        fetch(url)
-          .then(response => response.text())
-          .then(html => {
-            modalContent.innerHTML = html;
-            setupForm();
-          })
-          .catch(error => {
-            console.error('Erro:', error);
-            modalContent.innerHTML = '<div class="alert alert-danger">Erro ao carregar formulário</div>';
-          });
-      }
-    
-      function setupForm() {
-        const form = modalContent.querySelector('form');
-        if (!form) return;
-        
-        // Adicionar botão cancelar
-        const btnArea = form.querySelector('.btn');
-        if (btnArea && !btnArea.querySelector('.btn-cancelar')) {
-          const btnCancelar = document.createElement('button');
-          btnCancelar.type = 'button';
-          btnCancelar.className = 'btn-cancelar';
-          btnCancelar.textContent = 'CANCELAR';
-          btnCancelar.onclick = () => modal.hide();
-          btnArea.insertBefore(btnCancelar, btnArea.firstChild);
-        }
-        
-        form.onsubmit = function (e) {
-          e.preventDefault();
-          
-          const formData = new FormData(this);
-          const submitBtn = form.querySelector('.btn-form');
-          
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'SALVANDO...';
-          }
-    
-          fetch(this.action, {
-            method: 'POST',
-            body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.message === 'success') {
-              modal.hide();
-              window.location.reload();
-            } else {
-              modalContent.innerHTML = data.html;
-              setupForm();
-            }
-          })
-          .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao salvar suporte');
-          })
-          .finally(() => {
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.textContent = 'SALVAR';
-            }
-          });
-        };
-      }
-    
-      // Evento criar suporte
-      document.querySelector('.open-modal-btn').onclick = function (e) {
-        e.preventDefault();
-        carregarFormulario(this.getAttribute('data-url'), 'Novo Suporte');
-      };
-    
-      // Evento editar suporte - delegação mais eficiente
-      document.onclick = function (e) {
-        const editBtn = e.target.closest('.edit-suporte');
-        if (editBtn) {
-          e.preventDefault();
-          carregarFormulario(editBtn.getAttribute('data-url'), 'Editar Suporte');
-        }
-      };
+    // Inicializar modal padrão para suporte
+    initModalPadrao('suporteModal', {
+      titleCreate: 'Novo Suporte',
+      titleEdit: 'Editar Suporte',
+      saveErrorMessage: 'Erro ao salvar suporte'
     });
   </script>
 {% endblock %}

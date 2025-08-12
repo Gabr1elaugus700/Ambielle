@@ -147,12 +147,13 @@ def editar_tarefa(request, tarefaId):
                 else:
                     nova_tarefa.save()
 
-                return JsonResponse({'success': True, 'message': 'Tarefa atualizada com sucesso'})
+                return JsonResponse({'message': 'success'})
             else:
-                errors = {}
-                for field, error_list in form.errors.items():
-                    errors[field] = [str(error) for error in error_list]
-                return JsonResponse({'success': False, 'error': errors})
+                # Retornar formulário com erros
+                return render(request, 'workflow/editar_tarefa_modal.html', {
+                    'form': form, 
+                    'tarefa': tarefa
+                })
         else:
             return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
     except Exception as e:

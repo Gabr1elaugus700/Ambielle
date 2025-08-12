@@ -1,0 +1,484 @@
+/* 
+ * Modal Padrão - Design Unificado
+ * Aplica o mesmo estilo usado na tela de suporte para todos os modais
+ * Cores de botão podem ser customizadas por tela através de variáveis CSS
+ */
+
+/* Variáveis CSS para customização por tela */
+:root {
+    --modal-primary-color: #17a2b8;
+    --modal-primary-hover: #138496;
+    --modal-primary-dark: #117a8b;
+    --modal-secondary-color: #6c757d;
+    --modal-secondary-hover: #545b62;
+    --modal-error-color: #e74c3c;
+    --modal-success-color: #28a745;
+}
+
+/* Configurações globais do modal - aplicável a qualquer modal com classe .modal-padrao */
+.modal-padrao {
+    --bs-modal-transition: none !important;
+    z-index: 1050;
+}
+
+/* Backdrop do modal */
+.modal-padrao .modal-backdrop {
+    z-index: 1040;
+}
+
+/* Desabilitar TODAS as animações e transições do modal */
+.modal-padrao,
+.modal-padrao *,
+.modal-padrao .fade,
+.modal-padrao.fade,
+.modal-padrao .modal-backdrop {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+.modal-padrao .modal-dialog {
+    max-width: 700px;
+    transform: none !important;
+    transition: none !important;
+    margin: 1.75rem auto;
+}
+
+.modal-padrao .modal-content {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: none !important;
+    transition: none !important;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-padrao .modal-header {
+    background: linear-gradient(135deg, var(--modal-primary-color), var(--modal-primary-hover));
+    color: white;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    padding: 20px 25px;
+}
+
+.modal-padrao .modal-title {
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.modal-padrao .btn-close {
+    background: none;
+    border: none;
+    color: white;
+    opacity: 0.8;
+    font-size: 1.2rem;
+}
+
+.modal-padrao .btn-close:hover {
+    opacity: 1;
+    color: white;
+}
+
+.modal-padrao .modal-body {
+    padding: 25px 25px 0 25px !important;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: white !important;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal-padrao .modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-padrao .modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.modal-padrao .modal-body::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.modal-padrao .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.modal-padrao .modal-body:last-child {
+    padding-bottom: 0 !important;
+}
+
+/* Override preciso do forms.css - APENAS nos elementos do modal */
+.modal-padrao .modal-body .containerForm,
+.modal-padrao .modal-body .tela-form {
+    background: white !important;
+    background-image: none !important;
+}
+
+/* Garantir que inputs e textareas tenham fundo branco */
+.modal-padrao .modal-body input,
+.modal-padrao .modal-body select, 
+.modal-padrao .modal-body textarea {
+    background: white !important;
+    background-image: none !important;
+}
+
+/* Override específico e cirúrgico do forms.css apenas no modal */
+.modal-padrao .containerForm {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    transform: none !important;
+    transition: none !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+.modal-padrao .tela-form {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: block !important;
+    transform: none !important;
+    transition: none !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+.modal-padrao .form {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+.modal-padrao .content-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Layout responsivo para o formulário */
+@media (min-width: 768px) {
+    .modal-padrao .content-form {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .modal-padrao .form-label:nth-child(2) {
+        grid-column: 1 / -1;
+    }
+}
+
+.modal-padrao .form-label {
+    margin-bottom: 0 !important;
+    background: white !important;
+}
+
+.modal-padrao .form-label label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    background: transparent !important;
+}
+
+.modal-padrao .form-label input,
+.modal-padrao .form-label select,
+.modal-padrao .form-label textarea {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border: 2px solid #e1e5e9 !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    background-color: #fff !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+    box-sizing: border-box !important;
+}
+
+.modal-padrao .form-label input:focus,
+.modal-padrao .form-label select:focus,
+.modal-padrao .form-label textarea:focus {
+    outline: none !important;
+    border-color: var(--modal-primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1) !important;
+    background-color: #fff !important;
+}
+
+.modal-padrao .form-label textarea {
+    min-height: 100px !important;
+    resize: vertical !important;
+}
+
+.modal-padrao .title-form {
+    display: none !important;
+}
+
+/* Erros */
+.modal-padrao .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    color: var(--modal-error-color);
+    font-size: 12px;
+}
+
+/* Botões */
+.modal-padrao .btn,
+.modal-padrao .modal-footer {
+    border-top: 1px solid #e1e5e9 !important;
+    background-color: #f8f9fa !important;
+    padding: 15px 25px !important;
+    margin: 0 !important;
+    margin-top: 20px !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    border-radius: 0 0 10px 10px !important;
+}
+
+/* Área de botões dentro do formulário */
+.modal-padrao .btn:not(.modal-footer) {
+    border-top: 1px solid #e1e5e9 !important;
+    background-color: #f8f9fa !important;
+    padding: 15px 25px !important;
+    margin: 0 !important;
+    margin-top: 20px !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+}
+
+/* Botão de submit do formulário */
+.modal-padrao .btn-form,
+.modal-padrao button[type="submit"],
+.modal-padrao .btn-primary {
+    background: linear-gradient(135deg, var(--modal-primary-color), var(--modal-primary-hover)) !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.2s ease !important;
+    margin: 0 !important;
+}
+
+.modal-padrao .btn-form:hover,
+.modal-padrao button[type="submit"]:hover,
+.modal-padrao .btn-primary:hover {
+    background: linear-gradient(135deg, var(--modal-primary-hover), var(--modal-primary-dark)) !important;
+    transform: translateY(-1px) !important;
+}
+
+.modal-padrao .btn-form:disabled,
+.modal-padrao button[type="submit"]:disabled,
+.modal-padrao .btn-primary:disabled {
+    background: var(--modal-secondary-color) !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+.modal-padrao .btn-cancelar,
+.modal-padrao .btn-secondary {
+    background: var(--modal-secondary-color) !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.2s ease !important;
+    margin: 0 !important;
+}
+
+.modal-padrao .btn-cancelar:hover,
+.modal-padrao .btn-secondary:hover {
+    background: var(--modal-secondary-hover) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Variações de cores para diferentes telas */
+.modal-padrao.modal-clientes {
+    --modal-primary-color: #007bff;
+    --modal-primary-hover: #0056b3;
+    --modal-primary-dark: #004085;
+}
+
+.modal-padrao.modal-servicos {
+    --modal-primary-color: #28a745;
+    --modal-primary-hover: #218838;
+    --modal-primary-dark: #1e7e34;
+}
+
+.modal-padrao.modal-tarefas {
+    --modal-primary-color: #ffc107;
+    --modal-primary-hover: #e0a800;
+    --modal-primary-dark: #d39e00;
+}
+
+.modal-padrao.modal-tipos {
+    --modal-primary-color: #6f42c1;
+    --modal-primary-hover: #5a32a3;
+    --modal-primary-dark: #4c2a85;
+}
+
+.modal-padrao.modal-suporte {
+    --modal-primary-color: #17a2b8;
+    --modal-primary-hover: #138496;
+    --modal-primary-dark: #117a8b;
+}
+
+/* Estilos específicos para inputs de formulário do Django */
+.modal-padrao .modal-body p {
+    margin-bottom: 20px !important;
+    background: white !important;
+}
+
+.modal-padrao .modal-body p label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.modal-padrao .modal-body p input,
+.modal-padrao .modal-body p select,
+.modal-padrao .modal-body p textarea {
+    width: 100% !important;
+    padding: 12px 15px !important;
+    border: 2px solid #e1e5e9 !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    background-color: #fff !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+    box-sizing: border-box !important;
+}
+
+.modal-padrao .modal-body p input:focus,
+.modal-padrao .modal-body p select:focus,
+.modal-padrao .modal-body p textarea:focus {
+    outline: none !important;
+    border-color: var(--modal-primary-color) !important;
+    box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1) !important;
+    background-color: #fff !important;
+}
+
+/* Área de botões específica */
+.modal-padrao .btn:last-child,
+.modal-padrao .form-actions,
+.modal-padrao .button-group {
+    border-top: 1px solid #e1e5e9 !important;
+    background-color: #f8f9fa !important;
+    padding: 15px 25px !important;
+    margin: 20px -25px 0 -25px !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    border-radius: 0 0 10px 10px !important;
+}
+
+/* Tabelas dentro do modal */
+.modal-padrao .table {
+    margin-bottom: 0;
+}
+
+.modal-padrao .table th {
+    background-color: #343a40 !important;
+    color: white;
+    font-weight: 600;
+    border: none;
+    padding: 15px 10px;
+    font-size: 14px;
+}
+
+.modal-padrao .table td {
+    padding: 15px 10px;
+    vertical-align: middle;
+    border-color: #f1f3f4;
+    font-size: 14px;
+}
+
+.modal-padrao .table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Spinners de carregamento */
+.modal-padrao .spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Alerts dentro do modal */
+.modal-padrao .alert {
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+}
+
+.modal-padrao .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.modal-padrao .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.modal-padrao .alert-info {
+    background-color: #cce7ff;
+    color: #004085;
+}
+
+/* Badges e elementos informativos */
+.modal-padrao .badge {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Lista de itens vazios */
+.modal-padrao .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+}
+
+.modal-padrao .empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}

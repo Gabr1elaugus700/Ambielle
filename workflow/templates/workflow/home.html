@@ -1,4 +1,5 @@
 {% extends 'global/base.html' %}
+{% load static %}
 
 {% block content %}
   <main>
@@ -220,15 +221,15 @@
     </section>
     
     <!-- Modal para Editar Tarefa -->
-    <div class="modal fade" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
+    <div class="modal fade modal-padrao modal-tarefas" id="modal-editar-tarefa" tabindex="-1" aria-labelledby="modalEditarTarefaLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
+          <div class="modal-header">
             <h5 class="modal-title d-flex align-items-center" id="modalEditarTarefaLabel">
               <i class="fas fa-edit me-2"></i>
               Editar Tarefa
             </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
           <div class="modal-body p-4">
             <form id="form-editar-tarefa" method="post">
@@ -327,23 +328,18 @@
     </div>
 
     <!-- Modal para Lista de Clientes -->
-    <div class="modal fade" id="clientesModal" tabindex="-1" aria-labelledby="clientesModalLabel" aria-hidden="true">
+    <div class="modal fade modal-padrao modal-clientes" id="clientesModal" tabindex="-1" aria-labelledby="clientesModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
+          <div class="modal-header">
             <h5 class="modal-title d-flex align-items-center" id="clientesModalLabel">
               <i class="fas fa-users me-2"></i>
               Clientes Cadastrados
             </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
-          <div class="modal-body p-4">
+          <div class="modal-body">
             <ul id="listaClientes" class="list-unstyled mb-0"></ul>
-          </div>
-          <div class="modal-footer bg-light">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              <i class="fas fa-times me-2"></i>Fechar
-            </button>
           </div>
         </div>
       </div>
