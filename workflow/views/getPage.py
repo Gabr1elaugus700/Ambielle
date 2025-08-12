@@ -120,9 +120,49 @@ def getCliente(request):
 @login_required(login_url='workflow:login')
 def getTimeLine(request):
     title = 'Linha Do Tempo'
+    
+    # Se há parâmetros GET, usar a mesma lógica da view de filtros
+    if request.GET:
+        # Redirecionar para a lógica de filtros
+        return get_tarefas_filtradas(request)
+    
+    # Carregar todas as tarefas por padrão
+    tarefas = Tarefa.objects.all().order_by('prazo_final')
+    clientes = Cliente.objects.all()
+    
+    # Definição de escolhas de status
+    status_choices = [
+        ('Iniciado', 'Iniciado'),
+        ('Coleta De Informações', 'Coleta de Informações'),
+        ('Execucao', 'Execução'),
+        ('Aprovação Cliente', 'Aprovação Cliente'),
+        ('Concluído', 'Concluído'),
+        ('Encerrado', 'Encerrado'),
+        ('Protocolado', 'Protocolado'),
+    ]
 
-    context ={
+    status_colors = {
+        'Iniciado': '#32CD32',  # Verde
+        'Coleta De Informações': '#FF8C00',  # Laranja
+        'Execucao': '#00BFFF',  # Azul
+        'Aprovação Cliente': '#FFD700',  # Amarelo
+        'Concluído': '#32CD32',  # Verde
+        'Encerrado': '#B22222',  # Vermelho
+        'Protocolado': '#FF4500'  # Laranja Vermelho
+    }
+
+    for tarefa in tarefas:
+        tarefa.status_color = status_colors.get(tarefa.status, '#000000')
+
+    context = {
         'title': title,
+        'tarefas': tarefas,
+        'clientes': clientes,
+        'cliente_selecionado': 'todos',
+        'status_choices': status_choices,
+        'status_selecionados': [],
+        'data_inicial': None,
+        'data_final': None,
     }
 
     return render(

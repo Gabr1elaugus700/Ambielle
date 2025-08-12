@@ -4,6 +4,38 @@
  * Cores de botão podem ser customizadas por tela através de variáveis CSS
  */
 
+/* Botões de ação para timeline */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px 0;
+}
+
+.btn-filter, .btn-nova-tarefa {
+    background: var(--modal-primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-filter:hover, .btn-nova-tarefa:hover {
+    background: var(--modal-primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-nova-tarefa {
+    background: var(--modal-success-color);
+}
+
+.btn-nova-tarefa:hover {
+    background: #218838;
+}
+
 /* Variáveis CSS para customização por tela */
 :root {
     --modal-primary-color: #17a2b8;

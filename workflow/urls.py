@@ -6,6 +6,7 @@ app_name = 'workflow'
 urlpatterns  = [
     #Detail
     path('ambielle/', views.index, name='index'),
+    path('ambielle/timeline/', views.getTimeLine, name='timeline'),
     path('ambielle/listaClientes/', views.getCliente, name='getCliente'),
     path('ambielle/tarefas/', views.get_tarefas_filtradas, name='get_tarefas_filtradas'),
     path('ambielle/listaTipoServico/', views.listaTipoServico, name='listaTipoServico'),

@@ -3,9 +3,10 @@
 
 {% block content %}
 <main>
-    <!-- Botão para abrir o modal de filtro -->
-    <section>
-        <button class="open-modal-btn">Filtrar Atividades</button>
+    <!-- Botões de ação -->
+    <section class="action-buttons">
+        <button class="open-modal-btn btn-filter">Filtrar Atividades</button>
+        <button class="btn-nova-tarefa" onclick="window.location.href='{% url 'workflow:createTarefa' %}'">Nova Tarefa</button>
     </section>
     
 <div id="filterModal" class="modal fade modal-padrao modal-tarefas" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
@@ -17,7 +18,7 @@
             </div>
             <div class="modal-body">
                 <!-- Formulário de Filtro -->
-                <form id="filterForm" action="{% url 'workflow:get_tarefas_filtradas' %}" method="GET">
+                <form id="filterForm" action="{% url 'workflow:timeline' %}" method="GET">
                     <div class="form">
                         <!-- Filtro por Cliente -->
                         <div class="form-label">
@@ -143,12 +144,14 @@
         
         // Inicialização do modal de filtro
         var filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
-        var openModalBtn = document.querySelector('.open-modal-btn');
+        var openModalBtn = document.querySelector('.btn-filter');
     
         // Abrir modal de filtro
-        openModalBtn.addEventListener('click', function () {
-            filterModal.show();
-        });
+        if (openModalBtn) {
+            openModalBtn.addEventListener('click', function () {
+                filterModal.show();
+            });
+        }
     
         // Inicializar modal de edição de tarefa usando o padrão
         const modalEditarTarefa = new ModalPadrao('modal-editar-tarefa', {
@@ -174,9 +177,9 @@
                 const tarefaId = this.getAttribute('data-id');
                 console.log('Editando tarefa ID:', tarefaId);
                 
-                // Carregar formulário de edição com URL correta
+                // Carregar formulário de edição
                 modalEditarTarefa.carregarFormulario(
-                    `/ambielle/tarefa/${tarefaId}/carregar-formulario/`, 
+                    `/tarefa/${tarefaId}/carregar-formulario/`, 
                     'Editar Tarefa'
                 );
             });
