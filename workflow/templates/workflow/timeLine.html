@@ -6,7 +6,7 @@
     <!-- Botões de ação -->
     <section class="action-buttons">
         <button class="open-modal-btn btn-filter">Filtrar Atividades</button>
-        <button class="btn-nova-tarefa" onclick="window.location.href='{% url 'workflow:createTarefa' %}'">Nova Tarefa</button>
+        <button class="btn-nova-tarefa" id="btn-criar-tarefa">Nova Tarefa</button>
     </section>
     
 <div id="filterModal" class="modal fade modal-padrao modal-tarefas" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
@@ -134,6 +134,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de Criação de Tarefa -->
+    <div class="modal fade modal-padrao modal-tarefas" id="modal-criar-tarefa" tabindex="-1" aria-labelledby="modalCriarTarefaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCriarTarefaLabel">Nova Tarefa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body" id="modal-criar-form-content">
+                    <!-- O conteúdo será carregado dinamicamente via AJAX -->
+                    <div class="text-center py-3">
+                        <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                        <p class="mt-2">Carregando...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <!-- Scripts -->
@@ -159,6 +178,25 @@
             titleEdit: 'Editar Tarefa',
             saveErrorMessage: 'Erro ao salvar tarefa'
         });
+
+        // Inicializar modal de criação de tarefa
+        const modalCriarTarefa = new ModalPadrao('modal-criar-tarefa', {
+            titleCreate: 'Nova Tarefa',
+            titleEdit: 'Nova Tarefa',
+            saveErrorMessage: 'Erro ao criar tarefa'
+        });
+
+        // Configurar botão de criar tarefa
+        const btnCriarTarefa = document.getElementById('btn-criar-tarefa');
+        if (btnCriarTarefa) {
+            btnCriarTarefa.addEventListener('click', function () {
+                console.log('Criando nova tarefa');
+                modalCriarTarefa.carregarFormulario(
+                    '{% url "workflow:createTarefa" %}', 
+                    'Nova Tarefa'
+                );
+            });
+        }
 
         // Garantir que os botões de fechar do modal de edição funcionem
         document.addEventListener('click', function(e) {

@@ -84,19 +84,27 @@ def deleteClientes(request, cliente_id):
 @login_required(login_url='workflow:login')   
 def createTarefa(request):
     if request.method == 'POST':
-
         title = 'Cadastro de Serviços'
         form = CreateTarefaForm(request.POST)
 
-        context ={
+        context = {
             'title': title,
             'form': form,
         }
 
         if form.is_valid():
             form.save()
+            
+            # Para requisições AJAX, retornar JSON
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'message': 'success'})
+            
             messages.success(request, 'Serviço Cadastrado com Sucesso!')
-            return redirect('workflow:createTarefa')
+            return redirect('workflow:timeline')
+
+        # Para requisições AJAX com erros, retornar o formulário
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return render(request, 'workflow/createServico.html', context)
 
         return render(
             request,

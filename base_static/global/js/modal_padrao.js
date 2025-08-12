@@ -12,7 +12,7 @@ class ModalPadrao {
       keyboard: true,
       ...options.bootstrapOptions
     });
-    this.modalContent = this.modalElement.querySelector('#modal-form-content, .modal-body');
+    this.modalContent = this.modalElement.querySelector('#modal-form-content, #modal-criar-form-content, .modal-body');
     this.modalTitle = this.modalElement.querySelector('.modal-title');
     this.options = {
       titleCreate: 'Novo Item',
@@ -141,7 +141,8 @@ class ModalPadrao {
       method: 'POST',
       body: formData,
       headers: {
-        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+        'X-Requested-With': 'XMLHttpRequest'
       }
     })
     .then(response => {
