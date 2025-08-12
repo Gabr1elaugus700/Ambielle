@@ -5,7 +5,7 @@
 <main>
     <!-- Botões de ação -->
     <section class="action-buttons">
-        <button class="open-modal-btn btn-filter">Filtrar Atividades</button>
+        <button class="btn-filter" data-bs-toggle="modal" data-bs-target="#filterModal">Filtrar Atividades</button>
         <button class="btn-nova-tarefa" id="btn-criar-tarefa">Nova Tarefa</button>
     </section>
     
@@ -161,17 +161,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         console.log('DOM carregado - iniciando eventos');
         
-        // Inicialização do modal de filtro
-        var filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
-        var openModalBtn = document.querySelector('.btn-filter');
-    
-        // Abrir modal de filtro
-        if (openModalBtn) {
-            openModalBtn.addEventListener('click', function () {
-                filterModal.show();
-            });
-        }
-    
         // Inicializar modal de edição de tarefa usando o padrão
         const modalEditarTarefa = new ModalPadrao('modal-editar-tarefa', {
             titleCreate: 'Nova Tarefa',
