@@ -117,19 +117,16 @@
     <!-- Modal de Edição de Tarefa -->
     <div id="modal-editar-tarefa" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Editar Status</h2>
-            <form id="form-editar-tarefa">
-                {% csrf_token %}
-                <input type="hidden" name="tarefa_id" id="tarefa-id">
-                <label for="status">Status:</label>
-                <select name="status" id="status">
-                    {% for key, value in task.STATUS_CHOICES %}
-                    <option value="{{ key }}">{{ value }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit">Salvar</button>
-            </form>
+            <div class="modal-header">
+                <h2>Editar Tarefa</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- O conteúdo será carregado dinamicamente via AJAX -->
+                <div id="modal-loading">
+                    <p>Carregando...</p>
+                </div>
+            </div>
         </div>
     </div>
 </main>
@@ -138,6 +135,8 @@
 <script>
     // Inicialização do Modal de Filtro
     document.addEventListener('DOMContentLoaded', function () {
+        console.log('DOM carregado - iniciando eventos');
+        
         // Inicialização do modal de filtro
         var filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
         var openModalBtn = document.querySelector('.open-modal-btn');
@@ -162,56 +161,111 @@
         // Inicialização do modal de edição de tarefa
         var modalEditar = document.getElementById('modal-editar-tarefa');
         var closeModalEditar = document.querySelector('#modal-editar-tarefa .close');
-        var modalEditarContent = document.querySelector('#modal-editar-tarefa .modal-content');
+        var modalEditarBody = document.querySelector('#modal-editar-tarefa .modal-body');
+        
+        console.log('Modal editar encontrado:', modalEditar);
+        console.log('Botões editar encontrados:', document.querySelectorAll('.btn-editar').length);
     
         // Abrir modal de edição de tarefa e carregar formulário via AJAX
         document.querySelectorAll('.btn-editar').forEach(button => {
             button.addEventListener('click', function () {
-                let tarefaId = this.getAttribute('data-id');
+                const tarefaId = this.getAttribute('data-id');
+                console.log('Tentando carregar tarefa ID:', tarefaId);
     
-                // Limpa o conteúdo anterior do modal
-                modalEditarContent.innerHTML = '';
+                // Mostra loading
+                modalEditarBody.innerHTML = '<div id="modal-loading"><p>Carregando...</p></div>';
+                modalEditar.style.display = 'block';
     
                 // Carrega o formulário de edição via AJAX
                 fetch(`/tarefa/${tarefaId}/carregar-formulario/`)
-                    .then(response => response.text())
+                    .then(response => {
+                        console.log('Response status carregar formulário:', response.status);
+                        if (!response.ok) {
+                            throw new Error(`Erro HTTP! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
                     .then(html => {
-                        modalEditarContent.innerHTML = html;
-                        modalEditar.style.display = 'block'; // Abre o modal de edição
+                        console.log('HTML carregado com sucesso');
+                        modalEditarBody.innerHTML = html;
     
-                        // Atualiza o action do formulário para a URL de edição
-                        var formEditarTarefa = document.getElementById('form-tarefa');
-                        if (formEditarTarefa) {
-                            formEditarTarefa.action = `/tarefa/${tarefaId}/editar/`; // Atualiza a URL de ação
-    
-                            // Adiciona o evento de submit ao formulário carregado
-                            formEditarTarefa.addEventListener('submit', function (event) {
-                                event.preventDefault();
-    
-                                let formData = new FormData(formEditarTarefa);
-    
-                                fetch(formEditarTarefa.action, {
-                                    method: 'POST',
-                                    body: formData,
-                                    headers: {
-                                        'X-CSRFToken': formData.get('csrfmiddlewaretoken') // Adiciona o token CSRF
-                                    }
-                                })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.success) {
-                                            alert('Tarefa atualizada com sucesso!');
-                                            // Atualiza a interface sem recarregar
-                                            location.reload(); // Recarrega a página para refletir as alterações
-                                        } else {
-                                            alert('Erro: ' + data.error);
-                                        }
-                                    })
-                                    .catch(error => console.error('Erro:', error));
+                        // Procura pelo formulário carregado
+                        const formEditarTarefa = modalEditarBody.querySelector('#form-tarefa');
+                        if (!formEditarTarefa) {
+                            throw new Error('Formulário #form-tarefa não encontrado');
+                        }
+                        
+                        console.log('Formulário encontrado:', formEditarTarefa);
+                        
+                        // Define a ação do formulário
+                        formEditarTarefa.action = `/ambielle/tarefa/${tarefaId}/editar/`;
+                        console.log('Action definida:', formEditarTarefa.action);
+
+                        // Adiciona o evento de submit ao formulário carregado
+                        formEditarTarefa.addEventListener('submit', function (event) {
+                            event.preventDefault();
+                            console.log('Formulário sendo enviado...');
+
+                            const formData = new FormData(formEditarTarefa);
+                            
+                            // Log para debug
+                            console.log('Dados do formulário:');
+                            for (const [key, value] of formData.entries()) {
+                                console.log(`${key}: ${value}`);
+                            }
+
+                            fetch(formEditarTarefa.action, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                                }
+                            })
+                            .then(response => {
+                                console.log('Response status edição:', response.status);
+                                if (!response.ok) {
+                                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log('Response data:', data);
+                                if (data.success) {
+                                    alert('Tarefa atualizada com sucesso!');
+                                    modalEditar.style.display = 'none';
+                                    location.reload();
+                                } else {
+                                    console.error('Erro do servidor:', data.error);
+                                    alert('Erro: ' + JSON.stringify(data.error));
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Erro no fetch de edição:', error);
+                                alert('Erro na comunicação com o servidor: ' + error.message);
+                            });
+                        });
+
+                        // Adiciona eventos para botões de fechar
+                        const closeButtons = modalEditarBody.querySelectorAll('.btn-secondary, .close-modal');
+                        closeButtons.forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                modalEditar.style.display = 'none';
+                            });
+                        });
+
+                        // Adiciona evento para botão de exclusão
+                        const btnExcluir = modalEditarBody.querySelector('.btn-excluir');
+                        if (btnExcluir) {
+                            btnExcluir.addEventListener('click', function() {
+                                const tarefaId = this.getAttribute('data-tarefa-id');
+                                excluirTarefa(tarefaId);
                             });
                         }
                     })
-                    .catch(error => console.error('Erro ao carregar formulário:', error));
+                    .catch(error => {
+                        console.error('Erro ao carregar formulário:', error);
+                        modalEditarBody.innerHTML = `<div class="alert alert-danger">Erro ao carregar o formulário: ${error.message}</div>`;
+                    });
             });
         });
     
@@ -226,6 +280,60 @@
                 modalEditar.style.display = 'none';
             }
         });
+    
+        // Fechar modal com tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && modalEditar.style.display === 'block') {
+                modalEditar.style.display = 'none';
+            }
+        });
     });
+
+    // Função global para excluir tarefa
+    function excluirTarefa(tarefaId) {
+        console.log('Função excluirTarefa chamada com ID:', tarefaId);
+        
+        if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+            console.log('Confirmação aceita, iniciando exclusão...');
+            
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (!csrfToken) {
+                console.error('Token CSRF não encontrado');
+                alert('Erro: Token de segurança não encontrado');
+                return;
+            }
+            
+            fetch(`/ambielle/tarefa/${tarefaId}/delete/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken.value
+                }
+            })
+            .then(response => {
+                console.log('Response status exclusão:', response.status);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data exclusão:', data);
+                if (data.success) {
+                    alert('Tarefa excluída com sucesso!');
+                    document.getElementById('modal-editar-tarefa').style.display = 'none';
+                    location.reload();
+                } else {
+                    console.error('Erro do servidor na exclusão:', data.error);
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
+                }
+            })
+            .catch(error => {
+                console.error('Erro no fetch de exclusão:', error);
+                alert('Erro na comunicação com o servidor: ' + error.message);
+            });
+        } else {
+            console.log('Exclusão cancelada pelo usuário');
+        }
+    }
 </script>
 {% endblock %}

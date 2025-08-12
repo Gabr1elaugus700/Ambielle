@@ -120,40 +120,56 @@ def createTarefa(request):
         
 @login_required(login_url='workflow:login')
 def carregar_formulario_edicao(request, tarefa_id):
-    tarefa = get_object_or_404(Tarefa, id=tarefa_id)
-    form = CreateTarefaForm(instance=tarefa)  # Preenche o formulário com os dados da tarefa
-    return render(request, 'workflow/createServico.html', {'form': form, 'tarefa': tarefa})
+    try:
+        tarefa = get_object_or_404(Tarefa, id=tarefa_id)
+        form = CreateTarefaForm(instance=tarefa)
+        return render(request, 'workflow/editar_tarefa_modal.html', {'form': form, 'tarefa': tarefa})
+    except Exception as e:
+        return render(request, 'workflow/editar_tarefa_modal.html', {
+            'error': f'Erro ao carregar formulário: {str(e)}'
+        })
 
 @login_required(login_url='workflow:login')
 def editar_tarefa(request, tarefaId):
-    tarefa = get_object_or_404(Tarefa, id=tarefaId)  # Busca a tarefa pelo ID
-    if request.method == 'POST':
-        form = CreateTarefaForm(request.POST, instance=tarefa)
-        if form.is_valid():
-            status_original = tarefa.status
-            nova_tarefa = form.save(commit=False)
-            novo_status = nova_tarefa.status
+    try:
+        tarefa = get_object_or_404(Tarefa, id=tarefaId)
+        
+        if request.method == 'POST':
+            form = CreateTarefaForm(request.POST, instance=tarefa)
+            if form.is_valid():
+                status_original = tarefa.status
+                nova_tarefa = form.save(commit=False)
+                novo_status = nova_tarefa.status
 
-            if status_original != novo_status:
-                nova_tarefa.save()
-                HistoricoStatusTarefa.objects.create(tarefa=nova_tarefa, status=novo_status)
+                if status_original != novo_status:
+                    nova_tarefa.save()
+                    HistoricoStatusTarefa.objects.create(tarefa=nova_tarefa, status=novo_status)
+                else:
+                    nova_tarefa.save()
+
+                return JsonResponse({'success': True, 'message': 'Tarefa atualizada com sucesso'})
             else:
-                nova_tarefa.save()
-
-            return JsonResponse({'success': True})
+                errors = {}
+                for field, error_list in form.errors.items():
+                    errors[field] = [str(error) for error in error_list]
+                return JsonResponse({'success': False, 'error': errors})
         else:
-            return JsonResponse({'success': False, 'error': form.errors})
-    return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
+            return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': f'Erro interno: {str(e)}'}, status=500)
 
-@csrf_exempt
+@login_required(login_url='workflow:login')
+@csrf_exempt  # Necessário para AJAX requests
 def excluir_tarefa(request, tarefaId):
     if request.method == 'POST':
         try:
-            tarefa = Tarefa.objects.get(id=tarefaId)
+            tarefa = get_object_or_404(Tarefa, id=tarefaId)
             tarefa.delete()
-            return JsonResponse({'success': True})
+            return JsonResponse({'success': True, 'message': 'Tarefa excluída com sucesso'})
         except Tarefa.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Tarefa não encontrada'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': f'Erro interno: {str(e)}'}, status=500)
     else:
         return JsonResponse({'success': False, 'error': 'Método não permitido'}, status=405)
     

@@ -1,0 +1,80 @@
+{% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+{% else %}
+<form id="form-tarefa" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {% for field in form %}
+        <div class="form-group">
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="text-danger">
+                    {% for error in field.errors %}
+                        <small>{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary close-modal">Fechar</button>
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        {% if tarefa %}
+        <button type="button" class="btn btn-danger btn-excluir" data-tarefa-id="{{ tarefa.id }}">Excluir</button>
+        {% endif %}
+    </div>
+</form>
+{% endif %}
+
+<style>
+/* Adiciona estilo aos campos do formulário */
+#form-tarefa .form-group {
+    margin-bottom: 20px;
+}
+
+#form-tarefa .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+#form-tarefa input, 
+#form-tarefa select, 
+#form-tarefa textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+#form-tarefa input:focus, 
+#form-tarefa select:focus, 
+#form-tarefa textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+#form-tarefa .text-danger {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+#form-tarefa .form-text {
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 5px;
+}
+</style>
+
+
